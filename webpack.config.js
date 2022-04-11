@@ -4,6 +4,8 @@ const path = require('path');
 const clientPath = path.join(__dirname, 'client');
 const serverPublicPath = path.join(__dirname, 'server/public');
 
+const stylesHandler = 'style-loader';
+
 module.exports = {
   resolve: {
     extensions: ['.js', '.jsx']
@@ -25,6 +27,14 @@ module.exports = {
             ]
           }
         }
+      },
+      {
+        test: /\.css$/i,
+        use: [stylesHandler, 'css-loader', 'postcss-loader']
+      },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+        type: 'asset'
       }
     ]
   },

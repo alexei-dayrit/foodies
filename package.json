@@ -23,9 +23,11 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.4",
     "@babel/core": "^7.17.9",
     "@babel/plugin-transform-react-jsx": "^7.17.3",
     "babel-loader": "^8.2.4",
+    "css-loader": "^6.7.1",
     "eslint": "^7.29.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-html": "^6.1.2",
@@ -38,9 +40,13 @@
     "markuplint": "^2.5.0",
     "nodemon": "^2.0.15",
     "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.12",
+    "postcss-loader": "^6.2.1",
+    "style-loader": "^3.3.1",
     "stylelint": "^14.6.1",
     "stylelint-config-recommended": "^7.0.0",
     "stylelint-config-standard": "^25.0.0",
+    "tailwindcss": "^3.0.23",
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1"
