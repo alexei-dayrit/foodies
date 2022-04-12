@@ -5,8 +5,8 @@ export default class Form extends React.Component {
     super(props);
     this.state = {
       caption: '',
-      isBought: null,
-      location: ''
+      location: '',
+      isBought: null
     };
     this.fileInputRef = React.createRef();
     this.handleCaptionChange = this.handleCaptionChange.bind(this);
@@ -38,6 +38,21 @@ export default class Form extends React.Component {
     formData.append('caption', this.state.caption);
     formData.append('location', this.state.location);
     formData.append('isBought', this.state.isBought);
+
+    fetch('/api/uploads', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(result => {
+        this.setState({
+          caption: '',
+          location: '',
+          isBought: null
+        });
+        this.fileInputRef.current.value = null;
+      })
+      .catch(err => console.error(err));
   }
 
   render() {
