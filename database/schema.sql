@@ -7,12 +7,13 @@ drop schema "public" cascade;
 create schema "public";
 
 CREATE TABLE "public"."photos" (
-	"photoId" serial NOT NULL,
-	"fileUrl" TEXT NOT NULL,
-	"createdAt" timestamp with time zone NOT NULL,
-	"location" TEXT NOT NULL,
-	"userId" integer NOT NULL,
-	"isBought" BOOLEAN NOT NULL,
+	"photoId" serial,
+	"imageUrl" TEXT,
+	"createdAt" timestamp with time zone NOT NULL default now(),
+	"location" TEXT,
+	"userId" integer,
+	"isBought" BOOLEAN,
+	"caption" TEXT,
 	CONSTRAINT "photos_pk" PRIMARY KEY ("photoId")
 ) WITH (
   OIDS=FALSE
@@ -24,7 +25,7 @@ CREATE TABLE "public"."users" (
 	"userId" serial NOT NULL,
 	"username" TEXT NOT NULL UNIQUE,
 	"hashedPassword" TEXT NOT NULL,
-	"createdAt" timestamp with time zone,
+	"createdAt" timestamp with time zone NOT NULL default now(),
 	"followerCount" integer NOT NULL,
 	"followingCount" integer NOT NULL,
 	"postCount" integer NOT NULL,
@@ -38,7 +39,7 @@ CREATE TABLE "public"."users" (
 CREATE TABLE "public"."likes" (
 	"userId" integer NOT NULL,
 	"photoId" integer NOT NULL,
-	"createdAt" timestamp with time zone NOT NULL
+	"createdAt" timestamp with time zone NOT NULL default now()
 ) WITH (
   OIDS=FALSE
 );
@@ -49,7 +50,7 @@ CREATE TABLE "public"."comments" (
 	"commentId" serial NOT NULL,
 	"userId" integer NOT NULL,
 	"photoId" integer NOT NULL,
-	"createdAt" timestamp with time zone NOT NULL,
+	"createdAt" timestamp with time zone NOT NULL default now(),
 	CONSTRAINT "comments_pk" PRIMARY KEY ("commentId")
 ) WITH (
   OIDS=FALSE
@@ -60,7 +61,7 @@ CREATE TABLE "public"."comments" (
 CREATE TABLE "public"."followers" (
 	"followerId" integer NOT NULL,
 	"userId" integer NOT NULL,
-	"followedAt" timestamp with time zone NOT NULL
+	"followedAt" timestamp with time zone NOT NULL default now()
 ) WITH (
   OIDS=FALSE
 );

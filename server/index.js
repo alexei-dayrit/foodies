@@ -19,16 +19,16 @@ const db = new pg.Pool({
   }
 });
 
-app.post('/api/photos', uploadsMiddleware, (req, res, next) => {
+app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
   const { userId, caption, location, isBought } = req.body;
   if (!caption || !location || !isBought) {
-    throw new ClientError(401, 'Caption, location, and isBought are required fields');
+    throw new ClientError(400, 'Caption, location, and isBought are required fields');
   }
-  const imageUrl = '/images' + req.file.filename;
+  const imageUrl = req.file.filename;
   const sql = `
     insert into "photos" ("userId", "imageUrl", "caption", "location", "isBought")
-                "values" ($1, $2, $3, $4, $5)
-                returning *
+      values ($1, $2, $3, $4, $5)
+      returning *;
   `;
   const params = [userId, imageUrl, caption, location, isBought];
   db.query(sql, params)
