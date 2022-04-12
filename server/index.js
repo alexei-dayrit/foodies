@@ -23,6 +23,18 @@ app.post('/api/photos', (req, res, next) => {
   if (!userId || !fileUrl || !caption || !location || !isBought) {
     throw new ClientError(401, 'Username, fileUrl, and isBought are required fields');
   }
+  const sql = `
+    insert into "photos" ("userId", "fileUrl", "caption", "location", "isBought")
+                "values" ($1, $2, $3, $4, $5)
+                returning *
+  `;
+  const params = [userId, fileUrl, caption, location, isBought];
+  db.query(sql, params)
+    .then(result => {
+      const [photo] = result.rows;
+      res.status(201).json(photo);
+    })
+    .catch(err => next(err));
 });
 
 app.use(errorMiddleware);
