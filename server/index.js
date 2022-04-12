@@ -4,6 +4,7 @@ const express = require('express');
 const ClientError = require('./client-error');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
+const uploadsMiddleware = require('./uploads-middleware');
 
 const app = express();
 const jsonMiddleware = express.json();
@@ -18,17 +19,18 @@ const db = new pg.Pool({
   }
 });
 
-app.post('/api/photos', (req, res, next) => {
-  const { userId, fileUrl, caption, location, isBought } = req.body;
-  if (!userId || !fileUrl || !caption || !location || !isBought) {
-    throw new ClientError(401, 'Username, fileUrl, and isBought are required fields');
+app.post('/api/photos', uploadsMiddleware, (req, res, next) => {
+  const { userId, caption, location, isBought } = req.body;
+  if (!caption || !location || !isBought) {
+    throw new ClientError(401, 'Caption, location, and isBought are required fields');
   }
+  const imageUrl = '/images' + req.file.filename;
   const sql = `
-    insert into "photos" ("userId", "fileUrl", "caption", "location", "isBought")
+    insert into "photos" ("userId", "imageUrl", "caption", "location", "isBought")
                 "values" ($1, $2, $3, $4, $5)
                 returning *
   `;
-  const params = [userId, fileUrl, caption, location, isBought];
+  const params = [userId, imageUrl, caption, location, isBought];
   db.query(sql, params)
     .then(result => {
       const [photo] = result.rows;
