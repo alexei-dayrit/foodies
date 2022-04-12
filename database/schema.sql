@@ -24,7 +24,7 @@ CREATE TABLE "public"."users" (
 	"userId" serial NOT NULL,
 	"username" TEXT NOT NULL UNIQUE,
 	"hashedPassword" TEXT NOT NULL,
-	"createdAt" timestamp with time zone NOT NULL,
+	"createdAt" timestamp with time zone,
 	"followerCount" integer NOT NULL,
 	"followingCount" integer NOT NULL,
 	"postCount" integer NOT NULL,
