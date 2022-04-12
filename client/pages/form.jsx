@@ -46,13 +46,13 @@ export default class Form extends React.Component {
         <h1 className='text-2xl'>New Post</h1>
         <form onSubmit={this.handleSubmit}>
           <p>sushi_lover9</p>
-          <input type="file" name="image" ref={this.fileInputRef} accept=".png, .jpg, .jpeg, .gif"/>
-          <input type="text" name="caption" placeholder="Write a caption..."
+          <input required type="file" name="image" ref={this.fileInputRef} accept=".png, .jpg, .jpeg, .gif"/>
+          <input required type="text" name="caption" placeholder="Write a caption..."
                  value={this.state.caption} onChange={this.handleCaptionChange}/>
           <input type="text" name="location" placeholder='Add location'
                  value={this.state.location} onChange={this.handleLocationChange}/>
 
-          <input type="radio" name="isBought" id='cooked' value='cooked'
+          <input required type="radio" name="isBought" id='cooked' value='cooked'
                  onClick={this.handleIsBoughtClick}/>
           <label htmlFor='cooked'>Home-cooked</label>
 
