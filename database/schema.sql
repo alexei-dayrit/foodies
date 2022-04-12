@@ -10,9 +10,9 @@ CREATE TABLE "public"."photos" (
 	"photoId" serial NOT NULL,
 	"fileUrl" TEXT NOT NULL,
 	"createdAt" timestamp with time zone NOT NULL,
-	"location" TEXT,
+	"location" TEXT NOT NULL,
 	"userId" integer NOT NULL,
-	"cooked" BOOLEAN NOT NULL,
+	"isBought" BOOLEAN NOT NULL,
 	CONSTRAINT "photos_pk" PRIMARY KEY ("photoId")
 ) WITH (
   OIDS=FALSE
