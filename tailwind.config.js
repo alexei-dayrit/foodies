@@ -1,7 +1,8 @@
 module.exports = {
   content: [
     './client/app.jsx',
-    './client/pages/home.jsx'
+    './client/index.jsx',
+    './client/pages/**/*.jsx'
   ],
   theme: {
     fontFamily: {
