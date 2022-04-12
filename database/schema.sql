@@ -6,7 +6,7 @@ drop schema "public" cascade;
 
 create schema "public";
 
-CREATE TABLE "public.photos" (
+CREATE TABLE "public"."photos" (
 	"photoId" serial NOT NULL,
 	"fileUrl" TEXT NOT NULL,
 	"createdAt" timestamp with time zone NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE "public.photos" (
 
 
 
-CREATE TABLE "public.users" (
+CREATE TABLE "public"."users" (
 	"userId" serial NOT NULL,
 	"username" TEXT NOT NULL UNIQUE,
 	"hashedPassword" TEXT NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE "public"."likes" (
 
 
 
-CREATE TABLE "public.comments" (
+CREATE TABLE "public"."comments" (
 	"commentId" serial NOT NULL,
 	"userId" integer NOT NULL,
 	"photoId" integer NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE "public.comments" (
 
 
 
-CREATE TABLE "public.followers" (
+CREATE TABLE "public"."followers" (
 	"followerId" integer NOT NULL,
 	"userId" integer NOT NULL,
 	"followedAt" timestamp with time zone NOT NULL
