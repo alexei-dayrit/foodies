@@ -19,6 +19,10 @@ export default class Form extends React.Component {
     this.setState({ caption: event.target.value });
   }
 
+  handleLocationChange(event) {
+    this.setState({ location: event.target.value });
+  }
+
   handleIsBoughtClick(event) {
     if (event.target.value === 'bought') {
       this.setState({ isBought: true });
@@ -27,21 +31,22 @@ export default class Form extends React.Component {
     }
   }
 
-  handleLocationChange(event) {
-    this.setState({ location: event.target.value });
-  }
-
   handleSubmit(event) {
     event.preventDefault();
+    const formData = new FormData();
+    formData.append('image', this.fileInputRef.current.files[0]);
+    formData.append('caption', this.state.caption);
+    formData.append('location', this.state.location);
+    formData.append('isBought', this.state.isBought);
   }
 
   render() {
     return (
       <>
         <h1 className='text-2xl'>New Post</h1>
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <p>sushi_lover9</p>
-          <input type="file" name="image" accept=".png, .jpg, .jpeg, .gif"/>
+          <input type="file" name="image" ref={this.fileInputRef} accept=".png, .jpg, .jpeg, .gif"/>
           <input type="text" name="caption" placeholder="Write a caption..."
                  value={this.state.caption} onChange={this.handleCaptionChange}/>
           <input type="text" name="location" placeholder='Add location'
