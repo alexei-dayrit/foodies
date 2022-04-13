@@ -77,19 +77,19 @@ export default class Form extends React.Component {
               <div className='w-full md:w-1/2 relative md:order-1 order-2'>
                 <img className='w-80 md:w-96 h-80 object-cover border border-gray-300' src={imagePreview} alt='Placeholder image' />
                 {!this.state.isUploaded &&
-                <label htmlFor='image' className='inset-center'>
+                <label htmlFor='image' className='inset-center cursor-pointer'>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </label>}
-                <input ref={this.fileInputRef} className='inset-center opacity-0' required type="file" name="image"
+                <input ref={this.fileInputRef} className='inset-center opacity-0 cursor-pointer' required type="file" name="image"
                   accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload}/>
               </div>
               <div className='w-full md:w-1/2 order-3 md:pl-4'>
                 <div className="flex items-center space-x-3 sm:order-1 py-4 md:pt-0 border-b border-gray-200">
-                  <img className="object-cover w-9 h-9 rounded-full border border-red-300" src="/images/placeholder-profile-pic.jpeg" alt="" />
+                  <img className="object-cover w-9 h-9 rounded-full border border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg" alt="" />
                   <div className="space-y-1 font-semibold">
-                    <div>sushi_lover</div>
+                    <div className='cursor-pointer'>sushi_lover</div>
                   </div>
                 </div>
                 <div className="w-full py-4 border-b border-gray-200">
