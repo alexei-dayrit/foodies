@@ -1,7 +1,8 @@
 module.exports = {
   content: [
     './client/app.jsx',
-    './client/pages/home.jsx'
+    './client/index.jsx',
+    './client/pages/**/*.jsx'
   ],
   theme: {
     fontFamily: {
@@ -9,12 +10,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: 'var(--primary)',
-        secondary: 'var(--secondary)',
-        main: 'var(--main)',
-        background: 'var(--background)',
-        header: 'var(--header)',
-        accent: 'var(--accent)'
+        wrapper: 'var(--wrapper)'
       }
     }
   },
