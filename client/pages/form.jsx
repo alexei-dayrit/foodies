@@ -6,7 +6,8 @@ export default class Form extends React.Component {
       caption: '',
       location: '',
       isBought: null,
-      imagePreview: '/images/placeholder-image-square.jpeg'
+      imagePreview: '/images/placeholder-image-square.jpeg',
+      isUploaded: false
     };
 
     this.fileInputRef = React.createRef();
@@ -34,7 +35,10 @@ export default class Form extends React.Component {
   }
 
   handleImageUpload(event) {
-    this.setState({ imagePreview: URL.createObjectURL(this.fileInputRef.current.files[0]) });
+    this.setState({
+      imagePreview: URL.createObjectURL(this.fileInputRef.current.files[0]),
+      isUploaded: true
+    });
   }
 
   handleSubmit(event) {
@@ -72,11 +76,12 @@ export default class Form extends React.Component {
             <div className='bg-wrapper flex flex-wrap p-3 rounded-xl border border-gray-100'>
               <div className='w-full md:w-1/2 relative md:order-1 order-2'>
                 <img className='w-80 md:w-96 h-80 object-cover border border-gray-300' src={imagePreview} alt='Placeholder image' />
+                {!this.state.isUploaded &&
                 <label htmlFor='image' className='inset-center'>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                </label>
+                </label>}
                 <input ref={this.fileInputRef} className='inset-center opacity-0' required type="file" name="image"
                   accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload}/>
               </div>
