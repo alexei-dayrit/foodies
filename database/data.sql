@@ -8,6 +8,9 @@ insert into "users" ("userId", "username", "hashedPassword", "followerCount", "f
      values (2, 'anonymous2', 'placeholder', 0, 0, 0);
 
 insert into "photos" ("photoId", "caption", "imageUrl", "location", "userId", "isBought")
-     values (100, 'test', 'image-1649789113223.jpeg', 'test', 1, true)
+     values (100, 'data-test1', 'image-1649888023634.jpeg', 'test-location1', 1, true);
+
+insert into "photos" ("photoId", "caption", "imageUrl", "location", "userId", "isBought")
+     values (101, 'data-test2', 'image-1649888023634.jpeg', 'test-location1', 1, false)
 
 -- 2022-04-12T18:44:59.581239Z
