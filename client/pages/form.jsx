@@ -6,9 +6,9 @@ export default class Form extends React.Component {
       caption: '',
       location: '',
       isBought: null,
-      imagePreview: '/images/placeholder-image-square.jpeg',
-      isUploaded: false
+      imagePreview: '/images/placeholder-image-square.jpeg'
     };
+
     this.fileInputRef = React.createRef();
     this.handleCaptionChange = this.handleCaptionChange.bind(this);
     this.handleIsBoughtClick = this.handleIsBoughtClick.bind(this);
@@ -34,9 +34,7 @@ export default class Form extends React.Component {
   }
 
   handleImageUpload(event) {
-    if (!this.state.isUploaded) {
-      this.setState({ imagePreview: this.fileInputRef.current.files[0] });
-    }
+    this.setState({ imagePreview: URL.createObjectURL(this.fileInputRef.current.files[0]) });
   }
 
   handleSubmit(event) {
@@ -56,7 +54,8 @@ export default class Form extends React.Component {
         this.setState({
           caption: '',
           location: '',
-          isBought: null
+          isBought: null,
+          imagePreview: '/images/placeholder-image-square.jpeg'
         });
         this.fileInputRef.current.value = null;
       })
@@ -72,26 +71,26 @@ export default class Form extends React.Component {
           <form onSubmit={this.handleSubmit}>
             <div className='bg-wrapper flex flex-wrap p-3 rounded-xl border border-gray-100'>
               <div className='w-full md:w-1/2 relative md:order-1 order-2'>
-                <img className='w-80 md:w-96' src={imagePreview} alt='Placeholder image' />
+                <img className='w-80 md:w-96 h-80 object-cover border border-gray-300' src={imagePreview} alt='Placeholder image' />
                 <label htmlFor='image' className='inset-center'>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </label>
                 <input ref={this.fileInputRef} className='inset-center opacity-0' required type="file" name="image"
-                  accept=".png, .jpg, .jpeg, .gif" />
+                  accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload}/>
               </div>
               <div className='w-full md:w-1/2 order-3 md:pl-4'>
-                <div className="flex items-center space-x-3 sm:order-1 py-4 md:pt-0">
+                <div className="flex items-center space-x-3 sm:order-1 py-4 md:pt-0 border-b border-gray-200">
                   <img className="object-cover w-9 h-9 rounded-full border border-red-300" src="/images/placeholder-profile-pic.jpeg" alt="" />
                   <div className="space-y-1 font-semibold">
                     <div>sushi_lover</div>
                   </div>
                 </div>
                 <div className="w-full py-4 border-b border-gray-200">
-                  <input required type="text" name="caption" placeholder="Write a caption..."
+                  <textarea required type="text" name="caption" placeholder="Write a caption..."
                     value={this.state.caption} onChange={this.handleCaptionChange}
-                    className='bg-wrapper' />
+                    className='bg-wrapper' cols={40} rows={2} />
                 </div>
                 <div className="w-full py-4 border-b border-gray-200">
                   <input type="text" name="location" placeholder='Add location'
@@ -101,14 +100,14 @@ export default class Form extends React.Component {
                 <div className="w-full py-4">
                   <ul id="isBought" className="filter-switch inline-flex items-center h-10 p-1 space-x-1 rounded-md font-semibold text-blue-600">
                     <li className="filter-switch-item flex h-8 bg-gray-300x">
-                      <input type="radio" name="isBought" id="cooked" className="sr-only" defaultChecked />
-                      <label onClick={this.handleIsBoughtClick} htmlFor="cooked" className="border-2 h-9 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
+                      <input onClick={this.handleIsBoughtClick} type="radio" name="isBought" id="cooked" value='cooked' className="sr-only" required />
+                      <label htmlFor="cooked" className="border-2 h-9 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
                         Home-cooked
                       </label>
                     </li>
                     <li className="filter-switch-item flex relative h-8 bg-gray-300x">
-                      <input type="radio" name="isBought" id="bought" className="sr-only" />
-                      <label onClick={this.handleIsBoughtClick} htmlFor="bought" className="border-2 h-9 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
+                      <input onClick={this.handleIsBoughtClick} type="radio" name="isBought" id="bought" value='bought' className="sr-only" required />
+                      <label htmlFor="bought" className="border-2 h-9 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
                         Bought
                       </label>
                     </li>
