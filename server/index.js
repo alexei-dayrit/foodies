@@ -20,7 +20,8 @@ const db = new pg.Pool({
 });
 
 app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
-  const { userId, caption, location, isBought } = req.body;
+  const userId = 1;
+  const { caption, location, isBought } = req.body;
   if (!caption || !location || !isBought) {
     throw new ClientError(400, 'Caption, location, and isBought are required fields');
   }

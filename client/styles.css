@@ -4,10 +4,26 @@
 @import "tailwindcss/utilities";
 
 :root {
-  --primary: #367ee9;
-  --secondary: #a0aec0;
-  --accent: #718096;
-  --background: #fff;
-  --main: #0d0106;
-  --header: #2d3748;
+  --wrapper: #f9faf8;
+}
+
+.inset-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.filter-switch label {
+  cursor: pointer;
+}
+
+.filter-switch-item input:checked + label {
+  color: inherit;
+}
+
+.filter-switch-item input:not(:checked) + label {
+  --bg-opacity: 0;
+
+  box-shadow: none;
 }

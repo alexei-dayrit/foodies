@@ -1,17 +1,19 @@
 import React from 'react';
-import '../styles.css';
 export default class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       caption: '',
       location: '',
-      isBought: null
+      isBought: null,
+      imagePreview: '/images/placeholder-image-square.jpeg',
+      isUploaded: false
     };
     this.fileInputRef = React.createRef();
     this.handleCaptionChange = this.handleCaptionChange.bind(this);
     this.handleIsBoughtClick = this.handleIsBoughtClick.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
+    this.handleImageUpload = this.handleImageUpload.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -28,6 +30,12 @@ export default class Form extends React.Component {
       this.setState({ isBought: true });
     } else {
       this.setState({ isBought: false });
+    }
+  }
+
+  handleImageUpload(event) {
+    if (!this.state.isUploaded) {
+      this.setState({ imagePreview: this.fileInputRef.current.files[0] });
     }
   }
 
@@ -56,29 +64,65 @@ export default class Form extends React.Component {
   }
 
   render() {
+    const imagePreview = this.state.imagePreview;
     return (
       <>
-        <h1 className='text-2xl'>New Post</h1>
-        <form onSubmit={this.handleSubmit}>
-          <p>sushi_lover9</p>
-          <input required type="file" name="image" ref={this.fileInputRef} accept=".png, .jpg, .jpeg, .gif"/>
-          <input required type="text" name="caption" placeholder="Write a caption..."
-                 value={this.state.caption} onChange={this.handleCaptionChange}/>
-          <input type="text" name="location" placeholder='Add location'
-                 value={this.state.location} onChange={this.handleLocationChange}/>
-
-          <input required type="radio" name="isBought" id='cooked' value='cooked'
-                 onClick={this.handleIsBoughtClick}/>
-          <label htmlFor='cooked'>Home-cooked</label>
-
-          <input type="radio" name="isBought" id='bought' value='bought'
-                 onClick={this.handleIsBoughtClick}/>
-          <label htmlFor='bought'>Bought</label>
-
-          <button type="submit" name='share'>
-            Share
-          </button>
-        </form>
+        <div className='w-96 md:w-[800px] p-8 m-auto'>
+          <h1 className='text-2xl flex justify-center pb-4'>New Post</h1>
+          <form onSubmit={this.handleSubmit}>
+            <div className='bg-wrapper flex flex-wrap p-3 rounded-xl border border-gray-100'>
+              <div className='w-full md:w-1/2 relative md:order-1 order-2'>
+                <img className='w-80 md:w-96' src={imagePreview} alt='Placeholder image' />
+                <label htmlFor='image' className='inset-center'>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </label>
+                <input ref={this.fileInputRef} className='inset-center opacity-0' required type="file" name="image"
+                  accept=".png, .jpg, .jpeg, .gif" />
+              </div>
+              <div className='w-full md:w-1/2 order-3 md:pl-4'>
+                <div className="flex items-center space-x-3 sm:order-1 py-4 md:pt-0">
+                  <img className="object-cover w-9 h-9 rounded-full border border-red-300" src="/images/placeholder-profile-pic.jpeg" alt="" />
+                  <div className="space-y-1 font-semibold">
+                    <div>sushi_lover</div>
+                  </div>
+                </div>
+                <div className="w-full py-4 border-b border-gray-200">
+                  <input required type="text" name="caption" placeholder="Write a caption..."
+                    value={this.state.caption} onChange={this.handleCaptionChange}
+                    className='bg-wrapper' />
+                </div>
+                <div className="w-full py-4 border-b border-gray-200">
+                  <input type="text" name="location" placeholder='Add location'
+                    value={this.state.location} onChange={this.handleLocationChange}
+                    className='bg-wrapper' />
+                </div>
+                <div className="w-full py-4">
+                  <ul id="isBought" className="filter-switch inline-flex items-center h-10 p-1 space-x-1 rounded-md font-semibold text-blue-600">
+                    <li className="filter-switch-item flex h-8 bg-gray-300x">
+                      <input type="radio" name="isBought" id="cooked" className="sr-only" defaultChecked />
+                      <label onClick={this.handleIsBoughtClick} htmlFor="cooked" className="border-2 h-9 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
+                        Home-cooked
+                      </label>
+                    </li>
+                    <li className="filter-switch-item flex relative h-8 bg-gray-300x">
+                      <input type="radio" name="isBought" id="bought" className="sr-only" />
+                      <label onClick={this.handleIsBoughtClick} htmlFor="bought" className="border-2 h-9 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
+                        Bought
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+                <div className="w-full py-4 flex flex-row-reverse">
+                  <button type="submit" name='share' className='text-blue-600'>
+                    Share
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
       </>
     );
   }
