@@ -19,6 +19,16 @@ const db = new pg.Pool({
   }
 });
 
+app.get('/api/posts', (req, res, next) => {
+  const userId = 1;
+  const sql = `
+    select *
+      from "photos"
+      where "userId" = $1
+  `;
+  const params = [userId];
+});
+
 app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
   const userId = 1;
   const { caption, location, isBought } = req.body;
