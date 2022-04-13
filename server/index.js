@@ -19,14 +19,22 @@ const db = new pg.Pool({
   }
 });
 
-app.get('/api/posts', (req, res, next) => {
-  const userId = 1;
+app.get('/api/posts/:id', (req, res, next) => {
+  const userId = parseFloat(req.params.id);
+  if (Number.isInteger(userId) !== true || userId < 0) {
+    throw new ClientError(400, 'UserId must be a positive integer');
+  }
   const sql = `
     select *
       from "photos"
       where "userId" = $1
   `;
   const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows);
+    })
+    .catch(err => next(err));
 });
 
 app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
