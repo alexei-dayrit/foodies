@@ -74,7 +74,7 @@ export default class Form extends React.Component {
           <h1 className='text-2xl flex justify-center pb-4'>New Post</h1>
           <form onSubmit={this.handleSubmit}>
             <div className='bg-wrapper flex flex-wrap p-3 rounded-xl border border-gray-100'>
-              <div className='w-full md:w-1/2 relative md:order-1 order-2'>
+              <div className='w-full md:w-1/2 relative order-1'>
                 <img className='w-80 md:w-96 h-80 object-cover border border-gray-300' src={imagePreview} alt='Placeholder image' />
                 {!this.state.isUploaded &&
                 <label htmlFor='image' className='inset-center cursor-pointer'>
@@ -85,24 +85,24 @@ export default class Form extends React.Component {
                 <input ref={this.fileInputRef} className='inset-center opacity-0 cursor-pointer' required type="file" name="image"
                   accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload}/>
               </div>
-              <div className='w-full md:w-1/2 order-3 md:pl-4'>
-                <div className="flex items-center space-x-3 sm:order-1 py-4 md:pt-0 border-b border-gray-200">
+              <div className='w-full md:w-1/2 order-2 md:pl-4'>
+                <div className="flex items-center space-x-3 py-4 md:pt-0 border-b border-gray-200">
                   <img className="object-cover w-9 h-9 rounded-full border border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg" alt="" />
                   <div className="space-y-1 font-semibold">
                     <div className='cursor-pointer'>sushi_lover</div>
                   </div>
                 </div>
-                <div className="w-full py-4 border-b border-gray-200">
+                <div className="py-4 border-b border-gray-200">
                   <textarea required type="text" name="caption" placeholder="Write a caption..."
                     value={this.state.caption} onChange={this.handleCaptionChange}
                     className='bg-wrapper' cols={40} rows={2} />
                 </div>
-                <div className="w-full py-4 border-b border-gray-200">
+                <div className="py-4 border-b border-gray-200">
                   <input type="text" name="location" placeholder='Add location'
                     value={this.state.location} onChange={this.handleLocationChange}
                     className='bg-wrapper' />
                 </div>
-                <div className="w-full py-4">
+                <div className="py-4">
                   <ul id="isBought" className="filter-switch inline-flex items-center h-10 p-1 space-x-1 rounded-md font-semibold text-blue-600">
                     <li className="filter-switch-item flex h-8 bg-gray-300x">
                       <input onClick={this.handleIsBoughtClick} type="radio" name="isBought" id="cooked" value='cooked' className="sr-only" required />
@@ -118,7 +118,7 @@ export default class Form extends React.Component {
                     </li>
                   </ul>
                 </div>
-                <div className="w-full py-4 flex flex-row-reverse">
+                <div className="py-4 flex flex-row-reverse">
                   <button type="submit" name='share' className='text-blue-600'>
                     Share
                   </button>
