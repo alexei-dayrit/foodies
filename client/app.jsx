@@ -27,7 +27,7 @@ export default class App extends React.Component {
       return <Home />;
     }
     if (route.path === 'profile') {
-      // hard coded userId
+
       const userId = 1;
       return <Profile userId={userId}/>;
     }
