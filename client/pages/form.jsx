@@ -77,11 +77,13 @@ export default class Form extends React.Component {
               <div className='w-full md:w-1/2 relative order-1'>
                 <img className='w-90 md:w-96 h-90 object-cover border border-gray-300' src={imagePreview} alt='Placeholder image' />
                 {!this.state.isUploaded &&
-                <label htmlFor='image' className='inset-center cursor-pointer'>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </label>}
+                <a href="">
+                  <label htmlFor='image' className='inset-center cursor-pointer'>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </label>
+                </a>}
                 <input ref={this.fileInputRef} className='inset-center opacity-0 cursor-pointer' required type="file" name="image"
                   accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload}/>
               </div>
