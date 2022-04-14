@@ -2,6 +2,7 @@ import React from 'react';
 // import Home from './pages/home';
 import Form from './pages/form';
 import Profile from './components/profile';
+import Navbar from './components/navbar';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ export default class App extends React.Component {
 
     return (
       <>
+        <Navbar />
         <Form />
         <Profile />
       </>

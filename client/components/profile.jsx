@@ -13,7 +13,7 @@ export default class Profile extends React.Component {
     return (
       <>
         <div className='w-96 md:w-[800px] p-8 m-auto'>
-          <div className='flex flex-wrap p-2 mb-4 border-gray-100'>
+          <div className='flex flex-wrap p-2 mb-4 border border-gray-100'>
             <div className='w-[25%] md:w-1/3 order-1 flex items-center md:justify-end'>
               <img className="w-[75px] h-[75px] md:w-[120px] md:h-[120px] border-red-300 rounded-full border object-cover"
                 src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
@@ -33,6 +33,7 @@ export default class Profile extends React.Component {
               </div>
               <div className="w-full md:w-3/4 flex justify-evenly md:justify-center mt-4 md:text-lg">
                 <div className="w-1/3">
+                  {/* Hard coded userId/profile pic */}
                   <p className='font-semibold'>sushi_lover</p>
                 </div>
                 <div className="w-1/3 text-red-500">

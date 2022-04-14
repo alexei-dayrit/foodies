@@ -25,9 +25,10 @@ CREATE TABLE "public"."users" (
 	"userId" serial NOT NULL,
 	"username" TEXT NOT NULL UNIQUE,
 	"hashedPassword" TEXT NOT NULL,
-	"createdAt" timestamp with time zone NOT NULL default now(),
+	"signedUpAt" timestamp with time zone NOT NULL default now(),
 	"followerCount" integer NOT NULL,
 	"followingCount" integer NOT NULL,
+  "profilePhotoUrl" TEXT NOT NULL,
 	"postCount" integer NOT NULL,
 	CONSTRAINT "users_pk" PRIMARY KEY ("userId")
 ) WITH (
@@ -39,7 +40,7 @@ CREATE TABLE "public"."users" (
 CREATE TABLE "public"."likes" (
 	"userId" integer NOT NULL,
 	"postId" integer NOT NULL,
-	"createdAt" timestamp with time zone NOT NULL default now()
+	"likedAt" timestamp with time zone NOT NULL default now()
 ) WITH (
   OIDS=FALSE
 );
@@ -50,7 +51,7 @@ CREATE TABLE "public"."comments" (
 	"commentId" serial NOT NULL,
 	"userId" integer NOT NULL,
 	"postId" integer NOT NULL,
-	"createdAt" timestamp with time zone NOT NULL default now(),
+	"commentedAt" timestamp with time zone NOT NULL default now(),
 	CONSTRAINT "comments_pk" PRIMARY KEY ("commentId")
 ) WITH (
   OIDS=FALSE

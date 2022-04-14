@@ -25,7 +25,14 @@ app.get('/api/posts/:id', (req, res, next) => {
     throw new ClientError(400, 'UserId must be a positive integer');
   }
   const sql = `
-    select *
+    select "username",
+           "profilePhotoUrl",
+           "postId",
+           "imageUrl",
+           "caption",
+           "isBought",
+           "location",
+           "createdAt"
       from "posts"
       join "users" using ("userId")
       where "userId" = $1
@@ -39,6 +46,7 @@ app.get('/api/posts/:id', (req, res, next) => {
 });
 
 app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
+  // hard coded userId
   const userId = 1;
   const { caption, location, isBought } = req.body;
   if (!caption || !location || !isBought) {

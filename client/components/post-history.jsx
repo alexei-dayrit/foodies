@@ -36,14 +36,14 @@ export default class PostHistory extends React.Component {
 }
 
 function Post(props) {
-  const { username, imageUrl, caption, isBought, createdAt, location } = props.post;
+  const { username, profilePhotoUrl, imageUrl, caption, isBought, createdAt, location } = props.post;
   return (
     <>
       <div className='bg-wrapper flex flex-wrap p-2 rounded-xl border border-gray-200'>
 
           {/* Profile pic */}
           <div className="flex items-center space-x-3 md:pt-0 pb-2 md:hidden">
-            <img className="object-cover w-10 h-10 rounded-full border border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
+          <img className="object-cover w-10 h-10 rounded-full border border-red-300 cursor-pointer" src={`/images/${profilePhotoUrl}`} alt="Profile picture" />
             <div>
               <div className='font-semibold text-sm md:text-lg'>{username}</div>
               <div className='text-gray-400 text-xs md:text-sm'>{location}</div>

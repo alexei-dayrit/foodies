@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@400;500;600;700&display=swap");
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
@@ -31,4 +31,9 @@
 textarea {
   max-width: 100%;
   resize: none;
+}
+
+.styled-font {
+  font-family: "Sansita Swashed", cursive;
+  font-weight: 500;
 }
