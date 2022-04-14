@@ -1,20 +1,50 @@
 import React from 'react';
-// import Home from './pages/home';
+import Home from './pages/home';
 import Form from './pages/form';
+import Profile from './pages/profile';
+import Navbar from './components/navbar';
+import parseRoute from './lib/parse-route';
+import AppContext from './lib/app-context';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isAuthorizing: true
+      route: parseRoute(window.location.hash)
     };
   }
 
-  render() {
+  componentDidMount() {
+    window.addEventListener('hashchange', event => {
+      const newRoute = parseRoute(window.location.hash);
+      this.setState({ route: newRoute });
+    });
+  }
 
+  renderPage() {
+    const { route } = this.state;
+    if (route.path === '') {
+      return <Home />;
+    }
+    if (route.path === 'profile') {
+
+      const userId = 1;
+      return <Profile userId={userId}/>;
+    }
+    if (route.path === 'form') {
+      return <Form />;
+    }
+  }
+
+  render() {
+    const { route } = this.state;
+    const contextValue = { route };
     return (
       <>
-        <Form />
+        <AppContext.Provider value={contextValue}>
+          <Navbar />
+          {this.renderPage()}
+        </AppContext.Provider>
       </>
     );
   }

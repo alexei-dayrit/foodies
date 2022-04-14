@@ -70,30 +70,32 @@ export default class Form extends React.Component {
     const imagePreview = this.state.imagePreview;
     return (
       <>
-        <div className='w-96 md:w-[800px] p-8 m-auto'>
+        <div className='w-96 md:w-[800px] p-4 m-auto'>
           <h1 className='text-2xl flex justify-center pb-4'>New Post</h1>
           <form onSubmit={this.handleSubmit}>
-            <div className='bg-wrapper flex flex-wrap p-3 rounded-xl border border-gray-100'>
+            <div className='bg-wrapper flex flex-wrap p-2 rounded-xl border border-gray-200'>
               <div className='w-full md:w-1/2 relative order-1'>
-                <img className='w-80 md:w-96 h-80 object-cover border border-gray-300' src={imagePreview} alt='Placeholder image' />
+                <img className='w-90 md:w-96 h-90 object-cover border border-gray-300' src={imagePreview} alt='Placeholder image' />
                 {!this.state.isUploaded &&
-                <label htmlFor='image' className='inset-center cursor-pointer'>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </label>}
+                <a href="">
+                  <label htmlFor='image' className='inset-center cursor-pointer'>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </label>
+                </a>}
                 <input ref={this.fileInputRef} className='inset-center opacity-0 cursor-pointer' required type="file" name="image"
                   accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload}/>
               </div>
               <div className='w-full md:w-1/2 order-2 md:pl-4'>
-                <div className="flex items-center space-x-3 py-4 md:pt-0 border-b border-gray-200">
-                  <img className="object-cover w-9 h-9 rounded-full border border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg" alt="" />
+                <div className="flex items-center space-x-3 py-4 md:pt-0">
+                  <img className="object-cover w-10 h-10 rounded-full border border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
                   <div className="space-y-1 font-semibold">
                     <div className='cursor-pointer'>sushi_lover</div>
                   </div>
                 </div>
                 <div className="py-4 border-b border-gray-200">
-                  <textarea required type="text" name="caption" placeholder="Write a caption..."
+                  <textarea required type="text" name="caption" placeholder="Write a caption"
                     value={this.state.caption} onChange={this.handleCaptionChange}
                     className='bg-wrapper' cols={40} rows={2} />
                 </div>
