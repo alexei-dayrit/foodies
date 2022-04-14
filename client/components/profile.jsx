@@ -13,12 +13,12 @@ export default class Profile extends React.Component {
     return (
       <>
         <div className='w-96 md:w-[800px] p-8 m-auto'>
-          <div className='flex flex-wrap p-2 rounded-xl border border-gray-100'>
+          <div className='flex flex-wrap p-2 mb-4 border-gray-100'>
             <div className='w-[25%] md:w-1/3 order-1 flex items-center md:justify-end'>
               <img className="w-[75px] h-[75px] md:w-[120px] md:h-[120px] border-red-300 rounded-full border object-cover"
                 src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
             </div>
-            <div className="w-[75%] md:w-2/3 order-2 pt-2 text-sm flex flex-wrap items-center md:justify-center text-center">
+            <div className="w-[75%] md:w-2/3 order-2 text-sm flex flex-wrap items-center md:justify-center text-center">
               <div className='w-1/3 md:w-[22%]'>
                 <p>0</p>
                 <p>Posts</p>
