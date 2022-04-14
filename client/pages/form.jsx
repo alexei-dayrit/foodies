@@ -87,7 +87,7 @@ export default class Form extends React.Component {
               </div>
               <div className='w-full md:w-1/2 order-2 md:pl-4'>
                 <div className="flex items-center space-x-3 py-4 md:pt-0 border-b border-gray-200">
-                  <img className="object-cover w-9 h-9 rounded-full border border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
+                  <img className="object-cover w-10 h-10 rounded-full border border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
                   <div className="space-y-1 font-semibold">
                     <div className='cursor-pointer'>sushi_lover</div>
                   </div>

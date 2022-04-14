@@ -26,7 +26,8 @@ app.get('/api/posts/:id', (req, res, next) => {
   }
   const sql = `
     select *
-      from "photos"
+      from "posts"
+      join "users" using ("userId")
       where "userId" = $1
   `;
   const params = [userId];
@@ -45,15 +46,15 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
   }
   const imageUrl = req.file.filename;
   const sql = `
-    insert into "photos" ("userId", "imageUrl", "caption", "location", "isBought")
+    insert into "posts" ("userId", "imageUrl", "caption", "location", "isBought")
       values ($1, $2, $3, $4, $5)
       returning *;
   `;
   const params = [userId, imageUrl, caption, location, isBought];
   db.query(sql, params)
     .then(result => {
-      const [photo] = result.rows;
-      res.status(201).json(photo);
+      const [post] = result.rows;
+      res.status(201).json(post);
     })
     .catch(err => next(err));
 });

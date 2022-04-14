@@ -6,15 +6,15 @@ drop schema "public" cascade;
 
 create schema "public";
 
-CREATE TABLE "public"."photos" (
-	"photoId" serial,
+CREATE TABLE "public"."posts" (
+	"postId" serial,
 	"imageUrl" TEXT,
 	"createdAt" timestamp with time zone NOT NULL default now(),
 	"location" TEXT,
 	"userId" integer,
 	"isBought" BOOLEAN,
 	"caption" TEXT,
-	CONSTRAINT "photos_pk" PRIMARY KEY ("photoId")
+	CONSTRAINT "posts_pk" PRIMARY KEY ("postId")
 ) WITH (
   OIDS=FALSE
 );
@@ -38,7 +38,7 @@ CREATE TABLE "public"."users" (
 
 CREATE TABLE "public"."likes" (
 	"userId" integer NOT NULL,
-	"photoId" integer NOT NULL,
+	"postId" integer NOT NULL,
 	"createdAt" timestamp with time zone NOT NULL default now()
 ) WITH (
   OIDS=FALSE
@@ -49,7 +49,7 @@ CREATE TABLE "public"."likes" (
 CREATE TABLE "public"."comments" (
 	"commentId" serial NOT NULL,
 	"userId" integer NOT NULL,
-	"photoId" integer NOT NULL,
+	"postId" integer NOT NULL,
 	"createdAt" timestamp with time zone NOT NULL default now(),
 	CONSTRAINT "comments_pk" PRIMARY KEY ("commentId")
 ) WITH (
@@ -68,14 +68,14 @@ CREATE TABLE "public"."followers" (
 
 
 
-ALTER TABLE "photos" ADD CONSTRAINT "photos_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
+ALTER TABLE "posts" ADD CONSTRAINT "posts_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
 
 
 ALTER TABLE "likes" ADD CONSTRAINT "likes_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
-ALTER TABLE "likes" ADD CONSTRAINT "likes_fk1" FOREIGN KEY ("photoId") REFERENCES "photos"("photoId");
+ALTER TABLE "likes" ADD CONSTRAINT "likes_fk1" FOREIGN KEY ("postId") REFERENCES "posts"("postId");
 
 ALTER TABLE "comments" ADD CONSTRAINT "comments_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
-ALTER TABLE "comments" ADD CONSTRAINT "comments_fk1" FOREIGN KEY ("photoId") REFERENCES "photos"("photoId");
+ALTER TABLE "comments" ADD CONSTRAINT "comments_fk1" FOREIGN KEY ("postId") REFERENCES "posts"("postId");
 
 ALTER TABLE "followers" ADD CONSTRAINT "followers_fk0" FOREIGN KEY ("followerId") REFERENCES "users"("userId");
 ALTER TABLE "followers" ADD CONSTRAINT "followers_fk1" FOREIGN KEY ("userId") REFERENCES "users"("userId");
