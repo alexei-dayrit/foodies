@@ -43,7 +43,7 @@ export default class Navbar extends React.Component {
             <div className={'md:flex flex-grow items-center' + (this.state.navbarOpen ? ' flex' : ' hidden')}>
               <ul className="flex flex-col md:flex-row list-none md:ml-auto">
                 <li>
-                  <a onClick={this.handleNavbarChange} className="px-3 py-2 flex items-center uppercase leading-snug  hover:opacity-75"
+                  <a onClick={this.handleNavbarChange} className="px-3 py-2 flex items-right uppercase leading-snug  hover:opacity-75"
                      href="#">
                     <span className="ml-2">Home</span>
                   </a>
