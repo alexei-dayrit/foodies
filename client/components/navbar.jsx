@@ -22,10 +22,10 @@ export default class Navbar extends React.Component {
     return (
     <>
         <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-zinc-200 border border-gray-200">
-          <div className="w-96 md:w-[800px] m-auto container px-2 flex flex-wrap items-center justify-between">
+          <div className="w-96 md:w-[800px] m-auto container px-10 flex flex-wrap items-center justify-between">
             <div className="w-full relative flex justify-between md:w-auto md:static md:block md:justify-start">
             <a className="styled-font text-3xl leading-relaxed inline-block mr-4 py-2 whitespace-nowrap"
-               href="">
+               href="#">
               Foodies
             </a>
               <button className="cursor-pointer text-2xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block md:hidden outline-none focus:outline-none"
@@ -44,25 +44,19 @@ export default class Navbar extends React.Component {
             <ul className="flex flex-col md:flex-row list-none md:ml-auto">
               <li>
                 <a className="px-3 py-2 flex items-center uppercase font-medium leading-snug  hover:opacity-75"
-                   href="">
+                   href="#">
                   <span className="ml-2">Home</span>
                 </a>
               </li>
               <li>
                 <a className="px-3 py-2 flex items-center uppercase font-medium leading-snug hover:opacity-75"
-                   href="">
+                   href="#form">
                   <span className="ml-2">New Post</span>
                 </a>
               </li>
               <li>
-                <a className="px-3 py-2 flex items-center uppercase font-medium leading-snughover:opacity-75"
-                   href="">
-                  <span className="ml-2">Activity</span>
-                </a>
-              </li>
-              <li>
                   <a className='px-3 pt-1 flex items-center uppercase leading-snughover:opacity-75'
-                     href="">
+                     href="#profile">
                     {/* hard coded user profile pic */}
                     <img className="ml-2 w-[35px] h-[35px] border-red-300 rounded-full border object-cover"
                       src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />

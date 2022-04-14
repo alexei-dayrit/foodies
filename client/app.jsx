@@ -4,6 +4,7 @@ import Form from './pages/form';
 import Profile from './pages/profile';
 import Navbar from './components/navbar';
 import parseRoute from './lib/parse-route';
+import AppContext from './lib/app-context';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -26,8 +27,6 @@ export default class App extends React.Component {
       return <Home />;
     }
     if (route.path === 'profile') {
-      // const userId = route.params.get('userId');
-
       // hard coded userId
       const userId = 1;
       return <Profile userId={userId}/>;
@@ -38,15 +37,19 @@ export default class App extends React.Component {
   }
 
   render() {
-
+    const { route } = this.state;
+    const contextValue = { route };
     return (
       <>
+        <AppContext.Provider value={contextValue}>
+          <Navbar />
+          {this.renderPage()}
+        </AppContext.Provider>
+
         {/* <Home />
         <Navbar />
         <Form />
         <Profile /> */}
-        <Navbar />
-        {this.renderPage()}
       </>
     );
   }
