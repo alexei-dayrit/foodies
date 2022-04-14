@@ -1,4 +1,5 @@
 import React from 'react';
+import Post from './post';
 
 export default class Profile extends React.Component {
   constructor(props) {
@@ -40,7 +41,7 @@ export default class Profile extends React.Component {
               </div>
             </div>
           </div>
-          {/* Post component goes here */}
+          <Post />
         </div>
 
       </>
