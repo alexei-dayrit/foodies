@@ -73,7 +73,7 @@ export default class Form extends React.Component {
         <div className='w-96 md:w-[800px] p-8 m-auto'>
           <h1 className='text-2xl flex justify-center pb-4'>New Post</h1>
           <form onSubmit={this.handleSubmit}>
-            <div className='bg-wrapper flex flex-wrap p-3 rounded-xl border border-gray-100'>
+            <div className='bg-wrapper flex flex-wrap p-2 rounded-xl border border-gray-100'>
               <div className='w-full md:w-1/2 relative order-1'>
                 <img className='w-80 md:w-96 h-80 object-cover border border-gray-300' src={imagePreview} alt='Placeholder image' />
                 {!this.state.isUploaded &&
@@ -87,13 +87,13 @@ export default class Form extends React.Component {
               </div>
               <div className='w-full md:w-1/2 order-2 md:pl-4'>
                 <div className="flex items-center space-x-3 py-4 md:pt-0 border-b border-gray-200">
-                  <img className="object-cover w-9 h-9 rounded-full border border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg" alt="" />
+                  <img className="object-cover w-9 h-9 rounded-full border border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
                   <div className="space-y-1 font-semibold">
                     <div className='cursor-pointer'>sushi_lover</div>
                   </div>
                 </div>
                 <div className="py-4 border-b border-gray-200">
-                  <textarea required type="text" name="caption" placeholder="Write a caption..."
+                  <textarea required type="text" name="caption" placeholder="Write a caption"
                     value={this.state.caption} onChange={this.handleCaptionChange}
                     className='bg-wrapper' cols={40} rows={2} />
                 </div>
