@@ -22,7 +22,7 @@ export default class Navbar extends React.Component {
     return (
     <>
         <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-zinc-200 border border-gray-200">
-          <div className="w-96 md:w-[800px] m-auto container px-8 flex flex-wrap items-center justify-between">
+          <div className="w-96 md:w-[800px] m-auto container px-2 flex flex-wrap items-center justify-between">
             <div className="w-full relative flex justify-between md:w-auto md:static md:block md:justify-start">
             <a className="styled-font text-3xl leading-relaxed inline-block mr-4 py-2 whitespace-nowrap"
                href="">
@@ -63,6 +63,7 @@ export default class Navbar extends React.Component {
               <li>
                   <a className='px-3 pt-1 flex items-center uppercase leading-snughover:opacity-75'
                      href="">
+                    {/* hard coded user profile pic */}
                     <img className="ml-2 w-[35px] h-[35px] border-red-300 rounded-full border object-cover"
                       src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
                 </a>

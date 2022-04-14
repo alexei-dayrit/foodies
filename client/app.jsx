@@ -1,7 +1,7 @@
 import React from 'react';
 // import Home from './pages/home';
 import Form from './pages/form';
-import Profile from './components/profile';
+import Profile from './pages/profile';
 import Navbar from './components/navbar';
 
 export default class App extends React.Component {
