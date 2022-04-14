@@ -45,11 +45,6 @@ export default class App extends React.Component {
           <Navbar />
           {this.renderPage()}
         </AppContext.Provider>
-
-        {/* <Home />
-        <Navbar />
-        <Form />
-        <Profile /> */}
       </>
     );
   }

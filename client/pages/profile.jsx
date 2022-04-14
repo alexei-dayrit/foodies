@@ -12,7 +12,7 @@ export default class Profile extends React.Component {
   render() {
     return (
       <>
-        <div className='w-96 md:w-[800px] p-8 m-auto'>
+        <div className='w-96 md:w-[800px] p-4 m-auto'>
           <div className='flex flex-wrap p-2 mb-4 border border-gray-100'>
             <div className='w-[25%] md:w-1/3 order-1 flex items-center md:justify-end'>
               {/* Hard coded profile pic */}

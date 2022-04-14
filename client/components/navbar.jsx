@@ -22,13 +22,13 @@ export default class Navbar extends React.Component {
     return (
     <>
         <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-zinc-200 border border-gray-200">
-          <div className="w-96 md:w-[800px] m-auto container px-10 flex flex-wrap items-center justify-between">
-            <div className="w-full relative flex justify-between md:w-auto md:static md:block md:justify-start">
+          <div className="w-96 md:w-[800px] m-auto container px-4 flex flex-wrap items-center justify-between">
+            <div className="pl-2 w-full relative flex justify-between md:w-auto md:static md:block md:justify-start">
             <a className="styled-font text-3xl leading-relaxed inline-block mr-4 py-2 whitespace-nowrap"
                href="#">
               Foodies
             </a>
-              <button className="cursor-pointer text-2xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block md:hidden outline-none focus:outline-none"
+              <button className="cursor-pointer text-2xl leading-none border border-solid border-transparent rounded bg-transparent block md:hidden outline-none focus:outline-none"
                     onClick={this.handleNavbarChange}>
               {!this.state.navbarOpen
                 ? <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -51,7 +51,7 @@ export default class Navbar extends React.Component {
               <li>
                 <a className="px-3 py-2 flex items-center uppercase font-medium leading-snug hover:opacity-75"
                    href="#form">
-                  <span className="ml-2">New Post</span>
+                  <span className="ml-2">Add Post</span>
                 </a>
               </li>
               <li>

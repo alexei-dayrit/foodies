@@ -70,12 +70,12 @@ export default class Form extends React.Component {
     const imagePreview = this.state.imagePreview;
     return (
       <>
-        <div className='w-96 md:w-[800px] p-8 m-auto'>
+        <div className='w-96 md:w-[800px] p-4 m-auto'>
           <h1 className='text-2xl flex justify-center pb-4'>New Post</h1>
           <form onSubmit={this.handleSubmit}>
             <div className='bg-wrapper flex flex-wrap p-2 rounded-xl border border-gray-200'>
               <div className='w-full md:w-1/2 relative order-1'>
-                <img className='w-80 md:w-96 h-80 object-cover border border-gray-300' src={imagePreview} alt='Placeholder image' />
+                <img className='w-90 md:w-96 h-90 object-cover border border-gray-300' src={imagePreview} alt='Placeholder image' />
                 {!this.state.isUploaded &&
                 <label htmlFor='image' className='inset-center cursor-pointer'>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
