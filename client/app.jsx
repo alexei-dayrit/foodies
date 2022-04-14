@@ -13,6 +13,13 @@ export default class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    window.addEventListener('hashchange', event => {
+      const newRoute = parseRoute(window.location.hash);
+      this.setState({ route: newRoute });
+    });
+  }
+
   render() {
 
     return (
