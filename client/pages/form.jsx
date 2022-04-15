@@ -3,19 +3,35 @@ export default class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      imagePreview: '/images/placeholder-image-square.jpeg',
       caption: '',
       location: '',
       isBought: null,
-      imagePreview: '/images/placeholder-image-square.jpeg',
       isUploaded: false
     };
-
     this.fileInputRef = React.createRef();
     this.handleCaptionChange = this.handleCaptionChange.bind(this);
     this.handleIsBoughtClick = this.handleIsBoughtClick.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.postId) {
+      fetch(`/api/post/${this.props.postId}`)
+        .then(res => res.json())
+        .then(post => {
+          const { imageUrl, caption, location, isBought } = post[0];
+          this.setState({
+            imagePreview: `images/${imageUrl}`,
+            caption: caption,
+            location: location,
+            isBought: isBought
+          });
+        })
+        .catch(err => console.error(err));
+    }
   }
 
   handleCaptionChange(event) {
@@ -75,7 +91,7 @@ export default class Form extends React.Component {
           <form onSubmit={this.handleSubmit}>
             <div className='bg-wrapper flex flex-wrap p-2 rounded-xl border border-gray-200'>
               <div className='w-full md:w-1/2 relative order-1'>
-                <img className='w-90 md:w-96 h-90 object-cover border border-gray-300' src={imagePreview} alt='Placeholder image' />
+                <img className='w-96 h-96 max-h-96 object-cover border border-gray-300' src={imagePreview} alt='Placeholder image' />
                 {!this.state.isUploaded &&
                 <a href="">
                   <label htmlFor='image' className='inset-center cursor-pointer'>
