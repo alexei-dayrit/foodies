@@ -63,9 +63,12 @@ function Post(props) {
               <div className='text-gray-400 text-xs md:text-sm pl-3'>{location}</div>
             </div>
           </div>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-          </svg>
+          {/* Edit icon */}
+          {/* <a href={`#edit-post?postId={postId}`}> */}
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          {/* </a> */}
         </div>
         <div className='w-full md:w-1/2'>
           <img className='w-80 md:w-96 h-80 object-cover border border-gray-300' src={`/images/${imageUrl}`} alt='Placeholder image' />
