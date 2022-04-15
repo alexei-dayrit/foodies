@@ -19,8 +19,8 @@ const db = new pg.Pool({
   }
 });
 
-app.get('/api/posts/:id', (req, res, next) => {
-  const userId = parseFloat(req.params.id);
+app.get('/api/posts/:userId', (req, res, next) => {
+  const userId = parseFloat(req.params.userId);
   if (Number.isInteger(userId) !== true || userId < 0) {
     throw new ClientError(400, 'UserId must be a positive integer');
   }
@@ -32,7 +32,8 @@ app.get('/api/posts/:id', (req, res, next) => {
            "caption",
            "isBought",
            "location",
-           "createdAt"
+           "createdAt",
+           "editedAt"
       from "posts"
       join "users" using ("userId")
       where "userId" = $1
@@ -40,7 +41,62 @@ app.get('/api/posts/:id', (req, res, next) => {
   const params = [userId];
   db.query(sql, params)
     .then(result => {
-      res.json(result.rows);
+      res.status(201).json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/post/:postId', (req, res, next) => {
+  const postId = parseFloat(req.params.postId);
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'PostId must be a positive integer');
+  }
+  const sql = `
+    select "username",
+           "profilePhotoUrl",
+           "postId",
+           "imageUrl",
+           "caption",
+           "isBought",
+           "location",
+           "createdAt",
+           "editedAt"
+      from "posts"
+      join "users" using ("userId")
+      where "postId" = $1
+  `;
+  const params = [postId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(201).json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.put('/api/edit/:postId', uploadsMiddleware, (req, res, next) => {
+  const { caption, isBought, location } = req.body;
+  const postId = parseFloat(req.params.postId);
+  const imageUrl = req.file ? req.file.filename : null;
+  const editedAt = new Date();
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'PostId must be a positive integer');
+  } else if (!caption || !location || !isBought) {
+    throw new ClientError(400, 'Caption, location, and isBought are required fields');
+  }
+  const sql = `
+    update "posts"
+      set  "imageUrl" = coalesce($1, "imageUrl"),
+           "caption" = $2,
+           "isBought" = $3,
+           "location" = $4,
+           "editedAt" = $5
+      where "postId" = $6
+      returning *;
+  `;
+  const params = [imageUrl, caption, isBought, location, editedAt, postId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(201).json(result.rows);
     })
     .catch(err => next(err));
 });

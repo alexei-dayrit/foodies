@@ -27,11 +27,14 @@ export default class App extends React.Component {
       return <Home />;
     }
     if (route.path === 'profile') {
-
       const userId = 1;
-      return <Profile userId={userId}/>;
+      return <Profile userId={userId} />;
     }
-    if (route.path === 'form') {
+    if (route.path === 'edit-post') {
+      const postId = route.params.get('postId');
+      return (<Form postId={postId} />);
+    }
+    if (route.path === 'new-post') {
       return <Form />;
     }
   }

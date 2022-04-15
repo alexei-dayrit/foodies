@@ -10,6 +10,7 @@ CREATE TABLE "public"."posts" (
 	"postId" serial,
 	"imageUrl" TEXT,
 	"createdAt" timestamp with time zone NOT NULL default now(),
+  "editedAt" timestamp with time zone,
 	"location" TEXT,
 	"userId" integer,
 	"isBought" BOOLEAN,
