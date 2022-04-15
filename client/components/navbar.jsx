@@ -50,7 +50,7 @@ export default class Navbar extends React.Component {
                 </li>
                 <li>
                   <a onClick={this.handleNavbarChange} className="px-3 py-2 flex items-center uppercase leading-snug hover:opacity-75"
-                    href="#form">
+                    href="#new-post">
                     <span className="ml-2">Add Post</span>
                   </a>
                 </li>
