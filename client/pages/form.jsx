@@ -70,9 +70,11 @@ export default class Form extends React.Component {
     if (!this.props.postId) {
       fetchRoute = '/api/uploads';
       fetchMethod = 'POST';
+      window.location.hash = '#';
     } else {
       fetchMethod = 'PUT';
       fetchRoute = `/api/edit/${this.props.postId}`;
+      window.location.hash = 'profile';
     }
 
     fetch(fetchRoute, {
