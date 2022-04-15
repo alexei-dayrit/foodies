@@ -49,7 +49,7 @@ export default class PostHistory extends React.Component {
 }
 
 export function Post(props) {
-  const { username, postId, profilePhotoUrl, imageUrl, caption, isBought, createdAt, location } = props.post;
+  const { username, postId, profilePhotoUrl, imageUrl, caption, isBought, createdAt, location, editedAt } = props.post;
   return (
     <>
       <div className='bg-wrapper flex flex-wrap p-4 rounded-xl border border-gray-200'>
@@ -102,7 +102,10 @@ export function Post(props) {
             {caption}
           </div>
           <div className='w-full text-gray-400 font-light text-xs md:text-sm'>
-            {`${formatDistance(new Date(createdAt), new Date(), { includeSeconds: true })} ago`}
+            {editedAt === null
+              ? `${formatDistance(new Date(createdAt), new Date(), { includeSeconds: true })} ago`
+              : `edited ${formatDistance(new Date(editedAt), new Date(), { includeSeconds: true })} ago`
+            }
           </div>
         </div>
       </div>

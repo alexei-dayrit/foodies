@@ -65,39 +65,31 @@ export default class Form extends React.Component {
     formData.append('location', this.state.location);
     formData.append('isBought', this.state.isBought);
 
+    let fetchMethod = '';
+    let fetchRoute = '';
     if (!this.props.postId) {
-      fetch('/api/uploads', {
-        method: 'POST',
-        body: formData
-      })
-        .then(response => response.json())
-        .then(result => {
-          this.setState({
-            caption: '',
-            location: '',
-            isBought: null,
-            imagePreview: '/images/placeholder-image-square.jpeg'
-          });
-          this.fileInputRef.current.value = null;
-        })
-        .catch(err => console.error(err));
+      fetchRoute = '/api/uploads';
+      fetchMethod = 'POST';
     } else {
-      fetch(`/api/edit/${this.props.postId}`, {
-        method: 'PUT',
-        body: formData
-      })
-        .then(response => response.json())
-        .then(result => {
-          this.setState({
-            caption: '',
-            location: '',
-            isBought: null,
-            imagePreview: '/images/placeholder-image-square.jpeg'
-          });
-          this.fileInputRef.current.value = null;
-        })
-        .catch(err => console.error(err));
+      fetchMethod = 'PUT';
+      fetchRoute = `/api/edit/${this.props.postId}`;
     }
+
+    fetch(fetchRoute, {
+      method: fetchMethod,
+      body: formData
+    })
+      .then(response => response.json())
+      .then(result => {
+        this.setState({
+          caption: '',
+          location: '',
+          isBought: null,
+          imagePreview: '/images/placeholder-image-square.jpeg'
+        });
+        this.fileInputRef.current.value = null;
+      })
+      .catch(err => console.error(err));
   }
 
   render() {

@@ -32,7 +32,8 @@ app.get('/api/posts/:userId', (req, res, next) => {
            "caption",
            "isBought",
            "location",
-           "createdAt"
+           "createdAt",
+           "editedAt"
       from "posts"
       join "users" using ("userId")
       where "userId" = $1
@@ -58,7 +59,8 @@ app.get('/api/post/:postId', (req, res, next) => {
            "caption",
            "isBought",
            "location",
-           "createdAt"
+           "createdAt",
+           "editedAt"
       from "posts"
       join "users" using ("userId")
       where "postId" = $1
