@@ -104,21 +104,21 @@ export default class Form extends React.Component {
         <div className='w-96 md:w-[800px] p-4 m-auto'>
           <h1 className='text-2xl flex justify-center pb-4'>
             {this.props.postId ? 'Edit Post' : 'New Post'}
-            </h1>
+          </h1>
           <form onSubmit={this.handleSubmit}>
             <div className='bg-wrapper flex flex-wrap p-2 rounded-xl border border-gray-200'>
               <div className='w-full md:w-1/2 relative order-1'>
                 <img className='w-96 h-96 max-h-96 object-cover object-center border border-gray-300' src={imagePreview} alt='Placeholder image' />
                 {!this.state.isUploaded &&
-                <a href="">
-                  <label htmlFor='image' className='inset-center cursor-pointer'>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </label>
-                </a>}
+                  <a href="">
+                    <label htmlFor='image' className='inset-center cursor-pointer'>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </label>
+                  </a>}
                 <input ref={this.fileInputRef} className='inset-center opacity-0 cursor-pointer' type="file" id="image" name="image"
-                  accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload}/>
+                  accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload} />
               </div>
               <div className='w-full md:w-1/2 order-2 md:pl-4'>
                 <div className="flex items-center space-x-3 py-4 md:pt-0">

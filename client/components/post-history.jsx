@@ -58,7 +58,7 @@ export function Post(props) {
   const { username, postId, profilePhotoUrl, imageUrl, caption, isBought, createdAt, location, editedAt } = props.post;
   return (
     <>
-      <div className='bg-wrapper flex flex-wrap p-4 rounded-xl border border-gray-200'>
+      <div className='drop-shadow-md bg-wrapper flex flex-wrap p-4 rounded-xl border border-gray-200'>
         <div className="flex items-center w-full space-x-3 md:pt-0 pb-2 md:hidden">
           <div className="flex w-full">
             <a href="#profile">
@@ -78,7 +78,7 @@ export function Post(props) {
           </a>
         </div>
         <div className='w-full md:w-1/2'>
-          <img className='w-80 md:w-96 h-80 object-cover border border-gray-300' src={`/images/${imageUrl}`} alt='Placeholder image' />
+          <img className='drop-shadow-lg w-80 md:w-96 h-80 object-cover border border-gray-200' src={`/images/${imageUrl}`} alt='Placeholder image' />
         </div>
         <div className='w-full md:w-1/2 md:pl-4'>
           <div className="md:flex items-center w-full space-x-3 md:pt-0 pb-2 border-b border-gray-200 hidden">
