@@ -11,7 +11,7 @@ export default class Form extends React.Component {
     };
     this.fileInputRef = React.createRef();
     this.handleCaptionChange = this.handleCaptionChange.bind(this);
-    this.handleIsBoughtClick = this.handleIsBoughtClick.bind(this);
+    this.handleIsBoughtChange = this.handleIsBoughtChange.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,7 +42,7 @@ export default class Form extends React.Component {
     this.setState({ location: event.target.value });
   }
 
-  handleIsBoughtClick(event) {
+  handleIsBoughtChange(event) {
     if (event.target.value === 'bought') {
       this.setState({ isBought: true });
     } else {
@@ -84,6 +84,7 @@ export default class Form extends React.Component {
 
   render() {
     const imagePreview = this.state.imagePreview;
+    const isBought = this.state.isBought;
     return (
       <>
         <div className='w-96 md:w-[800px] p-4 m-auto'>
@@ -120,22 +121,24 @@ export default class Form extends React.Component {
                     value={this.state.location} onChange={this.handleLocationChange}
                     className='bg-wrapper' />
                 </div>
+                {/* isBought radio */}
                 <div className="py-4">
                   <ul id="isBought" className="filter-switch inline-flex items-center h-10 p-1 space-x-1 rounded-md font-semibold text-blue-600">
                     <li className="filter-switch-item flex h-8 bg-gray-300x">
-                      <input onClick={this.handleIsBoughtClick} type="radio" name="isBought" id="cooked" value='cooked' className="sr-only" required />
+                      <input onChange={this.handleIsBoughtChange} checked={isBought === false} type="radio" name="isBought" id="cooked" value='cooked' className="sr-only" required />
                       <label htmlFor="cooked" className="border-2 h-9 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
                         Home-cooked
                       </label>
                     </li>
                     <li className="filter-switch-item flex relative h-8 bg-gray-300x">
-                      <input onClick={this.handleIsBoughtClick} type="radio" name="isBought" id="bought" value='bought' className="sr-only" required />
+                      <input onChange={this.handleIsBoughtChange} checked={isBought === true} type="radio" name="isBought" id="bought" value='bought' className="sr-only" required />
                       <label htmlFor="bought" className="border-2 h-9 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
                         Bought
                       </label>
                     </li>
                   </ul>
                 </div>
+
                 <div className="py-4 flex flex-row-reverse">
                   <button type="submit" name='share' className='text-blue-600'>
                     Share
