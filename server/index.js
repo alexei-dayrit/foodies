@@ -19,8 +19,8 @@ const db = new pg.Pool({
   }
 });
 
-app.get('/api/posts/:id', (req, res, next) => {
-  const userId = parseFloat(req.params.id);
+app.get('/api/posts/:userId', (req, res, next) => {
+  const userId = parseFloat(req.params.userId);
   if (Number.isInteger(userId) !== true || userId < 0) {
     throw new ClientError(400, 'UserId must be a positive integer');
   }
@@ -38,6 +38,32 @@ app.get('/api/posts/:id', (req, res, next) => {
       where "userId" = $1
   `;
   const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/edit/:postId', (req, res, next) => {
+  const postId = parseFloat(req.params.postId);
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'UserId must be a positive integer');
+  }
+  const sql = `
+    select "username",
+           "profilePhotoUrl",
+           "postId",
+           "imageUrl",
+           "caption",
+           "isBought",
+           "location",
+           "createdAt"
+      from "posts"
+      join "users" using ("userId")
+      where "postId" = $1
+  `;
+  const params = [postId];
   db.query(sql, params)
     .then(result => {
       res.json(result.rows);
