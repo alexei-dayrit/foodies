@@ -45,10 +45,10 @@ app.get('/api/posts/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/edit/:postId', (req, res, next) => {
+app.get('/api/post/:postId', (req, res, next) => {
   const postId = parseFloat(req.params.postId);
   if (Number.isInteger(postId) !== true || postId < 0) {
-    throw new ClientError(400, 'UserId must be a positive integer');
+    throw new ClientError(400, 'PostId must be a positive integer');
   }
   const sql = `
     select "username",
@@ -64,6 +64,33 @@ app.get('/api/edit/:postId', (req, res, next) => {
       where "postId" = $1
   `;
   const params = [postId];
+  db.query(sql, params)
+    .then(result => {
+      res.json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.put('/api/edit/:postId', (req, res, next) => {
+  const { imageUrl, caption, isBought, location } = req.body;
+  const postId = parseFloat(req.params.postId);
+  const editedAt = new Date();
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'PostId must be a positive integer');
+  } else if (!imageUrl || !caption || !location || !isBought) {
+    throw new ClientError(400, 'ImageUrl, caption, location, and isBought are required fields');
+  }
+  const sql = `
+    update "posts"
+      set  "imageUrl" = $1,
+           "caption" = $2,
+           "isBought" = $3,
+           "location" = $4,
+           "editedAt" = $5
+      where "postId" = $6
+      returning *;
+  `;
+  const params = [imageUrl, caption, isBought, location, editedAt, postId];
   db.query(sql, params)
     .then(result => {
       res.json(result.rows);
