@@ -40,7 +40,7 @@ app.get('/api/posts/:userId', (req, res, next) => {
   const params = [userId];
   db.query(sql, params)
     .then(result => {
-      res.json(result.rows);
+      res.status(201).json(result.rows);
     })
     .catch(err => next(err));
 });
@@ -66,19 +66,20 @@ app.get('/api/post/:postId', (req, res, next) => {
   const params = [postId];
   db.query(sql, params)
     .then(result => {
-      res.json(result.rows);
+      res.status(201).json(result.rows);
     })
     .catch(err => next(err));
 });
 
-app.put('/api/edit/:postId', (req, res, next) => {
-  const { imageUrl, caption, isBought, location } = req.body;
+app.put('/api/edit/:postId', uploadsMiddleware, (req, res, next) => {
+  const { caption, isBought, location } = req.body;
   const postId = parseFloat(req.params.postId);
+  const imageUrl = req.file.filename;
   const editedAt = new Date();
   if (Number.isInteger(postId) !== true || postId < 0) {
     throw new ClientError(400, 'PostId must be a positive integer');
-  } else if (!imageUrl || !caption || !location || !isBought) {
-    throw new ClientError(400, 'ImageUrl, caption, location, and isBought are required fields');
+  } else if (!caption || !location || !isBought) {
+    throw new ClientError(400, 'Caption, location, and isBought are required fields');
   }
   const sql = `
     update "posts"
@@ -93,7 +94,7 @@ app.put('/api/edit/:postId', (req, res, next) => {
   const params = [imageUrl, caption, isBought, location, editedAt, postId];
   db.query(sql, params)
     .then(result => {
-      res.json(result.rows);
+      res.status(201).json(result.rows);
     })
     .catch(err => next(err));
 });

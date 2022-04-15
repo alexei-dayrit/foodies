@@ -65,21 +65,39 @@ export default class Form extends React.Component {
     formData.append('location', this.state.location);
     formData.append('isBought', this.state.isBought);
 
-    fetch('/api/uploads', {
-      method: 'POST',
-      body: formData
-    })
-      .then(response => response.json())
-      .then(result => {
-        this.setState({
-          caption: '',
-          location: '',
-          isBought: null,
-          imagePreview: '/images/placeholder-image-square.jpeg'
-        });
-        this.fileInputRef.current.value = null;
+    if (!this.props.postId) {
+      fetch('/api/uploads', {
+        method: 'POST',
+        body: formData
       })
-      .catch(err => console.error(err));
+        .then(response => response.json())
+        .then(result => {
+          this.setState({
+            caption: '',
+            location: '',
+            isBought: null,
+            imagePreview: '/images/placeholder-image-square.jpeg'
+          });
+          this.fileInputRef.current.value = null;
+        })
+        .catch(err => console.error(err));
+    } else {
+      fetch(`/api/edit/${this.props.postId}`, {
+        method: 'PUT',
+        body: formData
+      })
+        .then(response => response.json())
+        .then(result => {
+          this.setState({
+            caption: '',
+            location: '',
+            isBought: null,
+            imagePreview: '/images/placeholder-image-square.jpeg'
+          });
+          this.fileInputRef.current.value = null;
+        })
+        .catch(err => console.error(err));
+    }
   }
 
   render() {
@@ -88,11 +106,13 @@ export default class Form extends React.Component {
     return (
       <>
         <div className='w-96 md:w-[800px] p-4 m-auto'>
-          <h1 className='text-2xl flex justify-center pb-4'>New Post</h1>
+          <h1 className='text-2xl flex justify-center pb-4'>
+            {this.props.postId ? 'Edit Post' : 'New Post'}
+            </h1>
           <form onSubmit={this.handleSubmit}>
             <div className='bg-wrapper flex flex-wrap p-2 rounded-xl border border-gray-200'>
               <div className='w-full md:w-1/2 relative order-1'>
-                <img className='w-96 h-96 max-h-96 object-cover border border-gray-300' src={imagePreview} alt='Placeholder image' />
+                <img className='w-96 h-96 max-h-96 object-cover object-center border border-gray-300' src={imagePreview} alt='Placeholder image' />
                 {!this.state.isUploaded &&
                 <a href="">
                   <label htmlFor='image' className='inset-center cursor-pointer'>
@@ -101,12 +121,12 @@ export default class Form extends React.Component {
                     </svg>
                   </label>
                 </a>}
-                <input ref={this.fileInputRef} className='inset-center opacity-0 cursor-pointer' required type="file" name="image"
+                <input ref={this.fileInputRef} className='inset-center opacity-0 cursor-pointer' type="file" id="image" name="image"
                   accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload}/>
               </div>
               <div className='w-full md:w-1/2 order-2 md:pl-4'>
                 <div className="flex items-center space-x-3 py-4 md:pt-0">
-                  <img className="object-cover w-10 h-10 rounded-full border border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
+                  <img className="object-cover object-center w-10 h-10 rounded-full border border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
                   <div className="space-y-1 font-semibold">
                     <div className='cursor-pointer'>sushi_lover</div>
                   </div>
@@ -121,7 +141,6 @@ export default class Form extends React.Component {
                     value={this.state.location} onChange={this.handleLocationChange}
                     className='bg-wrapper' />
                 </div>
-                {/* isBought radio */}
                 <div className="py-4">
                   <ul id="isBought" className="filter-switch inline-flex items-center h-10 p-1 space-x-1 rounded-md font-semibold text-blue-600">
                     <li className="filter-switch-item flex h-8 bg-gray-300x">
@@ -138,7 +157,6 @@ export default class Form extends React.Component {
                     </li>
                   </ul>
                 </div>
-
                 <div className="py-4 flex flex-row-reverse">
                   <button type="submit" name='share' className='text-blue-600'>
                     Share
