@@ -151,7 +151,7 @@ export default class Form extends React.Component {
                 </div>
                 <div className="py-4 flex flex-row-reverse">
                   <button type="submit" name='share' className='text-blue-600'>
-                    Share
+                    {this.props.postId ? 'Save' : 'Share'}
                   </button>
                 </div>
               </div>
