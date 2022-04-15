@@ -65,11 +65,12 @@ export function Post(props) {
               <img className="object-cover w-10 h-10 rounded-full border border-red-300" src={`/images/${profilePhotoUrl}`} alt="Profile picture" />
             </a>
             <div>
-              <div className='font-semibold text-sm md:text-lg pl-3'>{username}</div>
+              <a href="#profile">
+                <div className='font-semibold text-sm md:text-lg pl-3'>{username}</div>
+              </a>
               <div className='text-gray-400 text-xs md:text-sm pl-3'>{location}</div>
             </div>
           </div>
-          {/* Edit icon */}
           <a href={`#edit-post?postId=${postId}`}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -86,7 +87,9 @@ export function Post(props) {
                 <img className="object-cover w-12 h-12 rounded-full border border-red-300" src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
               </a>
               <div>
-                <div className='font-semibold text-sm md:text-lg md:pl-3'>{username}</div>
+                <a href="#profile">
+                  <div className='font-semibold text-sm md:text-lg md:pl-3'>{username}</div>
+                </a>
                 <div className='text-gray-400 text-xs md:text-sm md:pl-3'>{location}</div>
               </div>
             </div>
