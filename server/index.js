@@ -74,7 +74,7 @@ app.get('/api/post/:postId', (req, res, next) => {
 app.put('/api/edit/:postId', uploadsMiddleware, (req, res, next) => {
   const { caption, isBought, location } = req.body;
   const postId = parseFloat(req.params.postId);
-  const imageUrl = req.file.filename;
+  const imageUrl = req.file ? req.file.filename : null;
   const editedAt = new Date();
   if (Number.isInteger(postId) !== true || postId < 0) {
     throw new ClientError(400, 'PostId must be a positive integer');
@@ -83,7 +83,7 @@ app.put('/api/edit/:postId', uploadsMiddleware, (req, res, next) => {
   }
   const sql = `
     update "posts"
-      set  "imageUrl" = $1,
+      set  "imageUrl" = coalesce($1, "imageUrl"),
            "caption" = $2,
            "isBought" = $3,
            "location" = $4,
