@@ -138,7 +138,7 @@ export default class Form extends React.Component {
                     className='bg-wrapper' />
                 </div>
                 <div className="py-4">
-                  <ul id="isBought" className="filter-switch inline-flex items-center h-10 p-1 space-x-1 rounded-md font-semibold text-blue-600">
+                  <ul id="isBought" className="filter-switch inline-flex items-center h-10 space-x-1 rounded-md font-semibold text-sky-600">
                     <li className="filter-switch-item flex h-8 bg-gray-300x">
                       <input onChange={this.handleIsBoughtChange} checked={isBought === false} type="radio" name="isBought" id="cooked" value='cooked' className="sr-only" required />
                       <label htmlFor="cooked" className="border-2 h-9 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
@@ -153,10 +153,17 @@ export default class Form extends React.Component {
                     </li>
                   </ul>
                 </div>
-                <div className="py-4 flex flex-row-reverse">
-                  <button type="submit" name='share' className='text-blue-600'>
-                    {this.props.postId ? 'Save' : 'Share'}
-                  </button>
+                <div className="pb-2 pt-8 flex">
+                  <div className='w-1/2'>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </div>
+                  <div className='w-1/2 flex justify-end pr-2'>
+                    <button type="submit" name='share' className='text-blue-600 text-xl'>
+                      {this.props.postId ? 'Save' : 'Share'}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -103,8 +103,8 @@ export function Post(props) {
             <div className='font-semibold text-sm md:text-lg'>
               {username}
               {isBought
-                ? <span className='font-normal text-sky-400'>{' Cooked'}</span>
-                : <span className='font-normal text-sky-400'>{' Bought'}</span>}
+                ? <span className='font-normal text-sky-600'>{' Cooked'}</span>
+                : <span className='font-normal text-sky-600'>{' Bought'}</span>}
             </div>
           </div>
           <div className='w-full font-light'>
