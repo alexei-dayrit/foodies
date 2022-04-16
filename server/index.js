@@ -68,6 +68,12 @@ app.get('/api/post/:postId', (req, res, next) => {
   const params = [postId];
   db.query(sql, params)
     .then(result => {
+      const [post] = result.rows;
+      if (!post) {
+        res.status(404).json({
+          error: `Cannot find a post with postId ${postId}`
+        });
+      }
       res.status(201).json(result.rows);
     })
     .catch(err => next(err));
@@ -96,6 +102,12 @@ app.put('/api/edit/:postId', uploadsMiddleware, (req, res, next) => {
   const params = [imageUrl, caption, isBought, location, editedAt, postId];
   db.query(sql, params)
     .then(result => {
+      const [editedPost] = result.rows;
+      if (!editedPost) {
+        res.status(404).json({
+          error: `Cannot find a post with postId ${postId}`
+        });
+      }
       res.status(201).json(result.rows);
     })
     .catch(err => next(err));
