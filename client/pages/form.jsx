@@ -99,11 +99,12 @@ export default class Form extends React.Component {
   render() {
     const imagePreview = this.state.imagePreview;
     const isBought = this.state.isBought;
+    const postId = this.props.postId;
     return (
       <>
         <div className='w-96 md:w-[800px] p-4 m-auto'>
           <h1 className='text-2xl flex justify-center pb-4'>
-            {this.props.postId ? 'Edit Post' : 'New Post'}
+            {postId ? 'Edit Post' : 'New Post'}
           </h1>
           <form onSubmit={this.handleSubmit}>
             <div className='bg-wrapper flex flex-wrap p-2 rounded-xl border border-gray-200'>
@@ -120,7 +121,7 @@ export default class Form extends React.Component {
                 <input ref={this.fileInputRef} className='inset-center opacity-0 cursor-pointer' type="file" id="image" name="image"
                   accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload} />
               </div>
-              <div className='w-full md:w-1/2 order-2 md:pl-4'>
+              <div className='w-full md:w-1/2 order-2 px-2 md:px-4'>
                 <div className="flex items-center space-x-3 py-4 md:pt-0">
                   <img className="object-cover object-center w-10 h-10 rounded-full border border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
                   <div className="space-y-1 font-semibold">
@@ -154,14 +155,14 @@ export default class Form extends React.Component {
                   </ul>
                 </div>
                 <div className="pb-2 pt-8 flex">
-                  <div className='w-1/2'>
+                  {postId && <div className='w-1/2'>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
-                  </div>
-                  <div className='w-1/2 flex justify-end pr-2'>
+                  </div>}
+                  <div className={`flex ${postId ? 'w-1/2 justify-end' : 'w-full flex-row-reverse pr-1'}` }>
                     <button type="submit" name='share' className='text-blue-600 text-xl'>
-                      {this.props.postId ? 'Save' : 'Share'}
+                      {postId ? 'Save' : 'Share'}
                     </button>
                   </div>
                 </div>
