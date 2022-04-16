@@ -43,7 +43,7 @@ export default class Navbar extends React.Component {
             <div className={'md:flex flex-grow items-center' + (this.state.navbarOpen ? ' flex' : ' hidden')}>
               <ul className="flex flex-col md:flex-row list-none md:ml-auto">
                 <li>
-                  <a onClick={this.handleNavbarChange} className="px-3 py-2 flex items-right uppercase leading-snug  hover:opacity-75"
+                  <a onClick={this.handleNavbarChange} className="px-3 py-2 flex items-center uppercase leading-snug  hover:opacity-75"
                      href="#">
                     <span className="ml-2">Home</span>
                   </a>
@@ -55,11 +55,9 @@ export default class Navbar extends React.Component {
                   </a>
                 </li>
                 <li>
-                  <a onClick={this.handleNavbarChange} className='px-3 pt-1 flex items-center uppercase leading-snughover:opacity-75'
+                  <a onClick={this.handleNavbarChange} className='px-3 py-2 flex items-center uppercase leading-snug hover:opacity-75'
                     href="#profile">
-                    <img className="ml-2 w-[35px] h-[35px] border-red-300 rounded-full border object-cover hidden md:inline"
-                      src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
-                    <span className='ml-2 md:hidden'>My Profile</span>
+                    <span className='ml-2'>My Profile</span>
                   </a>
                 </li>
               </ul>

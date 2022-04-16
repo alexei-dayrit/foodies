@@ -1,4 +1,5 @@
 import React from 'react';
+import Modal from '../components/modal';
 export default class Form extends React.Component {
   constructor(props) {
     super(props);
@@ -7,13 +8,15 @@ export default class Form extends React.Component {
       caption: '',
       location: '',
       isBought: null,
-      isUploaded: false
+      isUploaded: false,
+      showModal: true
     };
     this.fileInputRef = React.createRef();
     this.handleCaptionChange = this.handleCaptionChange.bind(this);
     this.handleIsBoughtChange = this.handleIsBoughtChange.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
+    this.handleModalClick = this.handleModalClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -96,6 +99,15 @@ export default class Form extends React.Component {
       .catch(err => console.error(err));
   }
 
+  handleModalClick(event) {
+    const showModal = this.state.showModal;
+    if (showModal) {
+      this.setState({ showModal: false });
+    } else {
+      this.setState({ showModal: true });
+    }
+  }
+
   render() {
     const imagePreview = this.state.imagePreview;
     const isBought = this.state.isBought;
@@ -142,13 +154,13 @@ export default class Form extends React.Component {
                   <ul id="isBought" className="filter-switch inline-flex items-center h-10 space-x-1 rounded-md font-semibold text-sky-600">
                     <li className="filter-switch-item flex h-8 bg-gray-300x">
                       <input onChange={this.handleIsBoughtChange} checked={isBought === false} type="radio" name="isBought" id="cooked" value='cooked' className="sr-only" required />
-                      <label htmlFor="cooked" className="border-2 h-9 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
+                      <label htmlFor="cooked" className="hover:scale-110 border-2 h-9 py-2 px-2 text-sm leading-4 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
                         Home-cooked
                       </label>
                     </li>
                     <li className="filter-switch-item flex relative h-8 bg-gray-300x">
                       <input onChange={this.handleIsBoughtChange} checked={isBought === true} type="radio" name="isBought" id="bought" value='bought' className="sr-only" required />
-                      <label htmlFor="bought" className="border-2 h-9 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
+                      <label htmlFor="bought" className="hover:scale-110 border-2 h-9 py-2 px-2 ml-1 text-sm leading-4 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
                         Bought
                       </label>
                     </li>
@@ -156,12 +168,14 @@ export default class Form extends React.Component {
                 </div>
                 <div className="pb-2 pt-8 flex">
                   {postId && <div className='w-1/2'>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
+                    <a onClick={this.handleModalClick} className='cursor-pointer'>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-red-600 hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </a>
                   </div>}
                   <div className={`flex ${postId ? 'w-1/2 justify-end' : 'w-full flex-row-reverse pr-1'}` }>
-                    <button type="submit" name='share' className='text-blue-600 text-xl'>
+                    <button type="submit" name='share' className='hover:scale-110 text-blue-600 text-xl'>
                       {postId ? 'Save' : 'Share'}
                     </button>
                   </div>
@@ -170,6 +184,7 @@ export default class Form extends React.Component {
             </div>
           </form>
         </div>
+        <Modal handleModalClick={this.handleModalClick} showModal={this.state.showModal}/>
       </>
     );
   }
