@@ -123,6 +123,30 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/delete/:postId', (req, res, next) => {
+  const postId = parseFloat(req.params.postId);
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'PostId must be a positive integer');
+  }
+  const sql = `
+    delete from "posts"
+     where "postId" = $1
+     returning *;
+  `;
+  const params = [postId];
+  db.query(sql, params)
+    .then(result => {
+      const [deletedPost] = result.rows;
+      if (!deletedPost) {
+        res.status(404).json({
+          error: `Cannot find a post with postId ${postId}`
+        });
+      }
+      res.status(204).json();
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
