@@ -9,7 +9,7 @@ export default class Form extends React.Component {
       location: '',
       isBought: null,
       isUploaded: false,
-      showModal: true
+      showModal: false
     };
     this.fileInputRef = React.createRef();
     this.handleCaptionChange = this.handleCaptionChange.bind(this);
