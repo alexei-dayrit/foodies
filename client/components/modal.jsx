@@ -15,7 +15,7 @@ export default class Modal extends React.Component {
                       Confirm Delete
                     </h3>
                     <button className="p-2 border-0 text-black float-right leading-none font-semibold"
-                        onClick={this.props.handleModalClick}>
+                        onClick={this.props.handleModal}>
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                       </svg>
@@ -29,11 +29,11 @@ export default class Modal extends React.Component {
                   </div>
                   <div className="flex items-center justify-end px-6 py-4 border-t border-solid border-slate-200 rounded-b">
                     <button className=" font-bold hover:scale-105 uppercase px-6 py-2 text-sm mr-1 mb-1"
-                        onClick={this.props.handleModalClick}>
+                        onClick={this.props.handleModal}>
                       Cancel
                     </button>
                     <button className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg hover:scale-105 mr-1 mb-1"
-                        onClick={this.props.handleModalClick}>
+                        onClick={this.props.handleDelete}>
                       Delete
                     </button>
                   </div>

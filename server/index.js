@@ -153,8 +153,9 @@ app.delete('/api/delete/:postId', (req, res, next) => {
         res.status(404).json({
           error: `Cannot find a post with postId ${postId}`
         });
+      } else {
+        res.sendStatus(204);
       }
-      res.status(204).json();
     })
     .catch(err => next(err));
 });

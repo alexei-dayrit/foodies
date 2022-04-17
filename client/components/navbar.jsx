@@ -24,7 +24,7 @@ export default class Navbar extends React.Component {
         <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-zinc-200 border border-gray-200">
           <div className="w-96 md:w-[800px] m-auto container px-4 flex flex-wrap items-center justify-between">
             <div className="w-full relative flex justify-between md:w-auto md:static md:block md:justify-start">
-              <a className="pl-2 styled-font text-3xl leading-relaxed inline-block mr-4 py-2 whitespace-nowrap"
+              <a className="text-sky-600 pl-2 styled-font text-3xl leading-relaxed inline-block mr-4 py-2 whitespace-nowrap"
                 href="#">
                 Foodies
               </a>

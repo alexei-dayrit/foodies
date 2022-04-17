@@ -9,15 +9,16 @@ export default class Form extends React.Component {
       location: '',
       isBought: null,
       isUploaded: false,
-      showModal: true
+      showModal: false
     };
     this.fileInputRef = React.createRef();
     this.handleCaptionChange = this.handleCaptionChange.bind(this);
     this.handleIsBoughtChange = this.handleIsBoughtChange.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
-    this.handleModalClick = this.handleModalClick.bind(this);
+    this.handleModal = this.handleModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
@@ -60,6 +61,16 @@ export default class Form extends React.Component {
     });
   }
 
+  handleDelete(event) {
+    fetch(`/api/delete/${this.props.postId}`, {
+      method: 'DELETE'
+    })
+      .then(() => {
+        window.location.hash = '#';
+      })
+      .catch(err => console.error(err));
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData();
@@ -99,7 +110,7 @@ export default class Form extends React.Component {
       .catch(err => console.error(err));
   }
 
-  handleModalClick(event) {
+  handleModal(event) {
     const showModal = this.state.showModal;
     if (showModal) {
       this.setState({ showModal: false });
@@ -168,7 +179,7 @@ export default class Form extends React.Component {
                 </div>
                 <div className="pb-2 pt-8 flex">
                   {postId && <div className='w-1/2'>
-                    <a onClick={this.handleModalClick} className='cursor-pointer'>
+                    <a onClick={this.handleModal} className='cursor-pointer'>
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-red-600 hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
@@ -184,7 +195,7 @@ export default class Form extends React.Component {
             </div>
           </form>
         </div>
-        <Modal handleModalClick={this.handleModalClick} showModal={this.state.showModal}/>
+        <Modal handleModal={this.handleModal} showModal={this.state.showModal} handleDelete={this.handleDelete}/>
       </>
     );
   }
