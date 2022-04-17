@@ -20,7 +20,7 @@ export default class Modal extends React.Component {
                       className="p-2 border-0 text-black float-right leading-none font-semibold"
                       onClick={this.props.handleModal}>
                       <svg
-                        xmlns="http://www.w3.org/2000/svg" className="h-6 w-6"
+                        xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 hover:scale-125 hover:drop-shadow-lg"
                         fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
                         ><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                       </svg>
@@ -34,8 +34,8 @@ export default class Modal extends React.Component {
                   <div className="flex items-center justify-end px-6 py-4 border-t
                        border-solid border-slate-200 rounded-b">
                     <button
-                      className=" font-bold hover:scale-105 uppercase px-6
-                      py-2 text-sm mr-1 mb-1"
+                      className=" font-bold hover:text-gray-700 hover:scale-105 uppercase mx-6
+                      my-2 text-sm"
                       onClick={this.props.handleModal}
                       >Cancel
                     </button>
