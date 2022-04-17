@@ -66,7 +66,7 @@ export default class Form extends React.Component {
       method: 'DELETE'
     })
       .then(() => {
-        window.location.hash = '#';
+        window.location.hash = 'profile';
       })
       .catch(err => console.error(err));
   }
