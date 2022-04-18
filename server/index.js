@@ -160,6 +160,27 @@ app.delete('/api/delete/:postId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/likes/:postId', (req, res, next) => {
+  // hard coded userId
+  const userId = 1;
+  const postId = parseFloat(req.params.postId);
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'PostId must be a positive integer');
+  }
+  const sql = `
+    insert into "likes" ("postId", "userId")
+      values ($1, $2)
+      returning *;
+  `;
+  const params = [postId, userId];
+  db.query(sql, params)
+    .then(result => {
+      const [likedRow] = result.rows;
+      res.status(201).json(likedRow);
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
