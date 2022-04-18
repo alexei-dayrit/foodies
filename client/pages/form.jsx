@@ -1,4 +1,7 @@
 import React from 'react';
+import Modal from '../components/modal';
+import DeleteIcon from '../components/svg-assets/delete-icon';
+import PlusIcon from '../components/svg-assets/plus-icon';
 export default class Form extends React.Component {
   constructor(props) {
     super(props);
@@ -7,14 +10,17 @@ export default class Form extends React.Component {
       caption: '',
       location: '',
       isBought: null,
-      isUploaded: false
+      isUploaded: false,
+      showModal: false
     };
     this.fileInputRef = React.createRef();
     this.handleCaptionChange = this.handleCaptionChange.bind(this);
     this.handleIsBoughtChange = this.handleIsBoughtChange.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
+    this.handleModal = this.handleModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
@@ -57,6 +63,16 @@ export default class Form extends React.Component {
     });
   }
 
+  handleDelete(event) {
+    fetch(`/api/delete/${this.props.postId}`, {
+      method: 'DELETE'
+    })
+      .then(() => {
+        window.location.hash = 'profile';
+      })
+      .catch(err => console.error(err));
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData();
@@ -96,33 +112,48 @@ export default class Form extends React.Component {
       .catch(err => console.error(err));
   }
 
+  handleModal(event) {
+    const showModal = this.state.showModal;
+    if (showModal) {
+      this.setState({ showModal: false });
+    } else {
+      this.setState({ showModal: true });
+    }
+  }
+
   render() {
     const imagePreview = this.state.imagePreview;
     const isBought = this.state.isBought;
+    const postId = this.props.postId;
     return (
       <>
         <div className='w-96 md:w-[800px] p-4 m-auto'>
           <h1 className='text-2xl flex justify-center pb-4'>
-            {this.props.postId ? 'Edit Post' : 'New Post'}
+            {postId ? 'Edit Post' : 'New Post'}
           </h1>
           <form onSubmit={this.handleSubmit}>
             <div className='bg-wrapper flex flex-wrap p-2 rounded-xl border border-gray-200'>
               <div className='w-full md:w-1/2 relative order-1'>
-                <img className='w-96 h-96 max-h-96 object-cover object-center border border-gray-300' src={imagePreview} alt='Placeholder image' />
+                <img className='w-96 h-96 max-h-96 object-cover object-center border
+                  border-gray-300' src={imagePreview} alt='Placeholder image'
+                />
                 {!this.state.isUploaded &&
                   <a href="">
                     <label htmlFor='image' className='inset-center cursor-pointer'>
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
+                      <PlusIcon />
                     </label>
                   </a>}
-                <input ref={this.fileInputRef} className='inset-center opacity-0 cursor-pointer' type="file" id="image" name="image"
-                  accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload} />
+                <input ref={this.fileInputRef} className='inset-center opacity-0 cursor-pointer'
+                  type="file" id="image" name="image"
+                  accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload}
+                />
               </div>
-              <div className='w-full md:w-1/2 order-2 md:pl-4'>
+              <div className='w-full md:w-1/2 order-2 px-2 md:px-4'>
                 <div className="flex items-center space-x-3 py-4 md:pt-0">
-                  <img className="object-cover object-center w-10 h-10 rounded-full border border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
+                  <img className="object-cover object-center w-10 h-10 rounded-full border
+                    border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg"
+                    alt="Profile picture"
+                  />
                   <div className="space-y-1 font-semibold">
                     <div className='cursor-pointer'>sushi_lover</div>
                   </div>
@@ -130,7 +161,8 @@ export default class Form extends React.Component {
                 <div className="py-4 border-b border-gray-200">
                   <textarea required type="text" name="caption" placeholder="Write a caption"
                     value={this.state.caption} onChange={this.handleCaptionChange}
-                    className='bg-wrapper' cols={40} rows={2} />
+                    className='bg-wrapper' cols={40} rows={2}
+                  />
                 </div>
                 <div className="py-4 border-b border-gray-200">
                   <input type="text" name="location" placeholder='Add location'
@@ -138,30 +170,48 @@ export default class Form extends React.Component {
                     className='bg-wrapper' />
                 </div>
                 <div className="py-4">
-                  <ul id="isBought" className="filter-switch inline-flex items-center h-10 p-1 space-x-1 rounded-md font-semibold text-blue-600">
+                  <ul id="isBought" className="filter-switch inline-flex items-center
+                    h-10 space-x-1 rounded-md font-semibold text-sky-600">
                     <li className="filter-switch-item flex h-8 bg-gray-300x">
-                      <input onChange={this.handleIsBoughtChange} checked={isBought === false} type="radio" name="isBought" id="cooked" value='cooked' className="sr-only" required />
-                      <label htmlFor="cooked" className="border-2 h-9 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
-                        Home-cooked
+                      <input onChange={this.handleIsBoughtChange} checked={isBought === false}
+                        type="radio" name="isBought" id="cooked" value='cooked' className="sr-only" required
+                      />
+                      <label htmlFor="cooked" className="hover:scale-110 border-2 h-9 py-2 px-2
+                        text-sm leading-4 text-gray-600 hover:text-gray-800 bg-white rounded shadow"
+                        >Home-cooked
                       </label>
                     </li>
                     <li className="filter-switch-item flex relative h-8 bg-gray-300x">
-                      <input onChange={this.handleIsBoughtChange} checked={isBought === true} type="radio" name="isBought" id="bought" value='bought' className="sr-only" required />
-                      <label htmlFor="bought" className="border-2 h-9 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 bg-white rounded shadow">
-                        Bought
+                      <input onChange={this.handleIsBoughtChange} checked={isBought === true}
+                        type="radio" name="isBought" id="bought" value='bought' className="sr-only" required
+                      />
+                      <label htmlFor="bought" className="hover:scale-110 border-2 h-9 py-2 px-2 ml-1
+                        text-sm leading-4 text-gray-600 hover:text-gray-800 bg-white rounded shadow"
+                        >Bought
                       </label>
                     </li>
                   </ul>
                 </div>
-                <div className="py-4 flex flex-row-reverse">
-                  <button type="submit" name='share' className='text-blue-600'>
-                    {this.props.postId ? 'Save' : 'Share'}
-                  </button>
+                <div className="pb-2 pt-8 flex">
+                  {postId && <div className='w-1/2'>
+                    <a onClick={this.handleModal} className='cursor-pointer'>
+                      <DeleteIcon />
+                    </a>
+                  </div>}
+                  <div className={`flex mt-1 ${postId ? 'w-1/2 justify-end' : 'w-full flex-row-reverse pr-1'}` }>
+                    <button type="submit" name='share' className='hover:scale-110 text-blue-600 text-xl'>
+                      {postId ? 'Save' : 'Share'}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </form>
         </div>
+        {this.state.showModal && (
+          <Modal handleModal={this.handleModal} showModal={this.state.showModal}
+            handleDelete={this.handleDelete}/>
+        )}
       </>
     );
   }
