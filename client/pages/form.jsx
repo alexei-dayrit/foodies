@@ -1,5 +1,7 @@
 import React from 'react';
 import Modal from '../components/modal';
+import DeleteIcon from '../components/svg-assets/delete-icon';
+import PlusIcon from '../components/svg-assets/plus-icon';
 export default class Form extends React.Component {
   constructor(props) {
     super(props);
@@ -138,12 +140,7 @@ export default class Form extends React.Component {
                 {!this.state.isUploaded &&
                   <a href="">
                     <label htmlFor='image' className='inset-center cursor-pointer'>
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0
-                          0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
+                      <PlusIcon />
                     </label>
                   </a>}
                 <input ref={this.fileInputRef} className='inset-center opacity-0 cursor-pointer'
@@ -198,15 +195,10 @@ export default class Form extends React.Component {
                 <div className="pb-2 pt-8 flex">
                   {postId && <div className='w-1/2'>
                     <a onClick={this.handleModal} className='cursor-pointer'>
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-red-600 hover:scale-110"
-                        fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138
-                          21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
+                      <DeleteIcon />
                     </a>
                   </div>}
-                  <div className={`flex ${postId ? 'w-1/2 justify-end' : 'w-full flex-row-reverse pr-1'}` }>
+                  <div className={`flex mt-1 ${postId ? 'w-1/2 justify-end' : 'w-full flex-row-reverse pr-1'}` }>
                     <button type="submit" name='share' className='hover:scale-110 text-blue-600 text-xl'>
                       {postId ? 'Save' : 'Share'}
                     </button>
@@ -216,7 +208,10 @@ export default class Form extends React.Component {
             </div>
           </form>
         </div>
-        <Modal handleModal={this.handleModal} showModal={this.state.showModal} handleDelete={this.handleDelete}/>
+        {this.state.showModal && (
+          <Modal handleModal={this.handleModal} showModal={this.state.showModal}
+            handleDelete={this.handleDelete}/>
+        )}
       </>
     );
   }
