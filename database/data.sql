@@ -26,5 +26,8 @@ insert into "likes" ("userId", "postId")
      values (1, 101);
 
 insert into "likes" ("userId", "postId")
+     values (1, 102);
+
+insert into "likes" ("userId", "postId")
      values (2, 103);
 -- 2022-04-12T18:44:59.581239Z

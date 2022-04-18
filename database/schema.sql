@@ -39,6 +39,7 @@ CREATE TABLE "public"."users" (
 
 
 CREATE TABLE "public"."likes" (
+  "likeId" serial NOT NULL,
 	"userId" integer NOT NULL,
 	"postId" integer NOT NULL,
 	"likedAt" timestamp with time zone NOT NULL default now()
