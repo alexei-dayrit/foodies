@@ -25,18 +25,21 @@ app.get('/api/posts/:userId', (req, res, next) => {
     throw new ClientError(400, 'UserId must be a positive integer');
   }
   const sql = `
-    select "username",
-           "profilePhotoUrl",
-           "postId",
-           "imageUrl",
-           "caption",
-           "isBought",
-           "location",
-           "createdAt",
-           "editedAt"
-      from "posts"
-      join "users" using ("userId")
-      where "userId" = $1
+  select  "u"."username",
+           "u"."profilePhotoUrl",
+           "p"."postId",
+           "p"."imageUrl",
+           "p"."caption",
+           "p"."isBought",
+           "p"."location",
+           "p"."createdAt",
+           "p"."editedAt",
+   count(*) as numberOfLikes
+      from "posts" as "p"
+      join "users" as "u" using ("userId")
+      left join "likes" using ("postId")
+      where "p"."userId" = $1
+      group by "u"."username", "u"."profilePhotoUrl", "p"."postId"
   `;
   const params = [userId];
   db.query(sql, params)
@@ -52,7 +55,7 @@ app.get('/api/post/:postId', (req, res, next) => {
     throw new ClientError(400, 'PostId must be a positive integer');
   }
   const sql = `
-    select "username",
+  select   "username",
            "profilePhotoUrl",
            "postId",
            "imageUrl",
@@ -60,10 +63,13 @@ app.get('/api/post/:postId', (req, res, next) => {
            "isBought",
            "location",
            "createdAt",
-           "editedAt"
+           "editedAt",
+  count(*) as numberOfLikes
       from "posts"
       join "users" using ("userId")
+      left join "likes" using ("postId")
       where "postId" = $1
+      group by "users"."username", "users"."profilePhotoUrl", "posts"."postId"
   `;
   const params = [postId];
   db.query(sql, params)
