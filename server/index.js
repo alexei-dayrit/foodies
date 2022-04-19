@@ -25,18 +25,24 @@ app.get('/api/posts/:userId', (req, res, next) => {
     throw new ClientError(400, 'UserId must be a positive integer');
   }
   const sql = `
-    select "username",
-           "profilePhotoUrl",
-           "postId",
-           "imageUrl",
-           "caption",
-           "isBought",
-           "location",
-           "createdAt",
-           "editedAt"
-      from "posts"
-      join "users" using ("userId")
-      where "userId" = $1
+       select  "u"."username",
+            "u"."profilePhotoUrl",
+            "p"."postId",
+            "p"."imageUrl",
+            "p"."caption",
+            "p"."isBought",
+            "p"."location",
+            "p"."createdAt",
+            "p"."editedAt",
+            "isLiked"."userId" is not null as "isLiked",
+            count("l".*) as "numberOfLikes"
+       from "posts" as "p"
+       join "users" as "u" using ("userId")
+       left join "likes" as "l" using ("postId")
+       left join "likes" as "isLiked"
+         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = $1)
+      where "p"."userId" = $1
+      group by "u"."userId", "isLiked"."userId", "p"."postId"
   `;
   const params = [userId];
   db.query(sql, params)
@@ -47,25 +53,33 @@ app.get('/api/posts/:userId', (req, res, next) => {
 });
 
 app.get('/api/post/:postId', (req, res, next) => {
+  // hard coded userId
+  const userId = 1;
   const postId = parseFloat(req.params.postId);
   if (Number.isInteger(postId) !== true || postId < 0) {
     throw new ClientError(400, 'PostId must be a positive integer');
   }
   const sql = `
-    select "username",
-           "profilePhotoUrl",
-           "postId",
-           "imageUrl",
-           "caption",
-           "isBought",
-           "location",
-           "createdAt",
-           "editedAt"
-      from "posts"
-      join "users" using ("userId")
-      where "postId" = $1
+    select  "u"."username",
+            "u"."profilePhotoUrl",
+            "p"."postId",
+            "p"."imageUrl",
+            "p"."caption",
+            "p"."isBought",
+            "p"."location",
+            "p"."createdAt",
+            "p"."editedAt",
+            "isLiked"."userId" is not null as "isLiked",
+            count("l".*) as "numberOfLikes"
+       from "posts" as "p"
+       join "users" as "u" using ("userId")
+       left join "likes" as "l" using ("postId")
+       left join "likes" as "isLiked"
+         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = $2)
+      where "p"."postId" = $1
+      group by "u"."userId", "isLiked"."userId", "p"."postId"
   `;
-  const params = [postId];
+  const params = [postId, userId];
   db.query(sql, params)
     .then(result => {
       const [post] = result.rows;
@@ -141,6 +155,11 @@ app.delete('/api/delete/:postId', (req, res, next) => {
     throw new ClientError(400, 'PostId must be a positive integer');
   }
   const sql = `
+  delete from "likes"
+  where "postId" = $1
+  returning *;
+  `;
+  const sql2 = `
     delete from "posts"
      where "postId" = $1
      returning *;
@@ -148,14 +167,39 @@ app.delete('/api/delete/:postId', (req, res, next) => {
   const params = [postId];
   db.query(sql, params)
     .then(result => {
-      const [deletedPost] = result.rows;
-      if (!deletedPost) {
-        res.status(404).json({
-          error: `Cannot find a post with postId ${postId}`
-        });
-      } else {
-        res.sendStatus(204);
-      }
+      db.query(sql2, params)
+        .then(result => {
+          const [deletedPost] = result.rows;
+          if (!deletedPost) {
+            res.status(404).json({
+              error: `Cannot find likes with postId ${postId}`
+            });
+          } else {
+            res.sendStatus(204);
+          }
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/likes/:postId', (req, res, next) => {
+  // hard coded userId
+  const userId = 1;
+  const postId = parseFloat(req.params.postId);
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'PostId must be a positive integer');
+  }
+  const sql = `
+    insert into "likes" ("postId", "userId")
+      values ($1, $2)
+      returning *;
+  `;
+  const params = [postId, userId];
+  db.query(sql, params)
+    .then(result => {
+      const [likedRow] = result.rows;
+      res.status(201).json(likedRow);
     })
     .catch(err => next(err));
 });
