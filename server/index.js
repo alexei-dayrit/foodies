@@ -155,6 +155,11 @@ app.delete('/api/delete/:postId', (req, res, next) => {
     throw new ClientError(400, 'PostId must be a positive integer');
   }
   const sql = `
+  delete from "likes"
+  where "postId" = $1
+  returning *;
+  `;
+  const sql2 = `
     delete from "posts"
      where "postId" = $1
      returning *;
@@ -162,14 +167,18 @@ app.delete('/api/delete/:postId', (req, res, next) => {
   const params = [postId];
   db.query(sql, params)
     .then(result => {
-      const [deletedPost] = result.rows;
-      if (!deletedPost) {
-        res.status(404).json({
-          error: `Cannot find a post with postId ${postId}`
-        });
-      } else {
-        res.sendStatus(204);
-      }
+      db.query(sql2, params)
+        .then(result => {
+          const [deletedPost] = result.rows;
+          if (!deletedPost) {
+            res.status(404).json({
+              error: `Cannot find likes with postId ${postId}`
+            });
+          } else {
+            res.sendStatus(204);
+          }
+        })
+        .catch(err => next(err));
     })
     .catch(err => next(err));
 });
