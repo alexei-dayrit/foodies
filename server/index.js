@@ -149,15 +149,15 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.delete('/api/delete/:postId', (req, res, next) => {
+app.delete('/api/deletePost/:postId', (req, res, next) => {
   const postId = parseFloat(req.params.postId);
   if (Number.isInteger(postId) !== true || postId < 0) {
     throw new ClientError(400, 'PostId must be a positive integer');
   }
   const sql = `
-  delete from "likes"
-  where "postId" = $1
-  returning *;
+    delete from "likes"
+     where "postId" = $1
+     returning *;
   `;
   const sql2 = `
     delete from "posts"
@@ -172,7 +172,7 @@ app.delete('/api/delete/:postId', (req, res, next) => {
           const [deletedPost] = result.rows;
           if (!deletedPost) {
             res.status(404).json({
-              error: `Cannot find likes with postId ${postId}`
+              error: `Cannot find posts with postId ${postId}`
             });
           } else {
             res.sendStatus(204);
@@ -181,6 +181,32 @@ app.delete('/api/delete/:postId', (req, res, next) => {
         .catch(err => next(err));
     })
     .catch(err => next(err));
+});
+
+app.delete('/api/deleteLikes/:postId', (req, res, next) => {
+  // hard coded userId = 1
+  const userId = 1;
+  const postId = parseFloat(req.params.postId);
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'PostId must be a positive integer');
+  }
+  const sql = `
+    delete from "likes"
+     where "postId" = $1 and "userId" = $2
+     returning *;
+  `;
+  const params = [postId, userId];
+  db.query(sql, params)
+    .then(result => {
+      const [deletedLike] = result.rows;
+      if (!deletedLike) {
+        res.status(404).json({
+          error: `Cannot find likes with postId ${postId}`
+        });
+      } else {
+        res.sendStatus(204);
+      }
+    });
 });
 
 app.post('/api/likes/:postId', (req, res, next) => {
