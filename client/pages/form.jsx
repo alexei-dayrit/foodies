@@ -64,7 +64,7 @@ export default class Form extends React.Component {
   }
 
   handleDelete(event) {
-    fetch(`/api/delete/${this.props.postId}`, {
+    fetch(`/api/deletePost/${this.props.postId}`, {
       method: 'DELETE'
     })
       .then(() => {
