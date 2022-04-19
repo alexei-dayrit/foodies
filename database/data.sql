@@ -14,23 +14,17 @@ insert into "posts" ("postId", "caption", "imageUrl", "location", "userId", "isB
      values (101, 'data-test2', 'image-1649888023634.jpeg', 'test-location2', 1, false);
 
 insert into "posts" ("postId", "caption", "imageUrl", "location", "userId", "isBought")
-     values (102, 'data-test3', 'image-1649888023634.jpeg', 'test-location3', 1, false);
+     values (102, 'data-test3', 'image-1649888023634.jpeg', 'test-location3', 2, false);
 
-insert into "posts" ("postId", "caption", "imageUrl", "location", "userId", "isBought")
-     values (103, 'data-test3', 'image-1649888023634.jpeg', 'test-location4', 2, false);
+insert into "likes" ("userId", "postId")
+     values (1, 100);
 
-insert into "likes" ("userId", "postId", "likeId")
-     values (1, 101, 99);
+insert into "likes" ("userId", "postId")
+     values (1, 102);
 
-insert into "likes" ("userId", "postId", "likeId")
-     values (2, 101, 100);
+insert into "likes" ("userId", "postId")
+     values (2, 100);
 
-insert into "likes" ("userId", "postId", "likeId")
-     values (1, 102, 101);
-
-insert into "likes" ("userId", "postId", "likeId")
-     values (2, 102, 102);
-
-insert into "likes" ("userId", "postId", "likeId")
-     values (1, 103, 103);
+insert into "likes" ("userId", "postId")
+     values (2, 102);
 -- 2022-04-12T18:44:59.581239Z

@@ -10,7 +10,7 @@ export default class PostHistory extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`api/posts/${this.props.userId}`)
+    fetch(`/api/posts/${this.props.userId}`)
       .then(res => res.json())
       .then(posts => {
         this.setState({ posts: posts });
@@ -38,15 +38,13 @@ export default class PostHistory extends React.Component {
     }
     return (
       <>
-        {
-          mostRecentToLeast.map(post => {
-            return (
-              <div key={post.postId} className='my-4'>
-                <Post post={post} userId={this.props.userId} />
-              </div>
-            );
-          })
-        }
+        {mostRecentToLeast.map(post => {
+          return (
+            <div key={post.postId} className='my-4'>
+              <Post post={post} userId={this.props.userId} />
+            </div>
+          );
+        })}
       </>
     );
   }

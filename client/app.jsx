@@ -32,10 +32,10 @@ export default class App extends React.Component {
     }
     if (route.path === 'edit-post') {
       const postId = route.params.get('postId');
-      return (<Form postId={postId} />);
+      return (<Form key='edit-post' postId={postId} />);
     }
     if (route.path === 'new-post') {
-      return <Form />;
+      return <Form key='new-post' />;
     }
   }
 

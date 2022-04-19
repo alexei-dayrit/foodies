@@ -25,21 +25,24 @@ app.get('/api/posts/:userId', (req, res, next) => {
     throw new ClientError(400, 'UserId must be a positive integer');
   }
   const sql = `
-  select  "u"."username",
-           "u"."profilePhotoUrl",
-           "p"."postId",
-           "p"."imageUrl",
-           "p"."caption",
-           "p"."isBought",
-           "p"."location",
-           "p"."createdAt",
-           "p"."editedAt",
-   count(*) as "numberOfLikes"
-      from "posts" as "p"
-      join "users" as "u" using ("userId")
-      left join "likes" using ("postId")
+       select  "u"."username",
+            "u"."profilePhotoUrl",
+            "p"."postId",
+            "p"."imageUrl",
+            "p"."caption",
+            "p"."isBought",
+            "p"."location",
+            "p"."createdAt",
+            "p"."editedAt",
+            "isLiked"."userId" is not null as "isLiked",
+            count("l".*) as "numberOfLikes"
+       from "posts" as "p"
+       join "users" as "u" using ("userId")
+       left join "likes" as "l" using ("postId")
+       left join "likes" as "isLiked"
+         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = $1)
       where "p"."userId" = $1
-      group by "u"."username", "u"."profilePhotoUrl", "p"."postId"
+      group by "u"."userId", "isLiked"."userId", "p"."postId"
   `;
   const params = [userId];
   db.query(sql, params)
@@ -50,28 +53,33 @@ app.get('/api/posts/:userId', (req, res, next) => {
 });
 
 app.get('/api/post/:postId', (req, res, next) => {
+  // hard coded userId
+  const userId = 1;
   const postId = parseFloat(req.params.postId);
   if (Number.isInteger(postId) !== true || postId < 0) {
     throw new ClientError(400, 'PostId must be a positive integer');
   }
   const sql = `
-  select   "username",
-           "profilePhotoUrl",
-           "postId",
-           "imageUrl",
-           "caption",
-           "isBought",
-           "location",
-           "createdAt",
-           "editedAt",
-  count(*) as "numberOfLikes"
-      from "posts"
-      join "users" using ("userId")
-      left join "likes" using ("postId")
-      where "postId" = $1
-      group by "users"."username", "users"."profilePhotoUrl", "posts"."postId"
+    select  "u"."username",
+            "u"."profilePhotoUrl",
+            "p"."postId",
+            "p"."imageUrl",
+            "p"."caption",
+            "p"."isBought",
+            "p"."location",
+            "p"."createdAt",
+            "p"."editedAt",
+            "isLiked"."userId" is not null as "isLiked",
+            count("l".*) as "numberOfLikes"
+       from "posts" as "p"
+       join "users" as "u" using ("userId")
+       left join "likes" as "l" using ("postId")
+       left join "likes" as "isLiked"
+         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = $2)
+      where "p"."postId" = $1
+      group by "u"."userId", "isLiked"."userId", "p"."postId"
   `;
-  const params = [postId];
+  const params = [postId, userId];
   db.query(sql, params)
     .then(result => {
       const [post] = result.rows;

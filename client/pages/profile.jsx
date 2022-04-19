@@ -2,13 +2,6 @@ import React from 'react';
 import PostHistory from '../components/post-history';
 
 export default class Profile extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-
-    };
-  }
-
   render() {
     return (
       <>
