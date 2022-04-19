@@ -29,6 +29,17 @@ export default class Post extends React.Component {
           });
         })
         .catch(err => console.error(err));
+    } else {
+      fetch(`/api/deleteLikes/${this.props.post.postId}`, {
+        method: 'DELETE'
+      })
+        .then(() => {
+          this.setState({
+            isLiked: false,
+            numberOfLikes: numberOfLikes - 1
+          });
+        })
+        .catch(err => console.error(err));
     }
   }
 
