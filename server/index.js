@@ -230,6 +230,29 @@ app.post('/api/likes/:postId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/uploadComment/:postId', (req, res, next) => {
+  const userId = 1;
+  const postId = parseFloat(req.params.postId);
+  const message = req.body.message;
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'PostId must be a positive integer');
+  } else if (!message) {
+    throw new ClientError(400, 'Message is a required field');
+  }
+  const sql = `
+    insert into "comments" ("userId", "message", "postId")
+      values ($1, $2, $3)
+      returning *;
+  `;
+  const params = [userId, message, postId];
+  db.query(sql, params)
+    .then(result => {
+      const [comment] = result.rows;
+      res.status(201).json(comment);
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
