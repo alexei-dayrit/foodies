@@ -1,11 +1,12 @@
 import React from 'react';
 import PenIcon from './svg-assets/pen-icon';
 import formatDistance from 'date-fns/formatDistance';
+import HeartIcon from './svg-assets/heart-icon';
 
 export default function Post(props) {
   const {
     username, postId, profilePhotoUrl, imageUrl, caption, isBought,
-    createdAt, location, editedAt
+    createdAt, location, editedAt, numberOfLikes
   } = props.post;
 
   return (
@@ -52,7 +53,13 @@ export default function Post(props) {
               <PenIcon />
             </a>
           </div>
-          <div className='w-full pt-2'>
+          <div className="w-full pt-2">
+            <a className='curor-pointer'>
+              <HeartIcon />
+            </a>
+            <p>{`${numberOfLikes} likes`}</p>
+          </div>
+          <div className='w-full'>
             <div className='font-semibold text-sm md:text-lg'>
               {username}
               {isBought

@@ -34,7 +34,7 @@ app.get('/api/posts/:userId', (req, res, next) => {
            "p"."location",
            "p"."createdAt",
            "p"."editedAt",
-   count(*) as numberOfLikes
+   count(*) as "numberOfLikes"
       from "posts" as "p"
       join "users" as "u" using ("userId")
       left join "likes" using ("postId")
@@ -64,7 +64,7 @@ app.get('/api/post/:postId', (req, res, next) => {
            "location",
            "createdAt",
            "editedAt",
-  count(*) as numberOfLikes
+  count(*) as "numberOfLikes"
       from "posts"
       join "users" using ("userId")
       left join "likes" using ("postId")
