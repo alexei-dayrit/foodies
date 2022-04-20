@@ -147,14 +147,7 @@ app.get('/api/comments/:postId', (req, res, next) => {
   const params = [postId];
   db.query(sql, params)
     .then(result => {
-      const comments = result.rows;
-      if (comments.length === 0) {
-        res.status(404).json({
-          error: `Cannot find comments with postId ${postId}`
-        });
-      } else {
-        res.status(201).json(result.rows);
-      }
+      res.status(201).json(result.rows);
     })
     .catch(err => next(err));
 });
