@@ -47,7 +47,14 @@ app.get('/api/posts/:userId', (req, res, next) => {
   const params = [userId];
   db.query(sql, params)
     .then(result => {
-      res.status(201).json(result.rows);
+      const posts = result.rows;
+      if (posts.length === 0) {
+        res.status(404).json({
+          error: `Cannot find posts with userId ${userId}`
+        });
+      } else {
+        res.status(201).json(posts);
+      }
     })
     .catch(err => next(err));
 });
@@ -87,8 +94,34 @@ app.get('/api/post/:postId', (req, res, next) => {
         res.status(404).json({
           error: `Cannot find a post with postId ${postId}`
         });
+      } else {
+        res.status(201).json(post);
       }
-      res.status(201).json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/comments/:postId', (req, res, next) => {
+  const postId = parseFloat(req.params.postId);
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'PostId must be a positive integer');
+  }
+  const sql = `
+    select *
+      from "comments"
+     where "postId" = $1
+  `;
+  const params = [postId];
+  db.query(sql, params)
+    .then(result => {
+      const comments = result.rows;
+      if (comments.length === 0) {
+        res.status(404).json({
+          error: `Cannot find comments with postId ${postId}`
+        });
+      } else {
+        res.status(201).json(result.rows);
+      }
     })
     .catch(err => next(err));
 });
