@@ -11,9 +11,11 @@ export default class Post extends React.Component {
     this.state = {
       isLiked: this.props.post.isLiked,
       numberOfLikes: this.props.post.numberOfLikes,
-      comments: []
+      comments: [],
+      showComments: true
     };
     this.handleLikeClicks = this.handleLikeClicks.bind(this);
+    this.handleCommentsToggle = this.handleCommentsToggle.bind(this);
   }
 
   componentDidMount() {
@@ -54,7 +56,12 @@ export default class Post extends React.Component {
     }
   }
 
+  handleCommentsToggle(event) {
+    this.setState({ showComments: !this.state.showComments });
+  }
+
   render() {
+    const showComments = this.state.showComments;
     const comments = this.state.comments;
     const shallowComments = comments.slice();
     const mostRecentToLeast = shallowComments.sort((a, b) => {
@@ -86,7 +93,7 @@ export default class Post extends React.Component {
             </a>
           </div>
           <div className='w-full md:w-1/2'>
-            <img className='drop-shadow-lg w-80 md:w-96 h-80 object-cover border border-gray-200'
+            <img className='drop-shadow-lg w-80 h-80 md:w-96 md:h-96 object-cover border border-gray-200'
               src={`/images/${imageUrl}`} alt='Placeholder image' />
           </div>
           <div className='w-full md:w-1/2 md:pl-4'>
@@ -110,7 +117,7 @@ export default class Post extends React.Component {
             </div>
             <div className="w-full pt-2">
               <a className='curor-pointer' onClick={this.handleLikeClicks}>
-                {this.state.isLiked ? <HeartIconFilled /> : <HeartIcon /> }
+                {this.state.isLiked ? <HeartIconFilled /> : <HeartIcon />}
               </a>
               <p>{`${this.state.numberOfLikes} likes`}</p>
             </div>
@@ -131,10 +138,13 @@ export default class Post extends React.Component {
                 : `edited ${formatDistance(new Date(editedAt), new Date(), { includeSeconds: true })} ago`
               }
             </div>
-            {mostRecentToLeast.map(comment => {
+            <button onClick={this.handleCommentsToggle} className='text-gray-500 text-xs md:text-sm'>
+              {showComments ? 'Hide comments' : 'View comments'}
+            </button>
+            {showComments && mostRecentToLeast.map(comment => {
               return (
                 <div key={comment.commentId}>
-                  <Comment comment={comment}/>
+                  <Comment comment={comment} />
                 </div>
               );
             })}

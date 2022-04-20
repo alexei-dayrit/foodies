@@ -28,7 +28,7 @@ export default class Form extends React.Component {
       fetch(`/api/post/${this.props.postId}`)
         .then(res => res.json())
         .then(post => {
-          const { imageUrl, caption, location, isBought } = post[0];
+          const { imageUrl, caption, location, isBought } = post;
           this.setState({
             imagePreview: `images/${imageUrl}`,
             caption: caption,
@@ -113,12 +113,7 @@ export default class Form extends React.Component {
   }
 
   handleModal(event) {
-    const showModal = this.state.showModal;
-    if (showModal) {
-      this.setState({ showModal: false });
-    } else {
-      this.setState({ showModal: true });
-    }
+    this.setState({ showModal: !this.state.showModal });
   }
 
   render() {
