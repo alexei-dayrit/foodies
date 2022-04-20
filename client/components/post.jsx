@@ -55,6 +55,11 @@ export default class Post extends React.Component {
   }
 
   render() {
+    const comments = this.state.comments;
+    const shallowComments = comments.slice();
+    const mostRecentToLeast = shallowComments.sort((a, b) => {
+      return b.commentId - a.commentId;
+    });
     const {
       username, postId, profilePhotoUrl, imageUrl, caption, isBought,
       createdAt, location, editedAt
@@ -126,7 +131,13 @@ export default class Post extends React.Component {
                 : `edited ${formatDistance(new Date(editedAt), new Date(), { includeSeconds: true })} ago`
               }
             </div>
-            <Comment />
+            {mostRecentToLeast.map(comment => {
+              return (
+                <div key={comment.commentId}>
+                  <Comment comment={comment}/>
+                </div>
+              );
+            })}
           </div>
         </div>
       </>

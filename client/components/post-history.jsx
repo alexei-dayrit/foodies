@@ -41,7 +41,7 @@ export default class PostHistory extends React.Component {
         {mostRecentToLeast.map(post => {
           return (
             <div key={post.postId} className='my-4'>
-              <Post post={post} userId={this.props.userId} />
+              <Post post={post}/>
             </div>
           );
         })}
