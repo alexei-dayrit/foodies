@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class Comment extends React.Component {
   render() {
-    const { message, commentedAt, username, profilePhotoUrl } = this.props.comment;
+    const { comment, commentedAt, username, profilePhotoUrl } = this.props.comment;
     return (
       <>
         <div className='flex pt-1'>
@@ -13,7 +13,7 @@ export default class Comment extends React.Component {
           </div>
           <p className='w-[85%] leading-tight'>
             <span className='font-semibold pr-1'>{username}</span>
-            {message}
+            {comment}
           </p>
         </div>
         <p className='text-xs pt-1'>{commentedAt}</p>

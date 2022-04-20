@@ -50,7 +50,7 @@ CREATE TABLE "public"."likes" (
 
 CREATE TABLE "public"."comments" (
 	"commentId" serial NOT NULL,
-  "message" TEXT NOT NULL,
+  "comment" TEXT NOT NULL,
 	"userId" integer NOT NULL,
 	"postId" integer NOT NULL,
 	"commentedAt" timestamp with time zone NOT NULL default now(),

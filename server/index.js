@@ -110,7 +110,7 @@ app.get('/api/comments/:postId', (req, res, next) => {
     select "username",
            "profilePhotoUrl",
            "commentId",
-           "message",
+           "comment",
            "commentedAt",
            "postId"
       from "comments"
@@ -272,18 +272,18 @@ app.post('/api/likes/:postId', (req, res, next) => {
 app.post('/api/uploadComment/:postId', (req, res, next) => {
   const userId = 1;
   const postId = parseFloat(req.params.postId);
-  const message = req.body.message;
+  const comment = req.body.comment;
   if (Number.isInteger(postId) !== true || postId < 0) {
     throw new ClientError(400, 'PostId must be a positive integer');
-  } else if (!message) {
-    throw new ClientError(400, 'Message is a required field');
+  } else if (!comment) {
+    throw new ClientError(400, 'Comment is a required field');
   }
   const sql = `
-    insert into "comments" ("userId", "message", "postId")
+    insert into "comments" ("userId", "comment", "postId")
       values ($1, $2, $3)
       returning *;
   `;
-  const params = [userId, message, postId];
+  const params = [userId, comment, postId];
   db.query(sql, params)
     .then(result => {
       const [comment] = result.rows;
