@@ -9,9 +9,19 @@ export default class Post extends React.Component {
     super(props);
     this.state = {
       isLiked: this.props.post.isLiked,
-      numberOfLikes: this.props.post.numberOfLikes
+      numberOfLikes: this.props.post.numberOfLikes,
+      comments: []
     };
     this.handleLikeClicks = this.handleLikeClicks.bind(this);
+  }
+
+  componentDidMount() {
+    fetch(`/api/comments/${this.props.post.postId}`)
+      .then(res => res.json())
+      .then(comments => {
+        this.setState({ comments: comments });
+      })
+      .catch(err => console.error(err));
   }
 
   handleLikeClicks(event) {
