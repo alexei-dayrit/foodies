@@ -91,7 +91,7 @@ export default class Form extends React.Component {
     } else {
       fetchMethod = 'PUT';
       fetchRoute = `/api/edit/${this.props.postId}`;
-      hashRoute = 'profile';
+      hashRoute = '#profile';
     }
 
     fetch(fetchRoute, {

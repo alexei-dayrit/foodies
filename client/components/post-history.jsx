@@ -20,11 +20,6 @@ export default class PostHistory extends React.Component {
 
   render() {
     const posts = this.state.posts;
-    const shallowPosts = posts.slice();
-    const mostRecentToLeast = shallowPosts.sort((a, b) => {
-      return b.postId - a.postId;
-    });
-
     if (posts.length === 0) {
       return (
         <div className='bg-wrapper flex flex-wrap p-4 h-96 rounded-xl border
@@ -38,7 +33,7 @@ export default class PostHistory extends React.Component {
     }
     return (
       <>
-        {mostRecentToLeast.map(post => {
+        {posts.map(post => {
           return (
             <div key={post.postId} className='my-4'>
               <Post post={post}/>
