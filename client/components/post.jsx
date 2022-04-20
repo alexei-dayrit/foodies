@@ -12,7 +12,7 @@ export default class Post extends React.Component {
       isLiked: this.props.post.isLiked,
       numberOfLikes: this.props.post.numberOfLikes,
       comments: [],
-      showComments: true,
+      showComments: false,
       newComment: ''
     };
     this.handleLikeClicks = this.handleLikeClicks.bind(this);
@@ -124,7 +124,7 @@ export default class Post extends React.Component {
             <img className='drop-shadow-lg w-80 h-80 md:w-[400px] md:h-[450px] object-cover border border-gray-200'
               src={`/images/${imageUrl}`} alt='Placeholder image' />
           </div>
-          <div className='w-full md:w-[45%] md:pl-4'>
+          <div className='w-full md:w-[45%] md:pl-4 flex flex-col'>
             <div className="md:flex items-center w-full space-x-3 md:pt-0 pb-2 md:pb-1 border-b
               border-gray-200 hidden">
               <div className="flex w-full">
@@ -180,7 +180,8 @@ export default class Post extends React.Component {
               })}
             </div>
             {showComments &&
-              <form onSubmit={this.handleCommentSubmit}>
+              <form onSubmit={this.handleCommentSubmit}
+                className='mt-auto'>
                 <textarea type="text" placeholder="Write a comment"
                   className='border border-gray-600 rounded-xl mt-5 pt-1 px-2
                     w-full h-20'
