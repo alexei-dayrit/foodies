@@ -20,6 +20,32 @@ const db = new pg.Pool({
   }
 });
 
+app.post('/api/auth/sign-up', uploadsMiddleware, (req, res, next) => {
+  const { username, password } = req.body;
+  const profilePhoto = req.file.filename;
+  if (!username || !password) {
+    throw new ClientError(400, 'Username and password are required fields');
+  }
+  argon2
+    .hash(password)
+    .then(hashedPassword => {
+      const sql = `
+        insert into "users" ("username", "hashedPassword", "postCount",
+            "followerCount", "followingCount", "profilePhotoUrl")
+        values ($1, $2, $3, $4, $5, $6)
+        returning "signedUpAt", "username", "userId", "profilePhotoUrl"
+      `;
+      const params = [username, hashedPassword, 0, 0, 0, profilePhoto];
+      db.query(sql, params)
+        .then(result => {
+          const [user] = result.rows;
+          res.status(201).json(user);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
 app.get('/api/posts', (req, res, next) => {
   const sql = `
        select  "u"."username",
@@ -78,20 +104,14 @@ app.get('/api/posts/:userId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       const posts = result.rows;
-      if (posts.length === 0) {
-        res.status(404).json({
-          error: `Cannot find posts with userId ${userId}`
-        });
-      } else {
-        res.status(201).json(posts);
-      }
+      res.status(201).json(posts);
     })
     .catch(err => next(err));
 });
 
 app.get('/api/post/:postId', (req, res, next) => {
   // hard coded userId
-  const userId = 1;
+  const userId = 100;
   const postId = parseFloat(req.params.postId);
   if (Number.isInteger(postId) !== true || postId < 0) {
     throw new ClientError(400, 'PostId must be a positive integer');
@@ -192,7 +212,7 @@ app.put('/api/edit/:postId', uploadsMiddleware, (req, res, next) => {
 
 app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
   // hard coded userId
-  const userId = 1;
+  const userId = 100;
   const { caption, location, isBought } = req.body;
   if (!caption || !location || !isBought) {
     throw new ClientError(400, 'Caption, location, and isBought are required fields');
@@ -247,8 +267,8 @@ app.delete('/api/deletePost/:postId', (req, res, next) => {
 });
 
 app.delete('/api/deleteLikes/:postId', (req, res, next) => {
-  // hard coded userId = 1
-  const userId = 1;
+  // hard coded userId = 2
+  const userId = 100;
   const postId = parseFloat(req.params.postId);
   if (Number.isInteger(postId) !== true || postId < 0) {
     throw new ClientError(400, 'PostId must be a positive integer');
@@ -274,7 +294,7 @@ app.delete('/api/deleteLikes/:postId', (req, res, next) => {
 
 app.post('/api/likes/:postId', (req, res, next) => {
   // hard coded userId
-  const userId = 1;
+  const userId = 100;
   const postId = parseFloat(req.params.postId);
   if (Number.isInteger(postId) !== true || postId < 0) {
     throw new ClientError(400, 'PostId must be a positive integer');
@@ -294,7 +314,7 @@ app.post('/api/likes/:postId', (req, res, next) => {
 });
 
 app.post('/api/uploadComment/:postId', (req, res, next) => {
-  const userId = 1;
+  const userId = 100;
   const postId = parseFloat(req.params.postId);
   const comment = req.body.comment;
   if (Number.isInteger(postId) !== true || postId < 0) {

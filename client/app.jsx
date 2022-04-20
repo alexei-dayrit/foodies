@@ -27,7 +27,7 @@ export default class App extends React.Component {
       return <Home />;
     }
     if (route.path === 'profile') {
-      const userId = 1;
+      const userId = 100;
       return <Profile userId={userId} />;
     }
     if (route.path === 'edit-post') {
