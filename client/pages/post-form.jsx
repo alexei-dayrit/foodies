@@ -2,7 +2,8 @@ import React from 'react';
 import Modal from '../components/modal';
 import DeleteIcon from '../components/svg-assets/delete-icon';
 import PlusIcon from '../components/svg-assets/plus-icon';
-export default class Form extends React.Component {
+
+export default class PostForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

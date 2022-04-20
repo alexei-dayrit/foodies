@@ -1,6 +1,6 @@
 import React from 'react';
 import Home from './pages/home';
-import Form from './pages/form';
+import PostForm from './pages/post-form';
 import Profile from './pages/profile';
 import Navbar from './components/navbar';
 import parseRoute from './lib/parse-route';
@@ -32,10 +32,10 @@ export default class App extends React.Component {
     }
     if (route.path === 'edit-post') {
       const postId = route.params.get('postId');
-      return (<Form key='edit-post' postId={postId} />);
+      return <PostForm key='edit-post' postId={postId} />;
     }
     if (route.path === 'new-post') {
-      return <Form key='new-post' />;
+      return <PostForm key='new-post' />;
     }
   }
 
