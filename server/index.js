@@ -19,6 +19,33 @@ const db = new pg.Pool({
   }
 });
 
+app.get('/api/posts', (req, res, next) => {
+  const sql = `
+       select  "u"."username",
+            "u"."profilePhotoUrl",
+            "p"."postId",
+            "p"."imageUrl",
+            "p"."caption",
+            "p"."isBought",
+            "p"."location",
+            "p"."createdAt",
+            "p"."editedAt",
+            "isLiked"."userId" is not null as "isLiked",
+            count("l".*) as "numberOfLikes"
+       from "posts" as "p"
+       join "users" as "u" using ("userId")
+       left join "likes" as "l" using ("postId")
+       left join "likes" as "isLiked"
+         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = "u"."userId")
+      group by "u"."userId", "isLiked"."userId", "p"."postId"
+  `;
+  db.query(sql)
+    .then(result => {
+      res.status(201).json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
 app.get('/api/posts/:userId', (req, res, next) => {
   const userId = parseFloat(req.params.userId);
   if (Number.isInteger(userId) !== true || userId < 0) {
