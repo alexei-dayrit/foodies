@@ -83,15 +83,15 @@ export default class Form extends React.Component {
 
     let fetchMethod = '';
     let fetchRoute = '';
-    let route = '';
+    let hashRoute = '';
     if (!this.props.postId) {
       fetchRoute = '/api/uploads';
       fetchMethod = 'POST';
-      route = '#';
+      hashRoute = '#';
     } else {
       fetchMethod = 'PUT';
       fetchRoute = `/api/edit/${this.props.postId}`;
-      route = 'profile';
+      hashRoute = 'profile';
     }
 
     fetch(fetchRoute, {
@@ -107,7 +107,7 @@ export default class Form extends React.Component {
           imagePreview: '/images/placeholder-image-square.jpeg'
         });
         this.fileInputRef.current.value = null;
-        window.location.hash = route;
+        window.location.hash = hashRoute;
       })
       .catch(err => console.error(err));
   }

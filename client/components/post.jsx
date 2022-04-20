@@ -12,7 +12,7 @@ export default class Post extends React.Component {
       isLiked: this.props.post.isLiked,
       numberOfLikes: this.props.post.numberOfLikes,
       comments: [],
-      showComments: false,
+      showComments: true,
       newComment: ''
     };
     this.handleLikeClicks = this.handleLikeClicks.bind(this);
@@ -77,8 +77,15 @@ export default class Post extends React.Component {
       .then(response => response.json())
       .then(result => {
         this.setState({ newComment: '' });
+        fetch(`/api/comments/${this.props.post.postId}`)
+          .then(res => res.json())
+          .then(comments => {
+            this.setState({ comments: comments });
+          })
+          .catch(err => console.error(err));
       })
       .catch(err => console.error(err));
+
   }
 
   render() {
