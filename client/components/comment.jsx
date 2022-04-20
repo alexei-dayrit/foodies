@@ -1,4 +1,5 @@
 import React from 'react';
+import formatDistance from 'date-fns/formatDistance';
 
 export default class Comment extends React.Component {
   render() {
@@ -16,7 +17,9 @@ export default class Comment extends React.Component {
             {comment}
           </p>
         </div>
-        <p className='text-xs pt-1'>{commentedAt}</p>
+        <p className='text-xs text-gray-400 font-light pb-1 md:text-sm'>
+          {`${formatDistance(new Date(commentedAt), new Date(), { includeSeconds: true })} ago`}
+        </p>
       </>
     );
   }

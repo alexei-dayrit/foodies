@@ -161,7 +161,7 @@ export default class Post extends React.Component {
               </p>
               <p className='w-full text-gray-400 font-light text-xs md:text-sm'>
                 {editedAt === null
-                  ? `${formatDistance(new Date(createdAt), new Date(), { includeSeconds: true })} ago`
+                  ? `posted ${formatDistance(new Date(createdAt), new Date(), { includeSeconds: true })} ago`
                   : `edited ${formatDistance(new Date(editedAt), new Date(), { includeSeconds: true })} ago`
                 }
               </p>
