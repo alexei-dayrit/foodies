@@ -1,4 +1,5 @@
 import React from 'react';
+import Comment from './comment';
 import PenIcon from './svg-assets/pen-icon';
 import formatDistance from 'date-fns/formatDistance';
 import HeartIcon from './svg-assets/heart-icon';
@@ -125,6 +126,7 @@ export default class Post extends React.Component {
                 : `edited ${formatDistance(new Date(editedAt), new Date(), { includeSeconds: true })} ago`
               }
             </div>
+            <Comment />
           </div>
         </div>
       </>
