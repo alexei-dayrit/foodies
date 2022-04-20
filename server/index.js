@@ -47,7 +47,14 @@ app.get('/api/posts/:userId', (req, res, next) => {
   const params = [userId];
   db.query(sql, params)
     .then(result => {
-      res.status(201).json(result.rows);
+      const posts = result.rows;
+      if (posts.length === 0) {
+        res.status(404).json({
+          error: `Cannot find posts with userId ${userId}`
+        });
+      } else {
+        res.status(201).json(posts);
+      }
     })
     .catch(err => next(err));
 });
@@ -87,8 +94,40 @@ app.get('/api/post/:postId', (req, res, next) => {
         res.status(404).json({
           error: `Cannot find a post with postId ${postId}`
         });
+      } else {
+        res.status(201).json(post);
       }
-      res.status(201).json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/comments/:postId', (req, res, next) => {
+  const postId = parseFloat(req.params.postId);
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'PostId must be a positive integer');
+  }
+  const sql = `
+    select "username",
+           "profilePhotoUrl",
+           "commentId",
+           "comment",
+           "commentedAt",
+           "postId"
+      from "comments"
+      join "users" using ("userId")
+     where "postId" = $1
+  `;
+  const params = [postId];
+  db.query(sql, params)
+    .then(result => {
+      const comments = result.rows;
+      if (comments.length === 0) {
+        res.status(404).json({
+          error: `Cannot find comments with postId ${postId}`
+        });
+      } else {
+        res.status(201).json(result.rows);
+      }
     })
     .catch(err => next(err));
 });
@@ -226,6 +265,29 @@ app.post('/api/likes/:postId', (req, res, next) => {
     .then(result => {
       const [likedRow] = result.rows;
       res.status(201).json(likedRow);
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/uploadComment/:postId', (req, res, next) => {
+  const userId = 1;
+  const postId = parseFloat(req.params.postId);
+  const comment = req.body.comment;
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'PostId must be a positive integer');
+  } else if (!comment) {
+    throw new ClientError(400, 'Comment is a required field');
+  }
+  const sql = `
+    insert into "comments" ("userId", "comment", "postId")
+      values ($1, $2, $3)
+      returning *;
+  `;
+  const params = [userId, comment, postId];
+  db.query(sql, params)
+    .then(result => {
+      const [comment] = result.rows;
+      res.status(201).json(comment);
     })
     .catch(err => next(err));
 });

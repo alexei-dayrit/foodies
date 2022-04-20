@@ -28,7 +28,7 @@ export default class Form extends React.Component {
       fetch(`/api/post/${this.props.postId}`)
         .then(res => res.json())
         .then(post => {
-          const { imageUrl, caption, location, isBought } = post[0];
+          const { imageUrl, caption, location, isBought } = post;
           this.setState({
             imagePreview: `images/${imageUrl}`,
             caption: caption,
@@ -83,15 +83,15 @@ export default class Form extends React.Component {
 
     let fetchMethod = '';
     let fetchRoute = '';
-    let route = '';
+    let hashRoute = '';
     if (!this.props.postId) {
       fetchRoute = '/api/uploads';
       fetchMethod = 'POST';
-      route = '#';
+      hashRoute = '#';
     } else {
       fetchMethod = 'PUT';
       fetchRoute = `/api/edit/${this.props.postId}`;
-      route = 'profile';
+      hashRoute = 'profile';
     }
 
     fetch(fetchRoute, {
@@ -107,18 +107,13 @@ export default class Form extends React.Component {
           imagePreview: '/images/placeholder-image-square.jpeg'
         });
         this.fileInputRef.current.value = null;
-        window.location.hash = route;
+        window.location.hash = hashRoute;
       })
       .catch(err => console.error(err));
   }
 
   handleModal(event) {
-    const showModal = this.state.showModal;
-    if (showModal) {
-      this.setState({ showModal: false });
-    } else {
-      this.setState({ showModal: true });
-    }
+    this.setState({ showModal: !this.state.showModal });
   }
 
   render() {

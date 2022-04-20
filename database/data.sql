@@ -27,4 +27,13 @@ insert into "likes" ("userId", "postId")
 
 insert into "likes" ("userId", "postId")
      values (2, 102);
+
+insert into "comments" ("userId", "comment", "postId")
+     values (1, 'WOW', 100);
+
+insert into "comments" ("userId", "comment", "postId")
+     values (2, 'It looks amazing!', 100);
+
+insert into "comments" ("userId", "comment", "postId")
+     values (2, 'That looks so good! Where did you get this?', 101);
 -- 2022-04-12T18:44:59.581239Z
