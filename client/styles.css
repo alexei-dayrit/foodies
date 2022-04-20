@@ -60,3 +60,7 @@ textarea {
 ::-webkit-scrollbar-thumb:hover {
   background: #a0aec0;
 }
+
+img {
+  object-position: center;
+}

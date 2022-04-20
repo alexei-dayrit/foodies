@@ -38,6 +38,7 @@ app.get('/api/posts', (req, res, next) => {
        left join "likes" as "isLiked"
          on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = "u"."userId")
       group by "u"."userId", "isLiked"."userId", "p"."postId"
+      order by "p"."createdAt" desc
   `;
   db.query(sql)
     .then(result => {
@@ -70,6 +71,7 @@ app.get('/api/posts/:userId', (req, res, next) => {
          on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = $1)
       where "p"."userId" = $1
       group by "u"."userId", "isLiked"."userId", "p"."postId"
+      order by "p"."createdAt" desc
   `;
   const params = [userId];
   db.query(sql, params)
@@ -143,6 +145,7 @@ app.get('/api/comments/:postId', (req, res, next) => {
       from "comments"
       join "users" using ("userId")
      where "postId" = $1
+     order by "comments"."commentedAt" desc
   `;
   const params = [postId];
   db.query(sql, params)

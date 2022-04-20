@@ -20,14 +20,10 @@ export default class Home extends React.Component {
 
   render() {
     const posts = this.state.posts;
-    const shallowPosts = posts.slice();
-    const mostRecentToLeast = shallowPosts.sort((a, b) => {
-      return b.postId - a.postId;
-    });
     return (
       <>
         <div className='drop-shadow-md w-96 md:w-[800px] p-4 m-auto'>
-          {mostRecentToLeast.map(post => {
+          {posts.map(post => {
             return (
               <div key={post.postId} className='my-4'>
                 <Post post={post} />

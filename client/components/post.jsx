@@ -91,10 +91,6 @@ export default class Post extends React.Component {
   render() {
     const showComments = this.state.showComments;
     const comments = this.state.comments;
-    const shallowComments = comments.slice();
-    const mostRecentToLeast = shallowComments.sort((a, b) => {
-      return b.commentId - a.commentId;
-    });
     const {
       username, postId, profilePhotoUrl, imageUrl, caption, isBought,
       createdAt, location, editedAt
@@ -121,7 +117,7 @@ export default class Post extends React.Component {
             </a>
           </div>
           <div className='w-full md:w-[55%]'>
-            <img className='drop-shadow-lg w-80 h-80 md:w-[400px] md:h-[450px] object-cover border border-gray-200'
+            <img className='drop-shadow-lg w-80 h-80 md:w-full md:h-[450px] object-cover border border-gray-200'
               src={`/images/${imageUrl}`} alt='Placeholder image' />
           </div>
           <div className='w-full md:w-[45%] md:pl-4 flex flex-col'>
@@ -171,7 +167,7 @@ export default class Post extends React.Component {
               </button>
             </div>
             <div className='md:max-h-[120px] md:overflow-y-scroll'>
-              {showComments && mostRecentToLeast.map(comment => {
+              {showComments && comments.map(comment => {
                 return (
                   <div key={comment.commentId}>
                     <Comment comment={comment} />
@@ -182,7 +178,7 @@ export default class Post extends React.Component {
             {showComments &&
               <form onSubmit={this.handleCommentSubmit}
                 className='mt-auto'>
-                <textarea type="text" placeholder="Add a comment"
+                <textarea type="text" placeholder="Add a comment" required
                   className='border border-gray-600 rounded-xl mt-5 pt-1 px-2
                     w-full h-20'
                   onChange={this.handleCommentChange} value={this.state.newComment}
