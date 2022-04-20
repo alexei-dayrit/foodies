@@ -107,8 +107,14 @@ app.get('/api/comments/:postId', (req, res, next) => {
     throw new ClientError(400, 'PostId must be a positive integer');
   }
   const sql = `
-    select *
+    select "username",
+           "profilePhotoUrl",
+           "commentId",
+           "message",
+           "commentedAt",
+           "postId"
       from "comments"
+      join "users" using ("userId")
      where "postId" = $1
   `;
   const params = [postId];
