@@ -1,5 +1,6 @@
 import React from 'react';
 import Post from '../components/post';
+import Redirect from '../components/redirect';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -20,6 +21,9 @@ export default class Home extends React.Component {
 
   render() {
     const posts = this.state.posts;
+
+    if (!this.context.user) return <Redirect to="sign-in" />;
+
     return (
       <>
         <div className='drop-shadow-md w-96 md:w-[800px] p-4 m-auto'>
