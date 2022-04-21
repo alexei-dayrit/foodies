@@ -10,12 +10,13 @@ export default class AuthPage extends React.Component {
   }
 
   render() {
-    const { route } = this.context;
+    const { user, route, handleSignIn } = this.context;
     return (
       <>
         <AuthForm
           key={route.path}
-          action={route.path}/>
+          action={route.path}
+          onSignIn={handleSignIn}/>
       </>
     );
   }
