@@ -3,7 +3,7 @@ import Home from './pages/home';
 import PostForm from './pages/post-form';
 import Profile from './pages/profile';
 import Navbar from './components/navbar';
-import Auth from './pages/auth';
+import AuthPage from './pages/auth';
 import parseRoute from './lib/parse-route';
 import AppContext from './lib/app-context';
 
@@ -25,7 +25,7 @@ export default class App extends React.Component {
   renderPage() {
     const { route } = this.state;
     if (route.path === 'sign-up') {
-      return <Auth />;
+      return <AuthPage />;
     }
     if (route.path === '') {
       return <Home />;

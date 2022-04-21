@@ -1,6 +1,7 @@
 import React from 'react';
-
-export default class Auth extends React.Component {
+import AppContext from '../lib/app-context';
+import AuthForm from '../components/auth-form';
+export default class AuthPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -9,10 +10,16 @@ export default class Auth extends React.Component {
   }
 
   render() {
+    const { route } = this.context;
+    const welcomeMessage = route.path === 'sign-up'
+      ? 'Create an account to get started!'
+      : 'Please sign in to continue';
+
     return (
       <>
-
+        <AuthForm />
       </>
     );
   }
 }
+AuthPage.contextType = AppContext;
