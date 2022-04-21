@@ -65,10 +65,10 @@ export default class AuthForm extends React.Component {
 
     return (
       <>
-        <div className="absolute w-full h-full">
+        <div className="absolute w-full h-full bg-zinc-100 ">
           <div className="flex content-center items-center justify-center h-full
               mx-auto px-4 drop-shadow-md w-96 md:w-[800px]">
-            <div className="md:w-[55%] py-4 px-4 relative flex flex-col w-full shadow-lg rounded-lg bg-zinc-100 border-2 border-gray-200">
+            <div className="md:w-[55%] py-4 px-4 relative flex flex-col w-full shadow-lg rounded-lg bg-white border-2 border-gray-200">
               <div className="rounded-t px-6 md:px-10 py-4">
                 <h1 className="text-[#262626] styled-font text-4xl text-center pb-4"
                   >Foodies
@@ -98,8 +98,7 @@ export default class AuthForm extends React.Component {
                       htmlFor="username" onChange={handleChange}
                     >Username
                     </label>
-                    <input type="text" className="border-0 px-3 py-3 text-gray-700
-                      bg-white rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full" placeholder="Username" id='username' name='username'
+                    <input type="text" className="border-2 border-gray-200 px-3 py-3 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full border-opacity-50" placeholder="Username" id='username' name='username'
                       value={username} onChange={handleChange}
                     />
                   </div>
@@ -108,8 +107,7 @@ export default class AuthForm extends React.Component {
                       htmlFor="password"
                     >Password
                     </label>
-                    <input type="password" className="border-0 px-3 py-3 text-gray-700
-                      bg-white rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full" placeholder="Password" id='password' name='password'
+                    <input type="password" className="px-3 py-3 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full border-2 border-gray-200 border-opacity-50" placeholder="Password" id='password' name='password'
                       value={password} onChange={handleChange}
                     />
                   </div>
