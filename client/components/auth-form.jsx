@@ -27,39 +27,67 @@ export default class AuthForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    const { action } = this.props;
     const formData = new FormData();
     formData.append('image', this.fileInputRef.current.files[0]);
     formData.append('username', this.state.username);
     formData.append('password', this.state.password);
-    fetch('/api/auth/sign-up', {
-      method: 'POST',
-      body: formData
-    })
-      .then(response => response.json())
-      .then(result => {
-        this.setState({
-          username: '',
-          password: '',
-          imagePreview: '/images/placeholder-profile-image.jpeg'
-        });
-        this.fileInputRef.current.value = null;
+
+    if (action === 'sign-up') {
+      fetch('/api/auth/sign-up', {
+        method: 'POST',
+        body: formData
       })
-      .catch(err => console.error(err));
+        .then(response => response.json())
+        .then(result => {
+          this.setState({
+            username: '',
+            password: '',
+            imagePreview: '/images/placeholder-profile-image.jpeg'
+          });
+          this.fileInputRef.current.value = null;
+          window.location.hash = 'sign-in';
+        })
+        .catch(err => console.error(err));
+    } else if (action === 'sign-in') {
+      fetch('/api/auth/sign-in', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: this.state.username,
+          password: this.state.password
+        })
+      })
+        .then(response => response.json())
+        .then(result => {
+          this.setState({
+            username: '',
+            password: '',
+            imagePreview: '/images/placeholder-profile-image.jpeg'
+          });
+          this.fileInputRef.current.value = null;
+          this.props.onSignIn(result);
+        })
+        .catch(err => console.error(err));
+    }
   }
 
   render() {
     const { password, username, imagePreview } = this.state;
     const { handleChange, handleSubmit, handleImageUpload } = this;
-    const welcomeMessage = this.props.action === 'sign-up'
+    const { action } = this.props;
+    const welcomeMessage = action === 'sign-up'
       ? 'Sign up to see photos of delicious food.'
       : 'Please sign in to continue.';
-    const submitButtonText = this.props.action === 'sign-up'
+    const submitButtonText = action === 'sign-up'
       ? 'Sign Up'
       : 'Log In';
-    const footerMessage = this.props.action === 'sign-up'
+    const footerMessage = action === 'sign-up'
       ? 'Already have an account?'
       : 'Don\'t have an account?';
-    const footerLink = this.props.action === 'sign-up'
+    const footerLink = action === 'sign-up'
       ? 'Log in'
       : 'Sign up';
 
@@ -122,8 +150,10 @@ export default class AuthForm extends React.Component {
                 <div className="text-center text-[#262626] pt-4">
                   <p>
                     {footerMessage}
-                    <button href='' className='pl-1 text-[#0095f6] hover:text-[#008ae3] hover:scale-105'>
-                      {footerLink}
+                    <button className='pl-1 text-[#0095f6] hover:text-[#008ae3] hover:scale-105'>
+                      <a href={action === 'sign-up' ? '#sign-in' : '#sign-up' }>
+                        {footerLink}
+                      </a>
                     </button>
                   </p>
                 </div>

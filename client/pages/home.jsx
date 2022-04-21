@@ -1,6 +1,7 @@
 import React from 'react';
 import Post from '../components/post';
 import Redirect from '../components/redirect';
+import AppContext from '../lib/app-context';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -39,3 +40,4 @@ export default class Home extends React.Component {
     );
   }
 }
+Home.contextType = AppContext;

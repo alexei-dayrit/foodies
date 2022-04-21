@@ -67,20 +67,17 @@ app.post('/api/auth/sign-in', (req, res, next) => {
       if (!user) {
         throw new ClientError(401, 'invald login');
       }
-      argon2
-        .verify(user.hashedPassword, password)
+      const { userId, hashedPassword } = user;
+      return argon2
+        .verify(hashedPassword, password)
         .then(isMatching => {
           if (!isMatching) {
             throw new ClientError(401, 'invalid login');
           }
-          const payload = {
-            userId: user.userId,
-            username: username
-          };
+          const payload = { userId, username };
           const token = jwt.sign(payload, process.env.TOKEN_SECRET);
-          res.status(200).json({ token, payload });
-        })
-        .catch(err => next(err));
+          res.json({ token, user: payload });
+        });
     })
     .catch(err => next(err));
 });
@@ -215,28 +212,6 @@ app.get('/api/comments/:postId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
-  // hard coded userId
-  const userId = 100;
-  const { caption, location, isBought } = req.body;
-  if (!caption || !location || !isBought) {
-    throw new ClientError(400, 'Caption, location, and isBought are required fields');
-  }
-  const imageUrl = req.file.filename;
-  const sql = `
-    insert into "posts" ("userId", "imageUrl", "caption", "location", "isBought")
-      values ($1, $2, $3, $4, $5)
-      returning *;
-  `;
-  const params = [userId, imageUrl, caption, location, isBought];
-  db.query(sql, params)
-    .then(result => {
-      const [post] = result.rows;
-      res.status(201).json(post);
-    })
-    .catch(err => next(err));
-});
-
 app.delete('/api/deleteLikes/:postId', (req, res, next) => {
   // hard coded userId = 2
   const userId = 100;
@@ -262,6 +237,8 @@ app.delete('/api/deleteLikes/:postId', (req, res, next) => {
       }
     });
 });
+
+app.use(authorizationMiddleware);
 
 app.post('/api/likes/:postId', (req, res, next) => {
   // hard coded userId
@@ -307,7 +284,27 @@ app.post('/api/uploadComment/:postId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.use(authorizationMiddleware);
+app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
+  // hard coded userId
+  const userId = 100;
+  const { caption, location, isBought } = req.body;
+  if (!caption || !location || !isBought) {
+    throw new ClientError(400, 'Caption, location, and isBought are required fields');
+  }
+  const imageUrl = req.file.filename;
+  const sql = `
+    insert into "posts" ("userId", "imageUrl", "caption", "location", "isBought")
+      values ($1, $2, $3, $4, $5)
+      returning *;
+  `;
+  const params = [userId, imageUrl, caption, location, isBought];
+  db.query(sql, params)
+    .then(result => {
+      const [post] = result.rows;
+      res.status(201).json(post);
+    })
+    .catch(err => next(err));
+});
 
 app.put('/api/edit/:postId', uploadsMiddleware, (req, res, next) => {
   const { userId } = req.user;

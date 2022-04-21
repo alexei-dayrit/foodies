@@ -85,6 +85,7 @@ export default class PostForm extends React.Component {
     let fetchMethod = '';
     let fetchRoute = '';
     let hashRoute = '';
+    const token = window.localStorage.getItem('foodies-jwt');
     if (!this.props.postId) {
       fetchRoute = '/api/uploads';
       fetchMethod = 'POST';
@@ -97,7 +98,8 @@ export default class PostForm extends React.Component {
 
     fetch(fetchRoute, {
       method: fetchMethod,
-      body: formData
+      body: formData,
+      headers: { 'X-Access-Token': token }
     })
       .then(response => response.json())
       .then(result => {
