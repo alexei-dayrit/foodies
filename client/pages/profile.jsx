@@ -29,7 +29,7 @@ export default class Profile extends React.Component {
               <div className="w-full md:w-3/4 flex justify-evenly md:justify-center
                 mt-4 md:text-lg">
                 <div className="w-1/3">
-                  <p className='font-semibold'>{'sushi_lover'}</p>
+                  <p className='font-semibold'>{'anonymous1'}</p>
                 </div>
                 <div className="w-1/3 text-red-500">
                   <p>Log Out</p>
@@ -37,7 +37,7 @@ export default class Profile extends React.Component {
               </div>
             </div>
           </div>
-          <PostHistory userId={1} />
+          <PostHistory userId={100} />
         </div>
       </>
     );

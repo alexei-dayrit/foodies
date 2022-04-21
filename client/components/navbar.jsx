@@ -23,12 +23,12 @@ export default class Navbar extends React.Component {
     return (
       <>
         <nav className="relative flex flex-wrap items-center justify-between
-          px-2 py-3 bg-zinc-200 border border-gray-200">
+          px-2 py-3 bg-zinc-200 border border-gray-200 text-[#262626]">
           <div className="w-96 md:w-[800px] m-auto container px-4 flex flex-wrap
             items-center justify-between">
             <div className="w-full relative flex justify-between md:w-auto md:static
               md:block md:justify-start">
-              <a className="text-sky-600 pl-2 styled-font text-3xl leading-relaxed
+              <a className="pl-2 styled-font text-4xl leading-relaxed
                 inline-block mr-4 py-2 whitespace-nowrap hover:scale-105"
                 href="#">
                 Foodies
@@ -39,23 +39,23 @@ export default class Navbar extends React.Component {
               </button>
             </div>
             <div className={`md:flex items-center' ${(this.state.navbarOpen ? 'flex' : 'hidden')}`}>
-              <ul className="flex flex-col md:flex-row list-none md:ml-auto">
+              <ul className="flex flex-col md:flex-row list-none md:ml-auto font-semibold">
                 <li>
                   <a onClick={this.handleNavbarChange} className="px-3 py-2 flex
-                    items-center uppercase leading-snug hover:text-gray-500 hover:scale-105" href="#">
+                    items-center uppercase leading-snug hover:text-gray-600 hover:scale-105" href="#">
                     <span className="ml-2 md:mt-2">Home</span>
                   </a>
                 </li>
                 <li>
                   <a onClick={this.handleNavbarChange} className="px-3 py-2 flex items-center
-                    uppercase leading-snug hover:text-gray-500 hover:scale-105"
+                    uppercase leading-snug hover:text-gray-600 hover:scale-105"
                     href="#new-post">
                     <span className="ml-2 md:mt-2">Add Post</span>
                   </a>
                 </li>
                 <li>
                   <a onClick={this.handleNavbarChange} className='px-3 py-2 flex items-center
-                    uppercase leading-snug hover:text-gray-500 hover:scale-105'
+                    uppercase leading-snug hover:text-gray-600 hover:scale-105'
                     href="#profile">
                     <span className='ml-2 md:mt-2'>My Profile</span>
                   </a>

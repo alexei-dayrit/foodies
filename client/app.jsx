@@ -1,8 +1,9 @@
 import React from 'react';
 import Home from './pages/home';
-import Form from './pages/form';
+import PostForm from './pages/post-form';
 import Profile from './pages/profile';
 import Navbar from './components/navbar';
+import AuthPage from './pages/auth';
 import parseRoute from './lib/parse-route';
 import AppContext from './lib/app-context';
 
@@ -23,19 +24,22 @@ export default class App extends React.Component {
 
   renderPage() {
     const { route } = this.state;
+    if (route.path === 'sign-up') {
+      return <AuthPage />;
+    }
     if (route.path === '') {
       return <Home />;
     }
     if (route.path === 'profile') {
-      const userId = 1;
+      const userId = 100;
       return <Profile userId={userId} />;
     }
     if (route.path === 'edit-post') {
       const postId = route.params.get('postId');
-      return (<Form key='edit-post' postId={postId} />);
+      return <PostForm key='edit-post' postId={postId} />;
     }
     if (route.path === 'new-post') {
-      return <Form key='new-post' />;
+      return <PostForm key='new-post' />;
     }
   }
 
@@ -45,7 +49,7 @@ export default class App extends React.Component {
     return (
       <>
         <AppContext.Provider value={contextValue}>
-          <Navbar />
+          {route.path !== 'sign-up' && <Navbar />}
           {this.renderPage()}
         </AppContext.Provider>
       </>

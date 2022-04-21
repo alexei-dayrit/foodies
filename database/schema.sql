@@ -29,7 +29,7 @@ CREATE TABLE "public"."users" (
 	"signedUpAt" timestamp with time zone NOT NULL default now(),
 	"followerCount" integer NOT NULL,
 	"followingCount" integer NOT NULL,
-  "profilePhotoUrl" TEXT NOT NULL,
+  "profilePhotoUrl" TEXT,
 	"postCount" integer NOT NULL,
 	CONSTRAINT "users_pk" PRIMARY KEY ("userId")
 ) WITH (
