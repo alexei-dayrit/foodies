@@ -11,13 +11,11 @@ export default class AuthPage extends React.Component {
 
   render() {
     const { route } = this.context;
-    const welcomeMessage = route.path === 'sign-up'
-      ? 'Create an account to get started!'
-      : 'Please sign in to continue';
-
     return (
       <>
-        <AuthForm />
+        <AuthForm
+          key={route.path}
+          action={route.path}/>
       </>
     );
   }

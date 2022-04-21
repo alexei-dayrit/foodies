@@ -49,7 +49,7 @@ export default class App extends React.Component {
     return (
       <>
         <AppContext.Provider value={contextValue}>
-          <Navbar />
+          {route.path !== 'sign-up' && <Navbar />}
           {this.renderPage()}
         </AppContext.Provider>
       </>

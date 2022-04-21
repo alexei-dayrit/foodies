@@ -27,27 +27,61 @@ export default class AuthForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    const formData = new FormData();
+    // NEED to fix error when user doesn't upload photo
+    formData.append('image', this.fileInputRef.current.files[0]);
+    formData.append('username', this.state.username);
+    formData.append('password', this.state.password);
+    fetch('/api/auth/sign-up', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(result => {
+        this.setState({
+          username: '',
+          password: '',
+          imagePreview: '/images/placeholder-profile-image.jpeg'
+        });
+        this.fileInputRef.current.value = null;
+      })
+      .catch(err => console.error(err));
   }
 
   render() {
-    const imagePreview = this.state.imagePreview;
+    const { password, username, imagePreview } = this.state;
+    const { handleChange, handleSubmit, handleImageUpload } = this;
+    const welcomeMessage = this.props.action === 'sign-up'
+      ? 'Sign up to see photos of delicious food.'
+      : 'Please sign in to continue.';
+    const submitButtonText = this.props.action === 'sign-up'
+      ? 'Sign Up'
+      : 'Log In';
+    const footerMessage = this.props.action === 'sign-up'
+      ? 'Already have an account?'
+      : 'Don\'t have an account?';
+    const footerLink = this.props.action === 'sign-up'
+      ? 'Log in'
+      : 'Sign up';
     return (
       <>
-        <div className="absolute w-full h-[80%]">
+        <div className="absolute w-full h-full">
           <div className="flex content-center items-center justify-center h-full
               mx-auto px-4 drop-shadow-md w-96 md:w-[800px]">
-            <div className="md:w-[55%] px-4 relative flex flex-col w-full mb-6 shadow-lg rounded-lg bg-zinc-100">
-              <div className="rounded-t px-6 md:px-10 py-6">
-                <h1 className="text-[#262626] pl-2 styled-font text-4xl text-center pb-5
-                  border-b border-gray-400"
-                >Foodies
+            <div className="md:w-[55%] py-4 px-4 relative flex flex-col w-full shadow-lg rounded-lg bg-zinc-100 border-2 border-gray-200">
+              <div className="rounded-t px-6 md:px-10 py-4">
+                <h1 className="text-[#262626] styled-font text-4xl text-center pb-4"
+                  >Foodies
                 </h1>
+                <h2 className='text-center border-b-2 border-gray-200 pb-4 text-gray-500 font-semibold'>
+                  {welcomeMessage}
+                </h2>
               </div>
-              <div className="flex-auto px-4 md:px-10 py-6 pt-0">
-                <form>
-                  <div className='flex w-full justify-center mb-2'>
+              <div className="flex-auto px-4 md:px-10 pb-6">
+                <form onSubmit={handleSubmit}>
+                  <div className='flex w-full justify-center my-1'>
                     <label htmlFor='profilePic' className='items-center relative flex flex-col mb-2'>
-                      <img className='w-10 h-10 rounded-full object-cover border border-gray-400
+                      <img className='w-12 h-12 rounded-full object-cover border border-gray-400
                         hover:border-[#0095f6] border-opacity-50 z-50 mb-1 cursor-pointer' src={imagePreview} alt='Placeholder image'
                       />
                       <a className='cursor-pointer text-[#0095f6] hover:text-[#008ae3] font-medium'>
@@ -55,43 +89,43 @@ export default class AuthForm extends React.Component {
                       </a>
                       <input ref={this.fileInputRef} className='inset-center hidden cursor-pointer'
                         type="file" id="profilePic" name="profilePic"
-                        accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload}
+                        accept=".png, .jpg, .jpeg, .gif" onChange={handleImageUpload}
                       />
                     </label>
                   </div>
                   <div className="relative w-full mb-3">
-                    <label className="block uppercase text-gray-700 text-sm font-bold mb-2"
-                      htmlFor="username" onChange={this.handleChange}
+                    <label className="block uppercase text-gray-700 text-xs font-bold mb-2"
+                      htmlFor="username" onChange={handleChange}
                     >Username
                     </label>
                     <input type="text" className="border-0 px-3 py-3 text-gray-700
-                      bg-white rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full"
-                      placeholder="Username" id='username' name='username' onChange={this.handleChange}
+                      bg-white rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full" placeholder="Username" id='username' name='username'
+                      value={username} onChange={handleChange}
                     />
                   </div>
                   <div className="relative w-full mb-3">
-                    <label className="block uppercase text-gray-700 text-sm font-bold mb-2"
+                    <label className="block uppercase text-gray-700 text-xs font-bold mb-2"
                       htmlFor="password"
                     >Password
                     </label>
                     <input type="password" className="border-0 px-3 py-3 text-gray-700
-                      bg-white rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full"
-                      placeholder="Password" id='password' name='password' onChange={this.handleChange}
+                      bg-white rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full" placeholder="Password" id='password' name='password'
+                      value={password} onChange={handleChange}
                     />
                   </div>
                   <div className="text-center mt-6">
                     <button className="bg-[#0095f6] text-white hover:bg-[#008ae3]
                       text-sm font-bold uppercase px-6 py-3 rounded shadow outline-none focus:outline-none mr-1 mb-1 w-full"
                       type='submit'
-                    >Sign Up
+                    >{submitButtonText}
                     </button>
                   </div>
                 </form>
                 <div className="text-center text-[#262626] pt-4">
                   <p>
-                    Have an account?
-                    <button href='' className='pl-2 text-[#0095f6] hover:text-[#008ae3] hover:scale-105'>
-                      Log in
+                    {footerMessage}
+                    <button href='' className='pl-1 text-[#0095f6] hover:text-[#008ae3] hover:scale-105'>
+                      {footerLink}
                     </button>
                   </p>
                 </div>
