@@ -92,9 +92,13 @@ export default class Post extends React.Component {
     const showComments = this.state.showComments;
     const comments = this.state.comments;
     const {
-      username, postId, profilePhotoUrl, imageUrl, caption, isBought,
+      username, postId, imageUrl, caption, isBought,
       createdAt, location, editedAt
     } = this.props.post;
+    let { profilePhotoUrl } = this.props.post;
+    if (profilePhotoUrl === null) {
+      profilePhotoUrl = 'placeholder-profile-image.jpeg';
+    }
     return (
       <>
         <div className='drop-shadow-md bg-wrapper flex flex-wrap p-4 rounded-xl border
@@ -126,7 +130,7 @@ export default class Post extends React.Component {
               <div className="flex w-full">
                 <a href="#profile">
                   <img className="object-cover w-12 h-12 rounded-full border border-red-300"
-                    src="/images/placeholder-profile-pic.jpeg" alt="Profile picture" />
+                    src={`/images/${profilePhotoUrl}`} alt="Profile picture" />
                 </a>
                 <div>
                   <a href="#profile">

@@ -22,7 +22,9 @@ const db = new pg.Pool({
 
 app.post('/api/auth/sign-up', uploadsMiddleware, (req, res, next) => {
   const { username, password } = req.body;
-  const profilePhoto = req.file.filename;
+  const profilePhoto = req.file
+    ? req.file.filename
+    : null;
   if (!username || !password) {
     throw new ClientError(400, 'Username and password are required fields');
   }
@@ -48,7 +50,7 @@ app.post('/api/auth/sign-up', uploadsMiddleware, (req, res, next) => {
 
 app.get('/api/posts', (req, res, next) => {
   const sql = `
-       select  "u"."username",
+     select "u"."username",
             "u"."profilePhotoUrl",
             "p"."postId",
             "p"."imageUrl",
@@ -80,7 +82,7 @@ app.get('/api/posts/:userId', (req, res, next) => {
     throw new ClientError(400, 'UserId must be a positive integer');
   }
   const sql = `
-       select  "u"."username",
+     select "u"."username",
             "u"."profilePhotoUrl",
             "p"."postId",
             "p"."imageUrl",
