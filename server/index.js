@@ -7,6 +7,7 @@ const ClientError = require('./client-error');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
+const authorizationMiddleware = require('./authorization-middleware');
 
 const app = express();
 const jsonMiddleware = express.json();
@@ -214,40 +215,6 @@ app.get('/api/comments/:postId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.put('/api/edit/:postId', uploadsMiddleware, (req, res, next) => {
-  const { caption, isBought, location } = req.body;
-  const postId = parseFloat(req.params.postId);
-  const imageUrl = req.file ? req.file.filename : null;
-  const editedAt = new Date();
-  if (Number.isInteger(postId) !== true || postId < 0) {
-    throw new ClientError(400, 'PostId must be a positive integer');
-  } else if (!caption || !location || !isBought) {
-    throw new ClientError(400, 'Caption, location, and isBought are required fields');
-  }
-  const sql = `
-    update "posts"
-      set  "imageUrl" = coalesce($1, "imageUrl"),
-           "caption" = $2,
-           "isBought" = $3,
-           "location" = $4,
-           "editedAt" = $5
-      where "postId" = $6
-      returning *;
-  `;
-  const params = [imageUrl, caption, isBought, location, editedAt, postId];
-  db.query(sql, params)
-    .then(result => {
-      const [editedPost] = result.rows;
-      if (!editedPost) {
-        res.status(404).json({
-          error: `Cannot find a post with postId ${postId}`
-        });
-      }
-      res.status(201).json(result.rows);
-    })
-    .catch(err => next(err));
-});
-
 app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
   // hard coded userId
   const userId = 100;
@@ -266,40 +233,6 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
     .then(result => {
       const [post] = result.rows;
       res.status(201).json(post);
-    })
-    .catch(err => next(err));
-});
-
-app.delete('/api/deletePost/:postId', (req, res, next) => {
-  const postId = parseFloat(req.params.postId);
-  if (Number.isInteger(postId) !== true || postId < 0) {
-    throw new ClientError(400, 'PostId must be a positive integer');
-  }
-  const sql = `
-    delete from "likes"
-     where "postId" = $1
-     returning *;
-  `;
-  const sql2 = `
-    delete from "posts"
-     where "postId" = $1
-     returning *;
-  `;
-  const params = [postId];
-  db.query(sql, params)
-    .then(result => {
-      db.query(sql2, params)
-        .then(result => {
-          const [deletedPost] = result.rows;
-          if (!deletedPost) {
-            res.status(404).json({
-              error: `Cannot find posts with postId ${postId}`
-            });
-          } else {
-            res.sendStatus(204);
-          }
-        })
-        .catch(err => next(err));
     })
     .catch(err => next(err));
 });
@@ -370,6 +303,78 @@ app.post('/api/uploadComment/:postId', (req, res, next) => {
     .then(result => {
       const [comment] = result.rows;
       res.status(201).json(comment);
+    })
+    .catch(err => next(err));
+});
+
+app.use(authorizationMiddleware);
+
+app.put('/api/edit/:postId', uploadsMiddleware, (req, res, next) => {
+  const { userId } = req.user;
+  const { caption, isBought, location } = req.body;
+  const postId = parseFloat(req.params.postId);
+  const imageUrl = req.file ? req.file.filename : null;
+  const editedAt = new Date();
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'PostId must be a positive integer');
+  } else if (!caption || !location || !isBought) {
+    throw new ClientError(400, 'Caption, location, and isBought are required fields');
+  }
+  const sql = `
+    update "posts"
+      set  "imageUrl" = coalesce($1, "imageUrl"),
+           "caption" = $2,
+           "isBought" = $3,
+           "location" = $4,
+           "editedAt" = $5
+      where "postId" = $6 and userId = $7
+      returning *;
+  `;
+  const params = [imageUrl, caption, isBought, location, editedAt, postId, userId];
+  db.query(sql, params)
+    .then(result => {
+      const [editedPost] = result.rows;
+      if (!editedPost) {
+        res.status(404).json({
+          error: `Cannot find a post with postId ${postId}`
+        });
+      }
+      res.status(201).json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/deletePost/:postId', (req, res, next) => {
+  const { userId } = req.user;
+  const postId = parseFloat(req.params.postId);
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'PostId must be a positive integer');
+  }
+  const sql = `
+    delete from "likes"
+     where "postId" = $1
+     returning *;
+  `;
+  const sql2 = `
+    delete from "posts"
+     where "postId" = $1 and "userId" = $2
+     returning *;
+  `;
+  const params = [postId, userId];
+  db.query(sql, params)
+    .then(result => {
+      db.query(sql2, params)
+        .then(result => {
+          const [deletedPost] = result.rows;
+          if (!deletedPost) {
+            res.status(404).json({
+              error: `Cannot find posts with postId ${postId}`
+            });
+          } else {
+            res.sendStatus(204);
+          }
+        })
+        .catch(err => next(err));
     })
     .catch(err => next(err));
 });
