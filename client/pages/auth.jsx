@@ -20,4 +20,5 @@ export default class AuthPage extends React.Component {
     );
   }
 }
+
 AuthPage.contextType = AppContext;

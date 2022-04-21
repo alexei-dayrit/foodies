@@ -28,8 +28,6 @@ export default class AuthForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData();
-    // NEED to fix error when user doesn't upload photo
-    // How to change background color of root element for only one component
     formData.append('image', this.fileInputRef.current.files[0]);
     formData.append('username', this.state.username);
     formData.append('password', this.state.password);
@@ -64,6 +62,7 @@ export default class AuthForm extends React.Component {
     const footerLink = this.props.action === 'sign-up'
       ? 'Log in'
       : 'Sign up';
+
     return (
       <>
         <div className="absolute w-full h-full">
