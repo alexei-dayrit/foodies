@@ -1,6 +1,7 @@
 import React from 'react';
 import XMarkIcon from './svg-assets/xmark-icon';
 import MenuIcon from './svg-assets/menu-icon';
+import AppContext from '../lib/app-context';
 export default class Navbar extends React.Component {
   constructor(props) {
     super(props);
@@ -20,6 +21,7 @@ export default class Navbar extends React.Component {
   }
 
   render() {
+    const { user } = this.context;
     return (
       <>
         <nav className="relative flex flex-wrap items-center justify-between
@@ -56,7 +58,7 @@ export default class Navbar extends React.Component {
                 <li>
                   <a onClick={this.handleNavbarChange} className='px-3 py-2 flex items-center
                     uppercase leading-snug hover:text-gray-600 hover:scale-105'
-                    href="#profile">
+                    href={`#profile?userId=${user.userId}`}>
                     <span className='ml-2 md:mt-2'>My Profile</span>
                   </a>
                 </li>
@@ -68,3 +70,5 @@ export default class Navbar extends React.Component {
     );
   }
 }
+
+Navbar.contextType = AppContext;

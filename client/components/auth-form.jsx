@@ -27,48 +27,76 @@ export default class AuthForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    const { action } = this.props;
     const formData = new FormData();
     formData.append('image', this.fileInputRef.current.files[0]);
     formData.append('username', this.state.username);
     formData.append('password', this.state.password);
-    fetch('/api/auth/sign-up', {
-      method: 'POST',
-      body: formData
-    })
-      .then(response => response.json())
-      .then(result => {
-        this.setState({
-          username: '',
-          password: '',
-          imagePreview: '/images/placeholder-profile-image.jpeg'
-        });
-        this.fileInputRef.current.value = null;
+
+    if (action === 'sign-up') {
+      fetch('/api/auth/sign-up', {
+        method: 'POST',
+        body: formData
       })
-      .catch(err => console.error(err));
+        .then(response => response.json())
+        .then(result => {
+          this.setState({
+            username: '',
+            password: '',
+            imagePreview: '/images/placeholder-profile-image.jpeg'
+          });
+          this.fileInputRef.current.value = null;
+          window.location.hash = 'sign-in';
+        })
+        .catch(err => console.error(err));
+    } else if (action === 'sign-in') {
+      fetch('/api/auth/sign-in', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: this.state.username,
+          password: this.state.password
+        })
+      })
+        .then(response => response.json())
+        .then(result => {
+          this.setState({
+            username: '',
+            password: '',
+            imagePreview: '/images/placeholder-profile-image.jpeg'
+          });
+          this.fileInputRef.current.value = null;
+          this.props.onSignIn(result);
+        })
+        .catch(err => console.error(err));
+    }
   }
 
   render() {
     const { password, username, imagePreview } = this.state;
     const { handleChange, handleSubmit, handleImageUpload } = this;
-    const welcomeMessage = this.props.action === 'sign-up'
+    const { action } = this.props;
+    const welcomeMessage = action === 'sign-up'
       ? 'Sign up to see photos of delicious food.'
       : 'Please sign in to continue.';
-    const submitButtonText = this.props.action === 'sign-up'
+    const submitButtonText = action === 'sign-up'
       ? 'Sign Up'
       : 'Log In';
-    const footerMessage = this.props.action === 'sign-up'
+    const footerMessage = action === 'sign-up'
       ? 'Already have an account?'
       : 'Don\'t have an account?';
-    const footerLink = this.props.action === 'sign-up'
+    const footerLink = action === 'sign-up'
       ? 'Log in'
       : 'Sign up';
 
     return (
       <>
-        <div className="absolute w-full h-full">
+        <div className="absolute w-full h-full bg-zinc-100 ">
           <div className="flex content-center items-center justify-center h-full
               mx-auto px-4 drop-shadow-md w-96 md:w-[800px]">
-            <div className="md:w-[55%] py-4 px-4 relative flex flex-col w-full shadow-lg rounded-lg bg-zinc-100 border-2 border-gray-200">
+            <div className="md:w-[55%] py-4 px-4 relative flex flex-col w-full shadow-lg rounded-lg bg-white border-2 border-gray-200">
               <div className="rounded-t px-6 md:px-10 py-4">
                 <h1 className="text-[#262626] styled-font text-4xl text-center pb-4"
                   >Foodies
@@ -81,7 +109,7 @@ export default class AuthForm extends React.Component {
                 <form onSubmit={handleSubmit}>
                   <div className='flex w-full justify-center my-1'>
                     <label htmlFor='profilePic' className='items-center relative flex flex-col mb-2'>
-                      <img className='w-12 h-12 rounded-full object-cover border border-gray-400
+                      <img className='w-12 h-12 rounded-full object-cover object-center border border-gray-400
                         hover:border-[#0095f6] border-opacity-50 z-50 mb-1 cursor-pointer' src={imagePreview} alt='Placeholder image'
                       />
                       <a className='cursor-pointer text-[#0095f6] hover:text-[#008ae3] font-medium'>
@@ -98,8 +126,7 @@ export default class AuthForm extends React.Component {
                       htmlFor="username" onChange={handleChange}
                     >Username
                     </label>
-                    <input type="text" className="border-0 px-3 py-3 text-gray-700
-                      bg-white rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full" placeholder="Username" id='username' name='username'
+                    <input type="text" className="border-2 border-gray-200 px-3 py-3 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full border-opacity-50" placeholder="Username" id='username' name='username'
                       value={username} onChange={handleChange}
                     />
                   </div>
@@ -108,8 +135,7 @@ export default class AuthForm extends React.Component {
                       htmlFor="password"
                     >Password
                     </label>
-                    <input type="password" className="border-0 px-3 py-3 text-gray-700
-                      bg-white rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full" placeholder="Password" id='password' name='password'
+                    <input type="password" className="px-3 py-3 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full border-2 border-gray-200 border-opacity-50" placeholder="Password" id='password' name='password'
                       value={password} onChange={handleChange}
                     />
                   </div>
@@ -124,8 +150,10 @@ export default class AuthForm extends React.Component {
                 <div className="text-center text-[#262626] pt-4">
                   <p>
                     {footerMessage}
-                    <button href='' className='pl-1 text-[#0095f6] hover:text-[#008ae3] hover:scale-105'>
-                      {footerLink}
+                    <button className='pl-1 text-[#0095f6] hover:text-[#008ae3] hover:scale-105'>
+                      <a href={action === 'sign-up' ? '#sign-in' : '#sign-up' }>
+                        {footerLink}
+                      </a>
                     </button>
                   </p>
                 </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from '../components/modal';
 import DeleteIcon from '../components/svg-assets/delete-icon';
 import PlusIcon from '../components/svg-assets/plus-icon';
+import AppContext from '../lib/app-context';
 
 export default class PostForm extends React.Component {
   constructor(props) {
@@ -25,8 +26,11 @@ export default class PostForm extends React.Component {
   }
 
   componentDidMount() {
+    const token = window.localStorage.getItem('foodies-jwt');
     if (this.props.postId) {
-      fetch(`/api/post/${this.props.postId}`)
+      fetch(`/api/post/${this.props.postId}`, {
+        headers: { 'X-Access-Token': token }
+      })
         .then(res => res.json())
         .then(post => {
           const { imageUrl, caption, location, isBought } = post;
@@ -65,8 +69,10 @@ export default class PostForm extends React.Component {
   }
 
   handleDelete(event) {
+    const token = window.localStorage.getItem('foodies-jwt');
     fetch(`/api/deletePost/${this.props.postId}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: { 'X-Access-Token': token }
     })
       .then(() => {
         window.location.hash = 'profile';
@@ -85,6 +91,7 @@ export default class PostForm extends React.Component {
     let fetchMethod = '';
     let fetchRoute = '';
     let hashRoute = '';
+    const token = window.localStorage.getItem('foodies-jwt');
     if (!this.props.postId) {
       fetchRoute = '/api/uploads';
       fetchMethod = 'POST';
@@ -97,7 +104,8 @@ export default class PostForm extends React.Component {
 
     fetch(fetchRoute, {
       method: fetchMethod,
-      body: formData
+      body: formData,
+      headers: { 'X-Access-Token': token }
     })
       .then(response => response.json())
       .then(result => {
@@ -121,6 +129,7 @@ export default class PostForm extends React.Component {
     const imagePreview = this.state.imagePreview;
     const isBought = this.state.isBought;
     const postId = this.props.postId;
+    const { user } = this.context;
     return (
       <>
         <div className='w-96 md:w-[800px] p-4 m-auto'>
@@ -147,11 +156,15 @@ export default class PostForm extends React.Component {
               <div className='w-full md:w-1/2 order-2 px-2 md:px-4'>
                 <div className="flex items-center space-x-3 py-4 md:pt-0">
                   <img className="object-cover object-center w-10 h-10 rounded-full border
-                    border-red-300 cursor-pointer" src="/images/placeholder-profile-pic.jpeg"
-                    alt="Profile picture"
+                    border-red-300 cursor-pointer" alt="Profile picture"
+                    src=
+                    {user.profilePhotoUrl
+                      ? `images/${user.profilePhotoUrl}`
+                      : '/images/placeholder-profile-image.jpeg'
+                    }
                   />
                   <div className="space-y-1 font-semibold">
-                    <div className='cursor-pointer'>sushi_lover</div>
+                    <div className='cursor-pointer'>{user.username}</div>
                   </div>
                 </div>
                 <div className="py-4 border-b border-gray-200">
@@ -212,3 +225,4 @@ export default class PostForm extends React.Component {
     );
   }
 }
+PostForm.contextType = AppContext;
