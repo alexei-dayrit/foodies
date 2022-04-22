@@ -7,7 +7,7 @@ export default class Navbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showDesktopDropdown: true,
+      showDesktopDropdown: false,
       showMobileDropdown: false
     };
     this.handleMobileDropdownToggle = this.handleMobileDropdownToggle.bind(this);
