@@ -7,11 +7,11 @@ export default class Profile extends React.Component {
     const { user } = this.context;
     return (
       <>
-        <div className='drop-shadow-md w-96 md:w-[800px] p-4 m-auto'>
-          <div className='flex flex-wrap p-2 mb-4 border border-gray-200'>
+        <div className='w-96 md:w-[800px] p-4 m-auto'>
+          <div className='flex flex-wrap p-4 pb-8 mb-8 border-b border-[#dbdbdb]'>
             <div className='w-[25%] md:w-1/3 order-1 flex items-center md:justify-end'>
               <img className="w-[75px] h-[75px] md:w-[120px] md:h-[120px]
-                border-red-300 rounded-full border object-cover"
+                border-gray-300 border rounded-full object-cover"
                 src=
                 {user.profilePhotoUrl
                   ? `images/${user.profilePhotoUrl}`
