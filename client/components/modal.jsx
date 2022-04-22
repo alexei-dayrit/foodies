@@ -3,6 +3,7 @@ import XMarkIcon from './svg-assets/xmark-icon';
 
 export default class Modal extends React.Component {
   render() {
+    const { handleDelete, handleModal } = this.props;
     return (
       <>
         <div className="justify-center items-center flex fixed inset-0 z-50">
@@ -10,13 +11,13 @@ export default class Modal extends React.Component {
             <div className="border-0 rounded-lg shadow-lg relative flex
                   flex-col w-full bg-white">
               <div className="flex items-start justify-between px-5 py-4 border-b
-                                 border-solid border-slate-200 rounded-t">
+                  border-solid border-slate-200 rounded-t">
                 <h3 className="text-3xl font-semibold">
                   Confirm Delete
                 </h3>
                 <button
                   className="p-1 border-0 text-black float-right leading-none font-semibold"
-                  onClick={this.props.handleModal}
+                  onClick={handleModal}
                 ><XMarkIcon />
                 </button>
               </div>
@@ -30,14 +31,14 @@ export default class Modal extends React.Component {
                 <button
                   className=" font-bold hover:text-gray-700 hover:scale-105 uppercase mx-6
                       my-2 text-sm"
-                  onClick={this.props.handleModal}
+                  onClick={handleModal}
                 >Cancel
                 </button>
                 <button
                   className="bg-red-500 text-white active:bg-red-600
                       font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg
                       hover:scale-105 mr-1 mb-1"
-                  onClick={this.props.handleDelete}
+                  onClick={handleDelete}
                 >Delete
                 </button>
               </div>

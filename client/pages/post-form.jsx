@@ -218,8 +218,7 @@ export default class PostForm extends React.Component {
           </form>
         </div>
         {this.state.showModal && (
-          <Modal handleModal={this.handleModal} showModal={this.state.showModal}
-            handleDelete={this.handleDelete}/>
+          <Modal handleModal={this.handleModal} handleDelete={this.handleDelete}/>
         )}
       </>
     );
