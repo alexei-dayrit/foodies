@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from '../components/modal';
 import DeleteIcon from '../components/svg-assets/delete-icon';
 import PlusIcon from '../components/svg-assets/plus-icon';
+import Redirect from '../components/redirect';
 import AppContext from '../lib/app-context';
 
 export default class PostForm extends React.Component {
@@ -130,14 +131,17 @@ export default class PostForm extends React.Component {
     const isBought = this.state.isBought;
     const postId = this.props.postId;
     const { user } = this.context;
+
+    if (!user) return <Redirect to="sign-in" />;
+
     return (
       <>
         <div className='w-96 md:w-[800px] p-4 m-auto'>
-          <h1 className='text-2xl flex justify-center pb-4'>
+          <h1 className='text-2xl flex justify-center mt-6 pb-4'>
             {postId ? 'Edit Post' : 'New Post'}
           </h1>
           <form onSubmit={this.handleSubmit}>
-            <div className='bg-wrapper flex flex-wrap p-2 rounded-xl border border-gray-200'>
+            <div className='flex flex-wrap p-4 rounded-xl border-2 border-gray-200'>
               <div className='w-full md:w-1/2 relative order-1'>
                 <img className='w-96 h-96 max-h-96 object-cover object-center border
                   border-gray-300' src={imagePreview} alt='Placeholder image'
@@ -156,7 +160,7 @@ export default class PostForm extends React.Component {
               <div className='w-full md:w-1/2 order-2 px-2 md:px-4'>
                 <div className="flex items-center space-x-3 py-4 md:pt-0">
                   <img className="object-cover object-center w-10 h-10 rounded-full border
-                    border-red-300 cursor-pointer" alt="Profile picture"
+                    border-gray-300 cursor-pointer" alt="Profile picture"
                     src=
                     {user.profilePhotoUrl
                       ? `images/${user.profilePhotoUrl}`
@@ -218,8 +222,7 @@ export default class PostForm extends React.Component {
           </form>
         </div>
         {this.state.showModal && (
-          <Modal handleModal={this.handleModal} showModal={this.state.showModal}
-            handleDelete={this.handleDelete}/>
+          <Modal handleModal={this.handleModal} handleDelete={this.handleDelete}/>
         )}
       </>
     );

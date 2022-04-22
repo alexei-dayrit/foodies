@@ -1,31 +1,39 @@
 import React from 'react';
 import XMarkIcon from './svg-assets/xmark-icon';
 import MenuIcon from './svg-assets/menu-icon';
+import DropdownMenu from './dropdown-menu';
+import Redirect from './redirect';
 import AppContext from '../lib/app-context';
 export default class Navbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      navbarOpen: false
+      showDesktopDropdown: false,
+      showMobileDropdown: false
     };
-    this.handleNavbarChange = this.handleNavbarChange.bind(this);
+    this.handleMobileDropdownToggle = this.handleMobileDropdownToggle.bind(this);
+    this.handleDesktopDropdownToggle = this.handleDesktopDropdownToggle.bind(this);
   }
 
-  handleNavbarChange(event) {
-    const navbarOpen = this.state.navbarOpen;
-    if (navbarOpen) {
-      this.setState({ navbarOpen: false });
-    } else {
-      this.setState({ navbarOpen: true });
-    }
+  handleDesktopDropdownToggle() {
+    this.setState({ showDesktopDropdown: !this.state.showDesktopDropdown });
+  }
+
+  handleMobileDropdownToggle() {
+    this.setState({ showMobileDropdown: !this.state.showMobileDropdown });
   }
 
   render() {
-    const { user } = this.context;
+    const { handleMobileDropdownToggle, handleDesktopDropdownToggle } = this;
+    const { showMobileDropdown, showDesktopDropdown } = this.state;
+    const { user, handleSignOut } = this.context;
+
+    if (!user) return <Redirect to="sign-in" />;
+
     return (
       <>
         <nav className="relative flex flex-wrap items-center justify-between
-          px-2 py-3 bg-zinc-200 border border-gray-200 text-[#262626]">
+          px-2 py-3 border-b-2 border-[#dbdbdb] text-[#262626]">
           <div className="w-96 md:w-[800px] m-auto container px-4 flex flex-wrap
             items-center justify-between">
             <div className="w-full relative flex justify-between md:w-auto md:static
@@ -36,31 +44,46 @@ export default class Navbar extends React.Component {
                 Foodies
               </a>
               <button className="cursor-pointer leading-none md:hidden"
-                onClick={this.handleNavbarChange}>
-                {!this.state.navbarOpen ? <MenuIcon /> : <XMarkIcon />}
+                onClick={handleMobileDropdownToggle}>
+                {!showMobileDropdown ? <MenuIcon /> : <XMarkIcon />}
               </button>
             </div>
-            <div className={`md:flex items-center' ${(this.state.navbarOpen ? 'flex' : 'hidden')}`}>
+            <div className={`md:flex items-center' ${(showMobileDropdown ? 'flex' : 'hidden')}`}>
               <ul className="flex flex-col md:flex-row list-none md:ml-auto font-semibold">
                 <li>
-                  <a onClick={this.handleNavbarChange} className="px-3 py-2 flex
+                  <a onClick={handleMobileDropdownToggle} className="px-3 py-2 flex
                     items-center uppercase leading-snug hover:text-gray-600 hover:scale-105" href="#">
                     <span className="ml-2 md:mt-2">Home</span>
                   </a>
                 </li>
                 <li>
-                  <a onClick={this.handleNavbarChange} className="px-3 py-2 flex items-center
+                  <a onClick={handleMobileDropdownToggle} className="px-3 py-2 flex items-center
                     uppercase leading-snug hover:text-gray-600 hover:scale-105"
                     href="#new-post">
                     <span className="ml-2 md:mt-2">Add Post</span>
                   </a>
                 </li>
-                <li>
-                  <a onClick={this.handleNavbarChange} className='px-3 py-2 flex items-center
-                    uppercase leading-snug hover:text-gray-600 hover:scale-105'
-                    href={`#profile?userId=${user.userId}`}>
-                    <span className='ml-2 md:mt-2'>My Profile</span>
+                <li className='md:hidden'>
+                  <a onClick={handleMobileDropdownToggle} className="px-3 py-2 flex items-center
+                    uppercase leading-snug hover:text-gray-600 hover:scale-105"
+                    href={ `#profile?userId=${user.userId}`}>
+                    <span className="ml-2 md:mt-2">View Profile</span>
                   </a>
+                </li>
+                <li className='md:hidden'>
+                  <button onClick={handleSignOut} className="text-[#262626] px-3 py-2 flex items-center
+                    uppercase leading-snug hover:text-gray-600 hover:scale-105 ml-2 md:mt-2 font-semibold">
+                    Sign out
+                  </button>
+                </li>
+                <li className='hidden md:block'>
+                  <div onClick={handleDesktopDropdownToggle} className='px-3 py-2 flex items-center
+                    uppercase leading-snug md:mt-2'>
+                    <DropdownMenu handleDesktopDropdownToggle={handleDesktopDropdownToggle}
+                      showDesktopDropdown={showDesktopDropdown} user={user || null}
+                      handleSignOut={handleSignOut}
+                    />
+                  </div>
                 </li>
               </ul>
             </div>

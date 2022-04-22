@@ -104,12 +104,12 @@ export default class Post extends React.Component {
     }
     return (
       <>
-        <div className='drop-shadow-md bg-wrapper flex flex-wrap p-4 rounded-xl border
+        <div className='flex flex-wrap p-4 rounded-md border-2
           border-gray-200'>
           <div className="flex items-center w-full space-x-3 md:pt-0 pb-2 md:hidden">
             <div className="flex w-full">
               <a href={`#profile?userId=${userId}`}>
-                <img className="object-cover w-10 h-10 rounded-full border border-red-300"
+                <img className="object-cover w-10 h-10 rounded-full border border-gray-300"
                   src={`/images/${profilePhotoUrl}`} alt="Profile picture" />
               </a>
               <div>
@@ -124,15 +124,15 @@ export default class Post extends React.Component {
             </a>
           </div>
           <div className='w-full md:w-[55%]'>
-            <img className='drop-shadow-lg w-80 h-80 md:w-full md:h-[450px] object-cover border border-gray-200'
+            <img className='w-80 h-80 md:w-full md:h-[450px] object-cover border border-gray-200'
               src={`/images/${imageUrl}`} alt='Placeholder image' />
           </div>
           <div className='w-full md:w-[45%] md:pl-4 flex flex-col'>
-            <div className="md:flex items-center w-full space-x-3 md:pt-0 pb-2 md:pb-1 border-b
+            <div className="md:flex items-center w-full space-x-3 md:pt-0 pb-2 border-b
               border-gray-200 hidden">
               <div className="flex w-full">
                 <a href={`#profile?userId=${userId}`}>
-                  <img className="object-cover w-12 h-12 rounded-full border border-red-300"
+                  <img className="object-cover w-12 h-12 rounded-full border border-gray-300"
                     src={`/images/${profilePhotoUrl}`} alt="Profile picture" />
                 </a>
                 <div>

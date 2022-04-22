@@ -22,7 +22,7 @@ export default class PostHistory extends React.Component {
     const posts = this.state.posts;
     if (posts.length === 0) {
       return (
-        <div className='bg-wrapper flex flex-wrap p-4 h-96 rounded-xl border
+        <div className='flex flex-wrap p-4 h-96 rounded-xl border
           border-gray-200'>
           <div className='w-full flex flex-col justify-center items-center'>
             <CameraIcon />

@@ -17,6 +17,7 @@ export default class App extends React.Component {
       route: parseRoute(window.location.hash)
     };
     this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   componentDidMount() {
@@ -33,6 +34,12 @@ export default class App extends React.Component {
     const { user, token } = result;
     window.localStorage.setItem('foodies-jwt', token);
     this.setState({ user });
+  }
+
+  handleSignOut() {
+    window.localStorage.removeItem('foodies-jwt');
+    this.setState({ user: null });
+    window.location.hash = '#sign-in';
   }
 
   renderPage() {
@@ -59,8 +66,8 @@ export default class App extends React.Component {
   render() {
     if (this.state.isAuthorizing) return null;
     const { user, route } = this.state;
-    const { handleSignIn } = this;
-    const contextValue = { user, route, handleSignIn };
+    const { handleSignIn, handleSignOut } = this;
+    const contextValue = { user, route, handleSignIn, handleSignOut };
     return (
       <>
         <AppContext.Provider value={contextValue}>
