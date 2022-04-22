@@ -32,7 +32,9 @@ export default class App extends React.Component {
 
   handleSignIn(result) {
     const { user, token } = result;
-    window.localStorage.setItem('foodies-jwt', token);
+    if (token) {
+      window.localStorage.setItem('foodies-jwt', token);
+    }
     this.setState({ user });
   }
 

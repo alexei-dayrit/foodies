@@ -59,13 +59,20 @@ app.post('/api/auth/sign-up', uploadsMiddleware, (req, res, next) => {
         insert into "users" ("username", "hashedPassword", "postCount",
             "followerCount", "followingCount", "profilePhotoUrl")
         values ($1, $2, $3, $4, $5, $6)
+        on conflict (username) do nothing
         returning "signedUpAt", "username", "userId", "profilePhotoUrl"
       `;
       const params = [username, hashedPassword, 0, 0, 0, profilePhoto];
       db.query(sql, params)
         .then(result => {
           const [user] = result.rows;
-          res.status(201).json(user);
+          if (!user) {
+            res.status(401).json({
+              error: 'Username taken'
+            });
+          } else {
+            res.status(201).json(user);
+          }
         })
         .catch(err => next(err));
     })
