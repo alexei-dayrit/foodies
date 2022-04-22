@@ -1,7 +1,6 @@
 import React from 'react';
 import PostHistory from '../components/post-history';
 import AppContext from '../lib/app-context';
-import Redirect from '../components/redirect';
 
 export default class Profile extends React.Component {
   constructor(props) {
@@ -25,12 +24,6 @@ export default class Profile extends React.Component {
   }
 
   render() {
-    // const { user } = this.context;
-
-    // if (!user) return <Redirect to="sign-in" />;
-    if (this.state.isLoading) {
-      return null;
-    }
     const { posts } = this.state;
     return (
       <>

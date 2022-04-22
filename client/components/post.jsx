@@ -4,6 +4,7 @@ import PenIcon from './svg-assets/pen-icon';
 import formatDistance from 'date-fns/formatDistance';
 import HeartIcon from './svg-assets/heart-icon';
 import HeartIconFilled from './svg-assets/heart-icon-filled';
+import CommentIcon from './svg-assets/comment-icon';
 
 export default class Post extends React.Component {
   constructor(props) {
@@ -71,10 +72,14 @@ export default class Post extends React.Component {
   }
 
   handleCommentSubmit(event) {
+    const token = window.localStorage.getItem('foodies-jwt');
     event.preventDefault();
     fetch(`/api/uploadComment/${this.props.post.postId}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'X-Access-Token': token,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({ comment: this.state.newComment })
     })
       .then(response => response.json())
@@ -146,12 +151,17 @@ export default class Post extends React.Component {
               </a>
             </div>
             <div className="w-full pt-2 md:pt-1">
-              <a className='curor-pointer' onClick={this.handleLikeClicks}>
-                {this.state.isLiked ? <HeartIconFilled /> : <HeartIcon />}
-              </a>
-              <p>{`${this.state.numberOfLikes} likes`}</p>
+              <div className='flex'>
+                <a className='curor-pointer' onClick={this.handleLikeClicks}>
+                  {this.state.isLiked ? <HeartIconFilled /> : <HeartIcon />}
+                </a>
+                <a className='curor-pointer pl-1' onClick={this.handleCommentsToggle}>
+                  <CommentIcon />
+                </a>
+              </div>
+              <p className='pl-1'>{`${this.state.numberOfLikes} likes`}</p>
             </div>
-            <div className='w-full'>
+            <div className='w-full pl-1'>
               <p className='font-semibold text-sm md:text-base leading-none'>
                 {username}
                 {isBought
