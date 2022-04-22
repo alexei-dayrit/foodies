@@ -14,19 +14,7 @@ insert into "posts" ("postId", "caption", "imageUrl", "location", "userId", "isB
      values (101, 'caption2', 'image-1649888023634.jpeg', 'location2', 100, false);
 
 insert into "posts" ("postId", "caption", "imageUrl", "location", "userId", "isBought")
-     values (102, 'caption3', 'image-1649888023634.jpeg', 'ocation3', 101, false);
-
-insert into "likes" ("userId", "postId")
-     values (100, 100);
-
-insert into "likes" ("userId", "postId")
-     values (100, 102);
-
-insert into "likes" ("userId", "postId")
-     values (101, 100);
-
-insert into "likes" ("userId", "postId")
-     values (101, 102);
+     values (102, 'caption3', 'image-1649888023634.jpeg', 'location3', 101, false);
 
 insert into "comments" ("userId", "comment", "postId")
      values (101, 'WOW', 100);

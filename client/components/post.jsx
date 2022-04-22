@@ -33,9 +33,11 @@ export default class Post extends React.Component {
   handleLikeClicks(event) {
     const isLiked = this.state.isLiked;
     const numberOfLikes = Number(this.state.numberOfLikes);
+    const token = window.localStorage.getItem('foodies-jwt');
     if (!isLiked) {
       fetch(`/api/likes/${this.props.post.postId}`, {
-        method: 'POST'
+        method: 'POST',
+        headers: { 'X-Access-Token': token }
       })
         .then(response => response.json())
         .then(result => {
@@ -47,7 +49,8 @@ export default class Post extends React.Component {
         .catch(err => console.error(err));
     } else {
       fetch(`/api/deleteLikes/${this.props.post.postId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: { 'X-Access-Token': token }
       })
         .then(() => {
           this.setState({
@@ -92,7 +95,7 @@ export default class Post extends React.Component {
     const showComments = this.state.showComments;
     const comments = this.state.comments;
     const {
-      username, postId, imageUrl, caption, isBought,
+      username, userId, postId, imageUrl, caption, isBought,
       createdAt, location, editedAt
     } = this.props.post;
     let { profilePhotoUrl } = this.props.post;
@@ -105,12 +108,12 @@ export default class Post extends React.Component {
           border-gray-200'>
           <div className="flex items-center w-full space-x-3 md:pt-0 pb-2 md:hidden">
             <div className="flex w-full">
-              <a href="#profile">
+              <a href={`#profile?userId=${userId}`}>
                 <img className="object-cover w-10 h-10 rounded-full border border-red-300"
                   src={`/images/${profilePhotoUrl}`} alt="Profile picture" />
               </a>
               <div>
-                <a href="#profile">
+                <a href={`#profile?userId=${userId}`}>
                   <div className='font-semibold text-sm md:text-lg pl-3'>{username}</div>
                 </a>
                 <div className='text-gray-400 text-xs md:text-sm pl-3'>{location}</div>
@@ -128,12 +131,12 @@ export default class Post extends React.Component {
             <div className="md:flex items-center w-full space-x-3 md:pt-0 pb-2 md:pb-1 border-b
               border-gray-200 hidden">
               <div className="flex w-full">
-                <a href="#profile">
+                <a href={`#profile?userId=${userId}`}>
                   <img className="object-cover w-12 h-12 rounded-full border border-red-300"
                     src={`/images/${profilePhotoUrl}`} alt="Profile picture" />
                 </a>
                 <div>
-                  <a href="#profile">
+                  <a href={`#profile?userId=${userId}`}>
                     <div className='font-semibold text-sm md:text-lg md:pl-3'>{username}</div>
                   </a>
                   <div className='text-gray-400 text-xs md:text-sm md:pl-3'>{location}</div>

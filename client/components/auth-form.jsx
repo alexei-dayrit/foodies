@@ -109,7 +109,7 @@ export default class AuthForm extends React.Component {
                 <form onSubmit={handleSubmit}>
                   <div className='flex w-full justify-center my-1'>
                     <label htmlFor='profilePic' className='items-center relative flex flex-col mb-2'>
-                      <img className='w-12 h-12 rounded-full object-cover border border-gray-400
+                      <img className='w-12 h-12 rounded-full object-cover object-center border border-gray-400
                         hover:border-[#0095f6] border-opacity-50 z-50 mb-1 cursor-pointer' src={imagePreview} alt='Placeholder image'
                       />
                       <a className='cursor-pointer text-[#0095f6] hover:text-[#008ae3] font-medium'>

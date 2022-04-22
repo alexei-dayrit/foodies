@@ -44,15 +44,15 @@ export default class App extends React.Component {
       return <Home />;
     }
     if (route.path === 'profile') {
-      const userId = 100;
+      const userId = route.params.get('user.userId');
       return <Profile userId={userId} />;
     }
     if (route.path === 'edit-post') {
       const postId = route.params.get('postId');
-      return <PostForm key='edit-post' postId={postId} />;
+      return <PostForm key='edit-post' postId={postId}/>;
     }
     if (route.path === 'new-post') {
-      return <PostForm key='new-post' />;
+      return <PostForm key='new-post'/>;
     }
   }
 
@@ -64,7 +64,9 @@ export default class App extends React.Component {
     return (
       <>
         <AppContext.Provider value={contextValue}>
+          {!(route.path === 'sign-up' || route.path === 'sign-in') &&
             <Navbar />
+          }
           {this.renderPage()}
         </AppContext.Provider>
       </>
