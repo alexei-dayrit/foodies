@@ -120,6 +120,7 @@ app.get('/api/posts/:userId', (req, res, next) => {
   const sql = `
      select "u"."username",
             "u"."profilePhotoUrl",
+            "p"."userId",
             "p"."postId",
             "p"."imageUrl",
             "p"."caption",
