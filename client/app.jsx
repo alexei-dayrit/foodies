@@ -59,7 +59,7 @@ export default class App extends React.Component {
       return <PostForm key='edit-post' postId={postId}/>;
     }
     if (route.path === 'new-post') {
-      return <PostForm key='new-post'/>;
+      return <PostForm />;
     }
   }
 
