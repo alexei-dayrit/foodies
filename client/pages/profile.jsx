@@ -7,7 +7,7 @@ export default class Profile extends React.Component {
     super(props);
     this.state = {
       posts: [],
-      isLoading: true
+      user: ''
     };
   }
 
@@ -16,15 +16,22 @@ export default class Profile extends React.Component {
       .then(res => res.json())
       .then(posts => {
         this.setState({
-          posts: posts,
-          isLoading: false
+          posts: posts
+        });
+      })
+      .catch(err => console.error(err));
+    fetch(`/api/user/${this.props.userId}`)
+      .then(res => res.json())
+      .then(user => {
+        this.setState({
+          user
         });
       })
       .catch(err => console.error(err));
   }
 
   render() {
-    const { posts } = this.state;
+    const { posts, user } = this.state;
     return (
       <>
         <div className='w-96 md:w-[800px] p-4 m-auto'>
@@ -33,8 +40,8 @@ export default class Profile extends React.Component {
               <img className="w-[75px] h-[75px] md:w-[120px] md:h-[120px]
                 border-gray-300 border rounded-full object-cover"
                 src=
-                {posts.profilePhotoUrl
-                  ? `images/${posts.profilePhotoUrl}`
+                {user.profilePhotoUrl
+                  ? `images/${user.profilePhotoUrl}`
                   : 'images/placeholder-profile-image.jpeg'
                 }
                 alt="Profile picture" />
@@ -42,20 +49,20 @@ export default class Profile extends React.Component {
             <div className="w-[75%] md:w-2/3 order-2 flex flex-wrap items-center
               md:justify-center text-center">
               <div className='w-1/3 md:w-[22%]'>
-                <p>0</p>
+                <p>{user.postCount}</p>
                 <p>Posts</p>
               </div>
               <div className='w-1/3 md:w-[22%]'>
-                <p>0</p>
+                <p>{user.followerCount}</p>
                 <p>Followers</p>
               </div>
               <div className='w-1/3 md:w-[22%]'>
-                <p>0</p>
+                <p>{user.followingCount}</p>
                 <p>Following</p>
               </div>
               <div className="w-full md:w-3/4 flex ml-4 pl-4 mt-4 md:text-lg">
                 <div className="w-1/3">
-                  <p className='font-semibold'>{posts.username}</p>
+                  <p className='font-semibold'>{user.username}</p>
                 </div>
               </div>
             </div>
