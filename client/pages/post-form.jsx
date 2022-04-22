@@ -160,9 +160,8 @@ export default class PostForm extends React.Component {
                     src=
                     {user.profilePhotoUrl
                       ? `images/${user.profilePhotoUrl}`
-                      : '/images/placeholder-profile-pic.jpeg'
+                      : '/images/placeholder-profile-image.jpeg'
                     }
-
                   />
                   <div className="space-y-1 font-semibold">
                     <div className='cursor-pointer'>{user.username}</div>
