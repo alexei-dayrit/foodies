@@ -21,6 +21,29 @@ const db = new pg.Pool({
   }
 });
 
+app.get('/api/user/:userId', (req, res, next) => {
+  const userId = parseFloat(req.params.userId);
+  if (Number.isInteger(userId) !== true || userId < 0) {
+    throw new ClientError(400, 'UserId must be a positive integer');
+  }
+  const sql = `
+    select "username",
+           "profilePhotoUrl",
+           "followerCount",
+           "followingCount",
+           "postCount"
+      from "users"
+     where "userId" = $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      const [user] = result.rows;
+      res.status(200).json(user);
+    })
+    .catch(err => console.error(err));
+});
+
 app.post('/api/auth/sign-up', uploadsMiddleware, (req, res, next) => {
   const { username, password } = req.body;
   const profilePhoto = req.file
