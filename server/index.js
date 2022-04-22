@@ -89,7 +89,7 @@ app.post('/api/auth/sign-in', (req, res, next) => {
     .then(result => {
       const [user] = result.rows;
       if (!user) {
-        throw new ClientError(401, 'Invald login');
+        throw new ClientError(401, 'Invalid login');
       }
       const { userId, hashedPassword, profilePhotoUrl } = user;
       return argon2
