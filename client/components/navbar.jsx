@@ -21,7 +21,7 @@ export default class Navbar extends React.Component {
   }
 
   render() {
-    const { user } = this.context;
+    const { user, handleSignOut } = this.context;
     return (
       <>
         <nav className="relative flex flex-wrap items-center justify-between
