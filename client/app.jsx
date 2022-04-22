@@ -51,15 +51,15 @@ export default class App extends React.Component {
       return <Home />;
     }
     if (route.path === 'profile') {
-      const userId = route.params.get('user.userId');
-      return <Profile userId={userId} />;
+      const userId = route.params.get('userId');
+      return <Profile key={userId} userId={userId} />;
     }
     if (route.path === 'edit-post') {
       const postId = route.params.get('postId');
       return <PostForm key='edit-post' postId={postId}/>;
     }
     if (route.path === 'new-post') {
-      return <PostForm key='new-post'/>;
+      return <PostForm />;
     }
   }
 

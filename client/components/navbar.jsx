@@ -17,10 +17,12 @@ export default class Navbar extends React.Component {
 
   handleDesktopDropdownToggle() {
     this.setState({ showDesktopDropdown: !this.state.showDesktopDropdown });
+    this.setState({ showMobileDropdown: false });
   }
 
   handleMobileDropdownToggle() {
     this.setState({ showMobileDropdown: !this.state.showMobileDropdown });
+    this.setState({ showDesktopDropdown: false });
   }
 
   render() {

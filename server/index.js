@@ -21,6 +21,29 @@ const db = new pg.Pool({
   }
 });
 
+app.get('/api/user/:userId', (req, res, next) => {
+  const userId = parseFloat(req.params.userId);
+  if (Number.isInteger(userId) !== true || userId < 0) {
+    throw new ClientError(400, 'UserId must be a positive integer');
+  }
+  const sql = `
+    select "username",
+           "profilePhotoUrl",
+           "followerCount",
+           "followingCount",
+           "postCount"
+      from "users"
+     where "userId" = $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      const [user] = result.rows;
+      res.status(200).json(user);
+    })
+    .catch(err => console.error(err));
+});
+
 app.post('/api/auth/sign-up', uploadsMiddleware, (req, res, next) => {
   const { username, password } = req.body;
   const profilePhoto = req.file
@@ -52,7 +75,7 @@ app.post('/api/auth/sign-up', uploadsMiddleware, (req, res, next) => {
 app.post('/api/auth/sign-in', (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
-    throw new ClientError(401, 'invalid login');
+    throw new ClientError(401, 'Username and password are required fields.');
   }
   const sql = `
     select "userId",
@@ -66,14 +89,14 @@ app.post('/api/auth/sign-in', (req, res, next) => {
     .then(result => {
       const [user] = result.rows;
       if (!user) {
-        throw new ClientError(401, 'invald login');
+        throw new ClientError(401, 'Invald login');
       }
       const { userId, hashedPassword, profilePhotoUrl } = user;
       return argon2
         .verify(hashedPassword, password)
         .then(isMatching => {
           if (!isMatching) {
-            throw new ClientError(401, 'invalid login');
+            throw new ClientError(401, 'Invalid login');
           }
           const payload = { userId, username, profilePhotoUrl };
           const token = jwt.sign(payload, process.env.TOKEN_SECRET);
@@ -120,6 +143,7 @@ app.get('/api/posts/:userId', (req, res, next) => {
   const sql = `
      select "u"."username",
             "u"."profilePhotoUrl",
+            "p"."userId",
             "p"."postId",
             "p"."imageUrl",
             "p"."caption",

@@ -1,14 +1,37 @@
 import React from 'react';
 import PostHistory from '../components/post-history';
 import AppContext from '../lib/app-context';
-import Redirect from '../components/redirect';
 
 export default class Profile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      posts: [],
+      user: ''
+    };
+  }
+
+  componentDidMount() {
+    fetch(`/api/posts/${this.props.userId}`)
+      .then(res => res.json())
+      .then(posts => {
+        this.setState({
+          posts: posts
+        });
+      })
+      .catch(err => console.error(err));
+    fetch(`/api/user/${this.props.userId}`)
+      .then(res => res.json())
+      .then(user => {
+        this.setState({
+          user
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
   render() {
-    const { user } = this.context;
-
-    if (!user) return <Redirect to="sign-in" />;
-
+    const { posts, user } = this.state;
     return (
       <>
         <div className='w-96 md:w-[800px] p-4 m-auto'>
@@ -26,15 +49,15 @@ export default class Profile extends React.Component {
             <div className="w-[75%] md:w-2/3 order-2 flex flex-wrap items-center
               md:justify-center text-center">
               <div className='w-1/3 md:w-[22%]'>
-                <p>0</p>
+                <p>{user.postCount}</p>
                 <p>Posts</p>
               </div>
               <div className='w-1/3 md:w-[22%]'>
-                <p>0</p>
+                <p>{user.followerCount}</p>
                 <p>Followers</p>
               </div>
               <div className='w-1/3 md:w-[22%]'>
-                <p>0</p>
+                <p>{user.followingCount}</p>
                 <p>Following</p>
               </div>
               <div className="w-full md:w-3/4 flex ml-4 pl-4 mt-4 md:text-lg">
@@ -44,7 +67,7 @@ export default class Profile extends React.Component {
               </div>
             </div>
           </div>
-          <PostHistory userId={user.userId} />
+          <PostHistory posts={posts}/>
         </div>
       </>
     );
