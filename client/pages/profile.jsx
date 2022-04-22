@@ -4,11 +4,34 @@ import AppContext from '../lib/app-context';
 import Redirect from '../components/redirect';
 
 export default class Profile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      posts: [],
+      isLoading: true
+    };
+  }
+
+  componentDidMount() {
+    fetch(`/api/posts/${this.props.userId}`)
+      .then(res => res.json())
+      .then(posts => {
+        this.setState({
+          posts: posts,
+          isLoading: false
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
   render() {
-    const { user } = this.context;
+    // const { user } = this.context;
 
-    if (!user) return <Redirect to="sign-in" />;
-
+    // if (!user) return <Redirect to="sign-in" />;
+    if (this.state.isLoading) {
+      return null;
+    }
+    const { posts } = this.state;
     return (
       <>
         <div className='w-96 md:w-[800px] p-4 m-auto'>
@@ -17,8 +40,8 @@ export default class Profile extends React.Component {
               <img className="w-[75px] h-[75px] md:w-[120px] md:h-[120px]
                 border-gray-300 border rounded-full object-cover"
                 src=
-                {user.profilePhotoUrl
-                  ? `images/${user.profilePhotoUrl}`
+                {posts.profilePhotoUrl
+                  ? `images/${posts.profilePhotoUrl}`
                   : 'images/placeholder-profile-image.jpeg'
                 }
                 alt="Profile picture" />
@@ -39,12 +62,12 @@ export default class Profile extends React.Component {
               </div>
               <div className="w-full md:w-3/4 flex ml-4 pl-4 mt-4 md:text-lg">
                 <div className="w-1/3">
-                  <p className='font-semibold'>{user.username}</p>
+                  <p className='font-semibold'>{posts.username}</p>
                 </div>
               </div>
             </div>
           </div>
-          <PostHistory userId={user.userId} />
+          <PostHistory posts={posts}/>
         </div>
       </>
     );

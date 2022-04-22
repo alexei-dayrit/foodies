@@ -88,7 +88,6 @@ export default class Post extends React.Component {
           .catch(err => console.error(err));
       })
       .catch(err => console.error(err));
-
   }
 
   render() {
