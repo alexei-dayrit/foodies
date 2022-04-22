@@ -17,6 +17,7 @@ export default class App extends React.Component {
       route: parseRoute(window.location.hash)
     };
     this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   componentDidMount() {
@@ -33,6 +34,10 @@ export default class App extends React.Component {
     const { user, token } = result;
     window.localStorage.setItem('foodies-jwt', token);
     this.setState({ user });
+  }
+
+  handleSignOut() {
+
   }
 
   renderPage() {
