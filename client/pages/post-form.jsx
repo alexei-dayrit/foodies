@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from '../components/modal';
 import DeleteIcon from '../components/svg-assets/delete-icon';
 import PlusIcon from '../components/svg-assets/plus-icon';
+import Redirect from '../components/redirect';
 import AppContext from '../lib/app-context';
 
 export default class PostForm extends React.Component {
@@ -130,6 +131,9 @@ export default class PostForm extends React.Component {
     const isBought = this.state.isBought;
     const postId = this.props.postId;
     const { user } = this.context;
+
+    if (!user) return <Redirect to="sign-in" />;
+
     return (
       <>
         <div className='w-96 md:w-[800px] p-4 m-auto'>

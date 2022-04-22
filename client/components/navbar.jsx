@@ -2,6 +2,7 @@ import React from 'react';
 import XMarkIcon from './svg-assets/xmark-icon';
 import MenuIcon from './svg-assets/menu-icon';
 import DropdownMenu from './dropdown-menu';
+import Redirect from './redirect';
 import AppContext from '../lib/app-context';
 export default class Navbar extends React.Component {
   constructor(props) {
@@ -26,6 +27,9 @@ export default class Navbar extends React.Component {
     const { handleMobileDropdownToggle, handleDesktopDropdownToggle } = this;
     const { showMobileDropdown, showDesktopDropdown } = this.state;
     const { user, handleSignOut } = this.context;
+
+    if (!user) return <Redirect to="sign-in" />;
+
     return (
       <>
         <nav className="relative flex flex-wrap items-center justify-between
@@ -62,23 +66,19 @@ export default class Navbar extends React.Component {
                 <li className='md:hidden'>
                   <a onClick={handleMobileDropdownToggle} className="px-3 py-2 flex items-center
                     uppercase leading-snug hover:text-gray-600 hover:scale-105"
-                    href={user
-                      ? `#profile?userId=${user.userId}`
-                      : '#sign-in'
-                    }>
+                    href={ `#profile?userId=${user.userId}`}>
                     <span className="ml-2 md:mt-2">View Profile</span>
                   </a>
                 </li>
                 <li className='md:hidden'>
-                  <a onClick={handleSignOut} className="px-3 py-2 flex items-center
-                    uppercase leading-snug hover:text-gray-600 hover:scale-105"
-                    href="#sign-in">
-                    <span className="ml-2 md:mt-2">Sign out</span>
-                  </a>
+                  <button onClick={handleSignOut} className="text-[#262626] px-3 py-2 flex items-center
+                    uppercase leading-snug hover:text-gray-600 hover:scale-105 ml-2 md:mt-2 font-semibold">
+                    Sign out
+                  </button>
                 </li>
                 <li className='hidden md:block'>
                   <div onClick={handleDesktopDropdownToggle} className='px-3 py-2 flex items-center
-                    uppercase leading-snug md:mt-2' href='#sign-in'>
+                    uppercase leading-snug md:mt-2'>
                     <DropdownMenu handleDesktopDropdownToggle={handleDesktopDropdownToggle}
                       showDesktopDropdown={showDesktopDropdown} user={user || null}
                       handleSignOut={handleSignOut}

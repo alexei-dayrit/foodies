@@ -39,6 +39,7 @@ export default class App extends React.Component {
   handleSignOut() {
     window.localStorage.removeItem('foodies-jwt');
     this.setState({ user: null });
+    window.location.hash = '#sign-in';
   }
 
   renderPage() {

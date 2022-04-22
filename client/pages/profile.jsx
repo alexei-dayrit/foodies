@@ -1,10 +1,14 @@
 import React from 'react';
 import PostHistory from '../components/post-history';
 import AppContext from '../lib/app-context';
+import Redirect from '../components/redirect';
 
 export default class Profile extends React.Component {
   render() {
     const { user } = this.context;
+
+    if (!user) return <Redirect to="sign-in" />;
+
     return (
       <>
         <div className='w-96 md:w-[800px] p-4 m-auto'>
@@ -33,13 +37,9 @@ export default class Profile extends React.Component {
                 <p>0</p>
                 <p>Following</p>
               </div>
-              <div className="w-full md:w-3/4 flex justify-evenly md:justify-center
-                mt-4 md:text-lg">
+              <div className="w-full md:w-3/4 flex ml-4 pl-4 mt-4 md:text-lg">
                 <div className="w-1/3">
                   <p className='font-semibold'>{user.username}</p>
-                </div>
-                <div className="w-1/3 text-red-500">
-                  <p>Log Out</p>
                 </div>
               </div>
             </div>

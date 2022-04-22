@@ -17,19 +17,16 @@ export default class DropdownMenu extends React.Component {
             <ul className="py-1 text-sm text-[#262626]">
               <li>
                 <a className="block py-2 px-4 hover:bg-gray-600 hover:text-white"
-                  href={user
-                    ? `#profile?userId=${user.userId}`
-                    : '#sign-in'
-                  }>
+                  href={`#profile?userId=${user.userId}`}>
                   View Profile
                 </a>
               </li>
             </ul>
-            <div className="py-1">
-              <a href='#sign-in' onClick={handleSignOut} className="block py-2 px-4 text-sm
-                text-[#262626] hover:bg-gray-600 hover:text-white">
+            <div className="py-1 ">
+              <button onClick={handleSignOut} className="w-full block py-2 px-4 text-sm
+                text-[#262626] text-left hover:bg-gray-600 hover:text-white font-semibold uppercase">
                 Sign out
-              </a>
+              </button>
             </div>
           </div>
         )}
