@@ -46,7 +46,9 @@ export default class AuthForm extends React.Component {
             imagePreview: '/images/placeholder-profile-image.jpeg'
           });
           this.fileInputRef.current.value = null;
-          window.location.hash = 'sign-in';
+          if (!result.error) {
+            window.location.hash = 'sign-in';
+          }
         })
         .catch(err => console.error(err));
     } else if (action === 'sign-in') {
@@ -150,11 +152,10 @@ export default class AuthForm extends React.Component {
                 <div className="text-center text-[#262626] pt-4">
                   <p>
                     {footerMessage}
-                    <button className='pl-1 text-[#0095f6] hover:text-[#008ae3] hover:scale-105'>
-                      <a href={action === 'sign-up' ? '#sign-in' : '#sign-up' }>
-                        {footerLink}
-                      </a>
-                    </button>
+                    <a className='pl-1 text-[#0095f6] hover:text-[#008ae3] hover:scale-105'
+                    href={action === 'sign-up' ? '#sign-in' : '#sign-up' }>
+                      {footerLink}
+                    </a>
                   </p>
                 </div>
               </div>
