@@ -6,7 +6,7 @@ export default class Comment extends React.Component {
     const { comment, commentedAt, username, profilePhotoUrl } = this.props.comment;
     return (
       <>
-        <div className='flex pt-1'>
+        <div className='flex pt-2 pl-1'>
           <div className='w-[10%]'>
             <img alt="Profile picture"
             src={profilePhotoUrl
@@ -21,7 +21,7 @@ export default class Comment extends React.Component {
             {comment}
           </p>
         </div>
-        <p className='text-xs text-gray-400 font-light pb-1 md:text-sm'>
+        <p className='text-xs text-gray-400 font-light pb-1 md:text-sm pl-1'>
           {`${formatDistance(new Date(commentedAt), new Date(), { includeSeconds: true })} ago`}
         </p>
       </>

@@ -335,6 +335,27 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/follow/:userId', (req, res, next) => {
+  const { userId } = req.user;
+  const toBeFollowUserId = parseFloat(req.params.userId);
+  if (Number.isInteger(toBeFollowUserId) !== true || toBeFollowUserId < 0) {
+    throw new ClientError(400, 'Target userId must be a positive integer');
+  } else if (!toBeFollowUserId) {
+    throw new ClientError(400, 'Target userId is a required field');
+  }
+  const sql = `
+    insert into "followers" ("userId", "followerId")
+      values($1, $2)
+      returning *;
+  `;
+  const params = [toBeFollowUserId, userId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(201).json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
 app.put('/api/edit/:postId', uploadsMiddleware, (req, res, next) => {
   const { userId } = req.user;
   const { caption, isBought, location } = req.body;
@@ -376,20 +397,20 @@ app.delete('/api/deletePost/:postId', (req, res, next) => {
   if (Number.isInteger(postId) !== true || postId < 0) {
     throw new ClientError(400, 'PostId must be a positive integer');
   }
-  const sql = `
+  const sqlDeleteLikes = `
     delete from "likes"
      where "postId" = $1 and "userId" = $2
      returning *;
   `;
-  const sql2 = `
+  const sqlDeletePosts = `
     delete from "posts"
      where "postId" = $1 and "userId" = $2
      returning *;
   `;
   const params = [postId, userId];
-  db.query(sql, params)
+  db.query(sqlDeleteLikes, params)
     .then(result => {
-      db.query(sql2, params)
+      db.query(sqlDeletePosts, params)
         .then(result => {
           const [deletedPost] = result.rows;
           if (!deletedPost) {

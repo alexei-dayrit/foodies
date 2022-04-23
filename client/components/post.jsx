@@ -193,7 +193,7 @@ export default class Post extends React.Component {
             </div>
             {showComments &&
               <form onSubmit={this.handleCommentSubmit}
-                className='mt-auto'>
+                className='mt-auto pl-1'>
                 <textarea type="text" placeholder="Add a comment" required
                   className='border border-gray-600 rounded-xl mt-5 pt-1 px-2
                     w-full h-20'
