@@ -10,12 +10,12 @@ module.exports = {
     fontFamily: {
       sans: ['"Roboto"', 'sans-serif']
     },
-    screens: {
-      sm: '500px'
-    },
     extend: {
       colors: {
         wrapper: 'var(--wrapper)'
+      },
+      screens: {
+        sm: '500px'
       }
     }
   },
