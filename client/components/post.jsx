@@ -108,8 +108,7 @@ export default class Post extends React.Component {
     }
     return (
       <>
-        <div className='flex flex-wrap p-4 rounded-md border-2
-          border-gray-200'>
+        <div className='flex flex-wrap p-4 rounded-sm border border-gray-300 bg-white'>
           <div className="flex items-center w-full space-x-3 md:pt-0 pb-2 md:hidden">
             <div className="flex w-full">
               <a href={`#profile?userId=${userId}`}>

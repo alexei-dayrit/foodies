@@ -70,13 +70,14 @@ export default class PostForm extends React.Component {
   }
 
   handleDelete(event) {
+    const { user } = this.context;
     const token = window.localStorage.getItem('foodies-jwt');
     fetch(`/api/deletePost/${this.props.postId}`, {
       method: 'DELETE',
       headers: { 'X-Access-Token': token }
     })
       .then(() => {
-        window.location.hash = 'profile';
+        window.location.hash = `#profile?userId=${user.userId}`;
       })
       .catch(err => console.error(err));
   }
@@ -141,7 +142,7 @@ export default class PostForm extends React.Component {
             {postId ? 'Edit Post' : 'New Post'}
           </h1>
           <form onSubmit={this.handleSubmit}>
-            <div className='flex flex-wrap p-4 rounded-xl border-2 border-gray-200'>
+            <div className='flex flex-wrap p-4 rounded-xl border bg-white border-gray-300'>
               <div className='w-full md:w-1/2 relative order-1'>
                 <img className='w-96 h-96 max-h-96 object-cover object-center border
                   border-gray-300' src={imagePreview} alt='Placeholder image'
@@ -158,7 +159,7 @@ export default class PostForm extends React.Component {
                 />
               </div>
               <div className='w-full md:w-1/2 order-2 px-2 md:px-4'>
-                <div className="flex items-center space-x-3 py-4 md:pt-0">
+                <div className="flex items-center space-x-3 py-4 md:pt-0 border-b border-gray-200">
                   <img className="object-cover object-center w-10 h-10 rounded-full border
                     border-gray-300 cursor-pointer" alt="Profile picture"
                     src=
@@ -171,16 +172,16 @@ export default class PostForm extends React.Component {
                     <div className='cursor-pointer'>{user.username}</div>
                   </div>
                 </div>
-                <div className="py-4 border-b border-gray-200">
+                <div className="border-b border-gray-200">
                   <textarea required type="text" name="caption" placeholder="Write a caption"
                     value={this.state.caption} onChange={this.handleCaptionChange}
-                    className='bg-wrapper' cols={40} rows={2}
+                    className='bg-[#f8f9fa] py-2 pl-1 my-2' cols={40} rows={3}
                   />
                 </div>
-                <div className="py-4 border-b border-gray-200">
+                <div className="border-b border-gray-200">
                   <input type="text" name="location" placeholder='Add location'
                     value={this.state.location} onChange={this.handleLocationChange}
-                    className='bg-wrapper' />
+                    className='bg-[#f8f9fa] w-full py-2 pl-1 my-2'/>
                 </div>
                 <div className="py-4">
                   <ul id="isBought" className="filter-switch inline-flex items-center

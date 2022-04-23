@@ -35,7 +35,7 @@ export default class Navbar extends React.Component {
     return (
       <>
         <nav className="relative flex flex-wrap items-center justify-between
-          px-2 py-3 border-b-2 border-[#dbdbdb] text-[#262626]">
+          px-2 py-3 border-b border-[#dbdbdb] text-[#262626]">
           <div className="w-96 md:w-[800px] m-auto container px-4 flex flex-wrap
             items-center justify-between">
             <div className="w-full relative flex justify-between md:w-auto md:static

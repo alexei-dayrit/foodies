@@ -7,11 +7,11 @@ export default class PostHistory extends React.Component {
     const posts = this.props.posts;
     if (posts.length === 0) {
       return (
-        <div className='flex flex-wrap p-4 h-96 rounded-xl border
-          border-gray-200'>
+        <div className='flex flex-wrap p-4 h-96 rounded-sm border
+          border-gray-300 bg-white'>
           <div className='w-full flex flex-col justify-center items-center'>
             <CameraIcon />
-            <h1 className='text-xl font-semibold pt-2'>No Posts yet</h1>
+            <h1 className='text-lg font-semibold pt-2'>No Posts yet</h1>
           </div>
         </div>
       );
