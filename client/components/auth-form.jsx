@@ -98,12 +98,12 @@ export default class AuthForm extends React.Component {
         <div className="absolute w-full h-full bg-zinc-100 ">
           <div className="flex content-center items-center justify-center h-full
               mx-auto px-4 drop-shadow-md w-96 md:w-[800px]">
-            <div className="md:w-[55%] py-4 px-4 relative flex flex-col w-full shadow-lg rounded-lg bg-white border-2 border-gray-200">
+            <div className="md:w-[55%] py-4 px-4 relative flex flex-col w-full shadow-md rounded-sm bg-white border-2 border-gray-200">
               <div className="rounded-t px-6 md:px-10 py-4">
                 <h1 className="text-[#262626] styled-font text-4xl text-center pb-4"
                   >Foodies
                 </h1>
-                <h2 className='text-center border-b-2 border-gray-200 pb-4 text-gray-500 font-semibold'>
+                <h2 className='text-center border-b-2 border-slate-200 pb-4 text-gray-500 font-semibold'>
                   {welcomeMessage}
                 </h2>
               </div>

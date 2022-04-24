@@ -1,5 +1,6 @@
 import React from 'react';
 import PostHistory from '../components/post-history';
+import GridHistory from '../components/grid-history';
 import AppContext from '../lib/app-context';
 
 export default class Profile extends React.Component {
@@ -7,8 +8,10 @@ export default class Profile extends React.Component {
     super(props);
     this.state = {
       posts: [],
-      user: ''
+      user: '',
+      showFullPosts: false
     };
+    this.handleClicks = this.handleClicks.bind(this);
   }
 
   componentDidMount() {
@@ -30,11 +33,48 @@ export default class Profile extends React.Component {
       .catch(err => console.error(err));
   }
 
+  handleClicks() {
+    this.setState({ showFullPosts: !this.state.showFullPosts });
+  }
+
+  handleLikeClicks(event) {
+    const isLiked = this.state.isLiked;
+    const numberOfLikes = Number(this.state.numberOfLikes);
+    const token = window.localStorage.getItem('foodies-jwt');
+    if (!isLiked) {
+      fetch(`/api/likes/${this.props.post.postId}`, {
+        method: 'POST',
+        headers: { 'X-Access-Token': token }
+      })
+        .then(response => response.json())
+        .then(result => {
+          this.setState({
+            isLiked: true,
+            numberOfLikes: numberOfLikes + 1
+          });
+        })
+        .catch(err => console.error(err));
+    } else {
+      fetch(`/api/deleteLikes/${this.props.post.postId}`, {
+        method: 'DELETE',
+        headers: { 'X-Access-Token': token }
+      })
+        .then(() => {
+          this.setState({
+            isLiked: false,
+            numberOfLikes: numberOfLikes - 1
+          });
+        })
+        .catch(err => console.error(err));
+    }
+  }
+
   render() {
-    const { posts, user } = this.state;
+    const { posts, user, showFullPosts } = this.state;
+    const { handleClicks } = this;
     return (
       <>
-        <div className='sm:w-96 md:w-[800px] p-4 mx-auto overflow-hidden mt-16'>
+        <div className='sm:w-96 md:w-[800px] p-2 mx-auto overflow-hidden mt-16'>
           <div className='flex flex-wrap p-4 pb-8 mb-8 border-b border-[#dbdbdb]'>
             <div className='w-[25%] md:w-1/3 order-1 flex items-center md:justify-end'>
               <img className="w-[75px] h-[75px] md:w-[120px] md:h-[120px]
@@ -67,7 +107,14 @@ export default class Profile extends React.Component {
               </div>
             </div>
           </div>
-          <PostHistory posts={posts}/>
+          <div onClick={handleClicks}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
+          </div>
+          {showFullPosts
+            ? <PostHistory posts={posts} />
+            : <GridHistory posts={posts} handleClicks={handleClicks} />}
         </div>
       </>
     );

@@ -110,7 +110,7 @@ export default class Post extends React.Component {
     }
     return (
       <>
-        <div className='flex flex-wrap p-4 rounded-sm border border-gray-300 bg-white'>
+        <div className='flex flex-wrap p-2 rounded-sm border border-slate-200 shadow-md bg-white'>
           <div className="flex items-center w-full space-x-3 md:pt-0 pb-2 md:hidden">
             <div className="flex w-full">
               <a href={`#profile?userId=${userId}`}>
@@ -119,23 +119,23 @@ export default class Post extends React.Component {
               </a>
               <div>
                 <a href={`#profile?userId=${userId}`}>
-                  <div className='font-semibold text-sm md:text-lg pl-3'>{username}</div>
+                  <h2 className='font-semibold text-sm md:text-lg pl-3'>{username}</h2>
                 </a>
-                <div className='text-gray-400 text-xs md:text-sm pl-3'>{location}</div>
+                <span className='text-gray-400 text-xs md:text-sm pl-3'>{location}</span>
               </div>
             </div>
             {user.userId === userId && (
               <a href={`#edit-post?postId=${postId}`}>
-              <PenIcon />
-            </a>)
+                <PenIcon />
+              </a>)
             }
           </div>
           <div className='w-full md:w-[60%] flex flex-wrap'
-          href={`/images/${imageUrl}`} target="_blank" rel="noreferrer"
-            ><img className='w-full max-h-[500px] object-cover border border-gray-200'
-             src={`/images/${imageUrl}`} alt='Placeholder image' />
+            href={`/images/${imageUrl}`} target="_blank" rel="noreferrer"
+          ><img className='w-full max-h-[500px] object-cover'
+            src={`/images/${imageUrl}`} alt='Placeholder image' />
           </div>
-          <div className='w-full md:w-[40%] md:pl-4 flex flex-col'>
+          <div className='w-full md:w-[40%] md:pl-2 flex flex-col'>
             <div className="md:flex items-center w-full space-x-3 md:pt-0 pb-2 border-b
               border-gray-200 hidden">
               <div className="flex w-full">
@@ -161,7 +161,7 @@ export default class Post extends React.Component {
                 <a className='curor-pointer' onClick={this.handleLikeClicks}>
                   {this.state.isLiked ? <HeartIconFilled /> : <HeartIcon />}
                 </a>
-                <a className='curor-pointer pl-1' onClick={this.handleCommentsToggle}>
+                <a className='curor-pointer pl-2' onClick={this.handleCommentsToggle}>
                   <CommentIcon />
                 </a>
               </div>
@@ -201,7 +201,7 @@ export default class Post extends React.Component {
               <form onSubmit={this.handleCommentSubmit}
                 className='mt-auto pl-1'>
                 <textarea type="text" placeholder="Add a comment" required
-                  className='border border-gray-600 rounded-xl mt-5 pt-1 px-2
+                  className='border border-slate-600 rounded-xl mt-5 pt-1 px-2
                     w-full h-20'
                   onChange={this.handleCommentChange} value={this.state.newComment}
                 />

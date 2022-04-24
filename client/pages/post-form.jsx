@@ -142,9 +142,9 @@ export default class PostForm extends React.Component {
             {postId ? 'Edit Post' : 'New Post'}
           </h1>
           <form onSubmit={this.handleSubmit}>
-            <div className='flex flex-wrap p-4 rounded-sm border bg-white border-gray-300'>
+            <div className='flex flex-wrap p-4 rounded-sm border shadow-md bg-white border-gray-300'>
               <div className='w-full md:w-[60%] relative order-1'>
-                <img className='w-full min-h-[320px] object-cover object-left
+                <img className='w-full min-h-[400px] object-cover object-left
                   border-gray-300' src={imagePreview} alt='Placeholder image'
                 />
                 {!this.state.isUploaded &&
@@ -159,7 +159,7 @@ export default class PostForm extends React.Component {
                 />
               </div>
               <div className='w-full md:w-[40%] order-2 px-2 md:px-4'>
-                <div className="flex items-center space-x-3 py-4 md:pt-0 border-b border-gray-200">
+                <div className="flex items-center space-x-3 py-4 md:pt-0 border-b border-slate-200">
                   <img className="object-cover object-center w-10 h-10 rounded-full border
                     border-gray-300 cursor-pointer" alt="Profile picture"
                     src=
@@ -175,13 +175,13 @@ export default class PostForm extends React.Component {
                 <div className="border-b border-gray-200">
                   <textarea required type="text" name="caption" placeholder="Write a caption"
                     value={this.state.caption} onChange={this.handleCaptionChange}
-                    className='bg-[#f8f9fa] py-2 pl-1 my-2' cols={40} rows={3}
+                    className='bg-[#f8f9fa] bg-opacity-60 py-2 pl-1 my-2' cols={40} rows={3}
                   />
                 </div>
                 <div className="border-b border-gray-200">
                   <input type="text" name="location" placeholder='Add location'
                     value={this.state.location} onChange={this.handleLocationChange}
-                    className='bg-[#f8f9fa] w-full py-2 pl-1 my-2'/>
+                    className='bg-[#f8f9fa] bg-opacity-60 w-full py-2 pl-1 my-2'/>
                 </div>
                 <div className="py-4">
                   <ul id="isBought" className="filter-switch inline-flex items-center
