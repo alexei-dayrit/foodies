@@ -137,12 +137,12 @@ export default class PostForm extends React.Component {
 
     return (
       <>
-        <div className='w-96 md:w-[800px] p-4 m-auto'>
+        <div className='sm:w-96 md:w-[800px] p-4 mx-auto mb-2 mt-16'>
           <h1 className='text-2xl flex justify-center mt-6 pb-4'>
             {postId ? 'Edit Post' : 'New Post'}
           </h1>
           <form onSubmit={this.handleSubmit}>
-            <div className='flex flex-wrap p-4 rounded-xl border bg-white border-gray-300'>
+            <div className='flex flex-wrap p-4 rounded-sm border bg-white border-gray-300'>
               <div className='w-full md:w-1/2 relative order-1'>
                 <img className='w-96 h-96 max-h-96 object-cover object-center border
                   border-gray-300' src={imagePreview} alt='Placeholder image'

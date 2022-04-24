@@ -34,7 +34,7 @@ export default class Profile extends React.Component {
     const { posts, user } = this.state;
     return (
       <>
-        <div className='w-96 md:w-[800px] p-4 m-auto'>
+        <div className='sm:w-96 md:w-[800px] p-4 mx-auto overflow-hidden mt-16'>
           <div className='flex flex-wrap p-4 pb-8 mb-8 border-b border-[#dbdbdb]'>
             <div className='w-[25%] md:w-1/3 order-1 flex items-center md:justify-end'>
               <img className="w-[75px] h-[75px] md:w-[120px] md:h-[120px]
