@@ -143,8 +143,8 @@ export default class PostForm extends React.Component {
           </h1>
           <form onSubmit={this.handleSubmit}>
             <div className='flex flex-wrap p-4 rounded-sm border bg-white border-gray-300'>
-              <div className='w-full md:w-1/2 relative order-1'>
-                <img className='w-96 h-96 max-h-96 object-cover object-center border
+              <div className='w-full md:w-[60%] relative order-1'>
+                <img className='w-full min-h-[320px] object-cover object-left
                   border-gray-300' src={imagePreview} alt='Placeholder image'
                 />
                 {!this.state.isUploaded &&
@@ -158,7 +158,7 @@ export default class PostForm extends React.Component {
                   accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload}
                 />
               </div>
-              <div className='w-full md:w-1/2 order-2 px-2 md:px-4'>
+              <div className='w-full md:w-[40%] order-2 px-2 md:px-4'>
                 <div className="flex items-center space-x-3 py-4 md:pt-0 border-b border-gray-200">
                   <img className="object-cover object-center w-10 h-10 rounded-full border
                     border-gray-300 cursor-pointer" alt="Profile picture"

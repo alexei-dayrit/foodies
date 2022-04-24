@@ -7,7 +7,7 @@ export default class Comment extends React.Component {
     return (
       <>
         <div className='flex pt-2 pl-1'>
-          <div className='w-[10%]'>
+          <div className='w-[12%]'>
             <img alt="Profile picture"
             src={profilePhotoUrl
               ? `images/${profilePhotoUrl}`
@@ -16,7 +16,7 @@ export default class Comment extends React.Component {
               className='object-cover w-8 h-8 rounded-full border border-gray-300'
             />
           </div>
-          <p className='w-[90%] leading-tight pl-2'>
+          <p className='w-[88%] leading-tight pl-2'>
             <span className='font-semibold pr-1'>{username}</span>
             {comment}
           </p>

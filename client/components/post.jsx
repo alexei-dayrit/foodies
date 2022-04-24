@@ -5,6 +5,7 @@ import formatDistance from 'date-fns/formatDistance';
 import HeartIcon from './svg-assets/heart-icon';
 import HeartIconFilled from './svg-assets/heart-icon-filled';
 import CommentIcon from './svg-assets/comment-icon';
+import AppContext from '../lib/app-context';
 
 export default class Post extends React.Component {
   constructor(props) {
@@ -96,6 +97,7 @@ export default class Post extends React.Component {
   }
 
   render() {
+    const { user } = this.context;
     const showComments = this.state.showComments;
     const comments = this.state.comments;
     const {
@@ -122,15 +124,18 @@ export default class Post extends React.Component {
                 <div className='text-gray-400 text-xs md:text-sm pl-3'>{location}</div>
               </div>
             </div>
-            <a href={`#edit-post?postId=${postId}`}>
+            {user.userId === userId && (
+              <a href={`#edit-post?postId=${postId}`}>
               <PenIcon />
-            </a>
+            </a>)
+            }
           </div>
-          <div className='w-full md:w-[65%]'>
-            <img className='w-full md:h-[450px] object-cover border border-gray-200'
-              src={`/images/${imageUrl}`} alt='Placeholder image' />
+          <div className='w-full md:w-[60%] flex flex-wrap'
+          href={`/images/${imageUrl}`} target="_blank" rel="noreferrer"
+            ><img className='w-full max-h-[500px] object-cover border border-gray-200'
+             src={`/images/${imageUrl}`} alt='Placeholder image' />
           </div>
-          <div className='w-full md:w-[35%] md:pl-4 flex flex-col'>
+          <div className='w-full md:w-[40%] md:pl-4 flex flex-col'>
             <div className="md:flex items-center w-full space-x-3 md:pt-0 pb-2 border-b
               border-gray-200 hidden">
               <div className="flex w-full">
@@ -145,9 +150,11 @@ export default class Post extends React.Component {
                   <div className='text-gray-400 text-xs md:text-sm md:pl-3'>{location}</div>
                 </div>
               </div>
-              <a href={`#edit-post?postId=${postId}`}>
-                <PenIcon />
-              </a>
+              {user.userId === userId && (
+                <a href={`#edit-post?postId=${postId}`}>
+                  <PenIcon />
+                </a>)
+              }
             </div>
             <div className="w-full pt-2 md:pt-1">
               <div className='flex'>
@@ -181,7 +188,7 @@ export default class Post extends React.Component {
                 {showComments ? 'Hide comments' : 'View comments'}
               </button>
             </div>
-            <div className='md:max-h-[120px] md:overflow-y-scroll'>
+            <div className='md:max-h-[100px] md:overflow-y-scroll'>
               {showComments && comments.map(comment => {
                 return (
                   <div key={comment.commentId}>
@@ -209,3 +216,5 @@ export default class Post extends React.Component {
     );
   }
 }
+
+Post.contextType = AppContext;
