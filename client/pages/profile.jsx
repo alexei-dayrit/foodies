@@ -37,38 +37,6 @@ export default class Profile extends React.Component {
     this.setState({ showFullPosts: !this.state.showFullPosts });
   }
 
-  handleLikeClicks(event) {
-    const isLiked = this.state.isLiked;
-    const numberOfLikes = Number(this.state.numberOfLikes);
-    const token = window.localStorage.getItem('foodies-jwt');
-    if (!isLiked) {
-      fetch(`/api/likes/${this.props.post.postId}`, {
-        method: 'POST',
-        headers: { 'X-Access-Token': token }
-      })
-        .then(response => response.json())
-        .then(result => {
-          this.setState({
-            isLiked: true,
-            numberOfLikes: numberOfLikes + 1
-          });
-        })
-        .catch(err => console.error(err));
-    } else {
-      fetch(`/api/deleteLikes/${this.props.post.postId}`, {
-        method: 'DELETE',
-        headers: { 'X-Access-Token': token }
-      })
-        .then(() => {
-          this.setState({
-            isLiked: false,
-            numberOfLikes: numberOfLikes - 1
-          });
-        })
-        .catch(err => console.error(err));
-    }
-  }
-
   render() {
     const { posts, user, showFullPosts } = this.state;
     const { handleClicks } = this;
