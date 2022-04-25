@@ -1,11 +1,25 @@
 import React from 'react';
 import PenIcon from './svg-assets/pen-icon';
+import CameraIcon from './svg-assets/camera-icon';
 import AppContext from '../lib/app-context';
 
 export default class GridHistory extends React.Component {
   render() {
     const { user } = this.context;
     const { posts, handleClicks } = this.props;
+
+    if (posts.length === 0) {
+      return (
+        <div className='flex flex-wrap p-2 h-96 rounded-sm border
+          border-slate-200 bg-white'>
+          <div className='w-full flex flex-col justify-center items-center'>
+            <CameraIcon />
+            <h1 className='text-lg font-semibold pt-2'>No Posts yet</h1>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className='flex flex-wrap mt-3'>
         {posts.map(post => {
