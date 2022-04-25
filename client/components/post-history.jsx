@@ -21,7 +21,7 @@ export default class PostHistory extends React.Component {
       <>
         {posts.map(post => {
           return (
-            <div key={post.postId} className='relative my-3'>
+            <div key={post.postId} className='relative my-4'>
               <Post post={post} />
             </div>
           );

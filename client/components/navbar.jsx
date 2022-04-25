@@ -32,6 +32,10 @@ export default class Navbar extends React.Component {
 
     if (!user) return <Redirect to="sign-in" />;
 
+    if (user.profilePhotoUrl === null) {
+      user.profilePhotoUrl = '/placeholder-profile-image.jpeg';
+    }
+
     return (
       <>
         <nav className="flex flex-wrap items-center justify-between
@@ -42,7 +46,7 @@ export default class Navbar extends React.Component {
               md:block md:justify-start">
               <a className="pl-2 styled-font text-3xl leading-relaxed
                 inline-block mr-4 py-2 whitespace-nowrap hover:scale-105"
-                href="#">
+                href="#" onClick={handleMobileDropdownToggle && handleDesktopDropdownToggle}>
                 Foodies
               </a>
               <button className="cursor-pointer leading-none md:hidden"
@@ -80,7 +84,7 @@ export default class Navbar extends React.Component {
                 </li>
                 <li className='hidden md:block'>
                   <div onClick={handleDesktopDropdownToggle} className='px-3 py-2 flex items-center
-                    uppercase leading-snug md:mt-2'>
+                    uppercase leading-snug md:mt-1'>
                     <DropdownMenu handleDesktopDropdownToggle={handleDesktopDropdownToggle}
                       showDesktopDropdown={showDesktopDropdown} user={user || null}
                       handleSignOut={handleSignOut}
