@@ -44,6 +44,42 @@ app.get('/api/user/:userId', (req, res, next) => {
     .catch(err => console.error(err));
 });
 
+app.get('/api/posts/:userId', (req, res, next) => {
+  const userId = parseFloat(req.params.userId);
+  if (Number.isInteger(userId) !== true || userId < 0) {
+    throw new ClientError(400, 'UserId must be a positive integer');
+  }
+  const sql = `
+     select "u"."username",
+            "u"."profilePhotoUrl",
+            "p"."userId",
+            "p"."postId",
+            "p"."imageUrl",
+            "p"."caption",
+            "p"."isBought",
+            "p"."location",
+            "p"."createdAt",
+            "p"."editedAt",
+            "isLiked"."userId" is not null as "isLiked",
+            count("l".*) as "numberOfLikes"
+       from "posts" as "p"
+       join "users" as "u" using ("userId")
+       left join "likes" as "l" using ("postId")
+       left join "likes" as "isLiked"
+         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = $1)
+      where "p"."userId" = $1
+      group by "u"."userId", "isLiked"."userId", "p"."postId"
+      order by "p"."createdAt" desc
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      const posts = result.rows;
+      res.status(201).json(posts);
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/auth/sign-up', uploadsMiddleware, (req, res, next) => {
   const { username, password } = req.body;
   const profilePhoto = req.file
@@ -142,42 +178,6 @@ app.get('/api/posts', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/posts/:userId', (req, res, next) => {
-  const userId = parseFloat(req.params.userId);
-  if (Number.isInteger(userId) !== true || userId < 0) {
-    throw new ClientError(400, 'UserId must be a positive integer');
-  }
-  const sql = `
-     select "u"."username",
-            "u"."profilePhotoUrl",
-            "p"."userId",
-            "p"."postId",
-            "p"."imageUrl",
-            "p"."caption",
-            "p"."isBought",
-            "p"."location",
-            "p"."createdAt",
-            "p"."editedAt",
-            "isLiked"."userId" is not null as "isLiked",
-            count("l".*) as "numberOfLikes"
-       from "posts" as "p"
-       join "users" as "u" using ("userId")
-       left join "likes" as "l" using ("postId")
-       left join "likes" as "isLiked"
-         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = $1)
-      where "p"."userId" = $1
-      group by "u"."userId", "isLiked"."userId", "p"."postId"
-      order by "p"."createdAt" desc
-  `;
-  const params = [userId];
-  db.query(sql, params)
-    .then(result => {
-      const posts = result.rows;
-      res.status(201).json(posts);
-    })
-    .catch(err => next(err));
-});
-
 app.get('/api/comments/:postId', (req, res, next) => {
   const postId = parseFloat(req.params.postId);
   if (Number.isInteger(postId) !== true || postId < 0) {
@@ -189,7 +189,8 @@ app.get('/api/comments/:postId', (req, res, next) => {
            "commentId",
            "comment",
            "commentedAt",
-           "postId"
+           "postId",
+           "comments"."userId"
       from "comments"
       join "users" using ("userId")
      where "postId" = $1

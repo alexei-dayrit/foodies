@@ -118,10 +118,12 @@ export default class Post extends React.Component {
                  hover:border-slate-400"
                   src={`/images/${profilePhotoUrl}`} alt="Profile picture" />
               </a>
-              <a href={`#profile?userId=${userId}`}>
-                <h2 className='font-semibold text-sm pl-3 hover:text-slate-400'>{username}</h2>
+              <div className='flex-col flex'>
+                <a href={`#profile?userId=${userId}`}>
+                  <h2 className='font-semibold text-sm pl-3 hover:text-slate-400'>{username}</h2>
+                </a>
                 <span className='text-gray-400 text-xs pl-3'>{location}</span>
-              </a>
+              </div>
             </div>
             {user.userId === userId && (
               <a href={`#edit-post?postId=${postId}`}>
@@ -142,10 +144,12 @@ export default class Post extends React.Component {
                   <img className="object-cover w-10 h-10 rounded-full border border-gray-300 hover:border-slate-400"
                     src={`/images/${profilePhotoUrl}`} alt="Profile picture" />
                 </a>
-                <a href={`#profile?userId=${userId}`}>
-                  <h2 className='font-semibold text-sm md:pl-3 hover:text-slate-400'>{username}</h2>
-                  <span className='text-gray-400 text-xs md:pl-3'>{location}</span>
-                </a>
+                <div className='flex flex-col'>
+                  <a href={`#profile?userId=${userId}`}>
+                    <h2 className='font-semibold text-sm md:pl-3 hover:text-slate-400'>{username}</h2>
+                  </a>
+                    <span className='text-gray-400 text-xs md:pl-3'>{location}</span>
+                </div>
               </div>
               {user.userId === userId && (
                 <a href={`#edit-post?postId=${postId}`}>
@@ -162,9 +166,9 @@ export default class Post extends React.Component {
                   <CommentIcon />
                 </a>
               </div>
-              <p className='pl-1 text-sm'>{`${this.state.numberOfLikes} likes`}</p>
+              <p className='pl-1 py-1 text-sm'>{`${this.state.numberOfLikes} likes`}</p>
             </div>
-            <div className='w-full pl-1'>
+            <div className='w-full pl-1 leading-tight'>
               <div className='flex'>
                 <a href={`#profile?userId=${userId}`}>
                   <h2 className='font-semibold text-sm pr-1 hover:text-slate-400'>
@@ -178,14 +182,14 @@ export default class Post extends React.Component {
               <p className='w-full text-sm font-light'>
                 {caption}
               </p>
-              <p className='w-full text-gray-400 font-light text-xs'>
+              <p className='w-full text-gray-400 pt-1 font-light text-xs'>
                 {editedAt === null
                   ? `posted ${formatDistance(new Date(createdAt), new Date(), { includeSeconds: true })} ago`
                   : `edited ${formatDistance(new Date(editedAt), new Date(), { includeSeconds: true })} ago`
                 }
               </p>
-              <button onClick={this.handleCommentsToggle} className='text-gray-400 \
-              hover:text-slate-400 text-sm'>
+              <button onClick={this.handleCommentsToggle} className='text-gray-400
+              hover:text-slate-500 text-sm'>
                 {showComments ? 'Hide comments' : 'View comments'}
               </button>
             </div>
@@ -193,7 +197,7 @@ export default class Post extends React.Component {
               {showComments && comments.map(comment => {
                 return (
                   <div key={comment.commentId}>
-                    <Comment comment={comment} />
+                    <Comment comment={comment} post={this.props.post} />
                   </div>
                 );
               })}

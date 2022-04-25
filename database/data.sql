@@ -25,9 +25,6 @@ insert into "posts" ("userId","postId", "caption", "imageUrl", "location", "isBo
 insert into "posts" ("userId","postId", "caption", "imageUrl", "location", "isBought", "createdAt")
      values (101, 108, 'Made some fish and chips with some sides.', 'image-1650861154878.jpeg', 'Vallejo, CA', false, '2022-04-19 18:30:10');
 
-insert into "posts" ("userId","postId", "caption", "imageUrl", "location", "isBought", "createdAt")
-     values (101, 109, 'Seafood boil', 'image-1650861103970.JPG', 'Vallejo, CA', false, '2022-04-23 15:30:10');
-
 -- SAMPLE USER3
 insert into "users" ("userId", "username", "profilePhotoUrl", "hashedPassword", "followerCount", "followingCount", "postCount")
      values (102, 'varietyEater', 'image-1650869307167.jpeg', 'pass1', 2, 1, 2);
