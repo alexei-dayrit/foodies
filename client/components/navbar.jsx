@@ -75,7 +75,7 @@ export default class Navbar extends React.Component {
                 <li className='md:hidden'>
                   <button onClick={handleSignOut} className="text-[#262626] px-3 py-2 flex items-center
                     uppercase leading-snug hover:text-slate-600 ml-2 md:mt-2 font-semibold">
-                    Sign out
+                    Log out
                   </button>
                 </li>
                 <li className='hidden md:block'>

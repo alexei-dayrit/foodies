@@ -5,10 +5,10 @@ export default class GridHistory extends React.Component {
   render() {
     const { posts, handleClicks } = this.props;
     return (
-      <div className='flex flex-wrap'>
+      <div className='flex flex-wrap mt-3'>
         {posts.map(post => {
           return (
-            <div key={post.postId} className='relative my-[1px] px-[1px] w-1/3'>
+            <div key={post.postId} className='relative my-[1px] px-[1px] md:my-1 md:px-1 w-1/3'>
               <img onClick={handleClicks} className='w-full h-32 md:h-56 object-cover object-center
                 border border-slate-200 cursor-pointer'
                 src={`images/${post.imageUrl}`} alt="Thumbnail for post" />

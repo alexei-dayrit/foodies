@@ -25,7 +25,7 @@ export default class DropdownMenu extends React.Component {
             <div className="py-1 ">
               <button onClick={handleSignOut} className="w-full block py-2 px-4 text-sm
                 text-[#262626] text-left hover:bg-gray-600 hover:text-white font-semibold uppercase">
-                Sign out
+                Log out
               </button>
             </div>
           </div>

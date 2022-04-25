@@ -144,7 +144,7 @@ export default class PostForm extends React.Component {
           <form onSubmit={this.handleSubmit}>
             <div className='flex flex-wrap p-4 rounded-sm border shadow-md bg-white border-gray-300'>
               <div className='w-full md:w-[60%] relative order-1'>
-                <img className='w-full min-h-[400px] object-cover object-left
+                <img className='w-full object-cover object-left
                   border-gray-300' src={imagePreview} alt='Placeholder image'
                 />
                 {!this.state.isUploaded &&

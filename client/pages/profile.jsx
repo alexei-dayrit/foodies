@@ -11,9 +11,10 @@ export default class Profile extends React.Component {
     this.state = {
       posts: [],
       user: '',
-      showFullPosts: false
+      showListView: false
     };
-    this.handleClicks = this.handleClicks.bind(this);
+    this.handleGridIconClicks = this.handleGridIconClicks.bind(this);
+    this.handleListIconClicks = this.handleListIconClicks.bind(this);
   }
 
   componentDidMount() {
@@ -35,17 +36,21 @@ export default class Profile extends React.Component {
       .catch(err => console.error(err));
   }
 
-  handleClicks() {
-    this.setState({ showFullPosts: !this.state.showFullPosts });
+  handleGridIconClicks() {
+    this.setState({ showListView: false });
+  }
+
+  handleListIconClicks() {
+    this.setState({ showListView: true });
   }
 
   render() {
-    const { posts, user, showFullPosts } = this.state;
-    const { handleClicks } = this;
+    const { posts, user, showListView } = this.state;
+    const { handleGridIconClicks, handleListIconClicks } = this;
     return (
       <>
         <div className='sm:w-96 md:w-[800px] p-2 mx-auto overflow-hidden mt-16'>
-          <div className='flex flex-wrap p-4 pb-6 mb-6 border-b border-[#dbdbdb]'>
+          <div className='flex flex-wrap p-4 pb-6'>
             <div className='w-[25%] md:w-1/3 order-1 flex items-center md:justify-end'>
               <img className="w-20 h-20 md:w-36 md:h-36
                 border-gray-300 border rounded-full object-cover"
@@ -77,17 +82,21 @@ export default class Profile extends React.Component {
               </div>
             </div>
           </div>
-          <div onClick={handleClicks} className='flex'>
-            <button className='w-1/2 flex justify-center'>
+          <div className='flex'>
+            <button className={`w-1/2 border-t border-[#dbdbdb] flex justify-center pr-4
+              ${!showListView && 'border-t-2 border-gray-600'} pt-2`}
+              onClick={handleGridIconClicks}>
               <GridIcon />
             </button>
-            <button className='w-1/2 flex justify-center'>
+            <button className={`w-1/2 border-t border-[#dbdbdb] pl-4 flex justify-center
+              ${showListView && 'border-t-2 border-gray-600'} pt-2`}
+              onClick={handleListIconClicks}>
               <ListIcon />
             </button>
           </div>
-          {showFullPosts
+          {showListView
             ? <PostHistory posts={posts} />
-            : <GridHistory posts={posts} handleClicks={handleClicks} />}
+            : <GridHistory posts={posts} handleListIconClicks={handleListIconClicks} />}
         </div>
       </>
     );
