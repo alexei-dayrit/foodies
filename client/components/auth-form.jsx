@@ -82,7 +82,7 @@ export default class AuthForm extends React.Component {
     const { action } = this.props;
     const welcomeMessage = action === 'sign-up'
       ? 'Sign up to see photos of delicious food.'
-      : 'Please sign in to continue.';
+      : null;
     const submitButtonText = action === 'sign-up'
       ? 'Sign Up'
       : 'Log In';
@@ -98,10 +98,11 @@ export default class AuthForm extends React.Component {
         <div className="absolute w-full h-full bg-zinc-100 ">
           <div className="flex content-center items-center justify-center h-full
               mx-auto px-4 drop-shadow-md w-96 md:w-[800px]">
-            <div className="md:w-[55%] py-4 px-4 relative flex flex-col w-full shadow-md rounded-sm bg-white border-2 border-gray-200">
+            <div className="md:w-[55%] py-4 px-4 relative flex flex-col w-full shadow-sm rounded-sm
+              bg-white border border-slate-300">
               <div className="rounded-t px-6 md:px-10 py-4">
                 <h1 className="text-[#262626] styled-font text-4xl text-center pb-4"
-                  >Foodies
+                >Foodies
                 </h1>
                 <h2 className='text-center border-b-2 border-slate-200 pb-4 text-gray-500 font-semibold'>
                   {welcomeMessage}
@@ -111,8 +112,8 @@ export default class AuthForm extends React.Component {
                 <form onSubmit={handleSubmit}>
                   <div className='flex w-full justify-center my-1'>
                     <label htmlFor='profilePic' className='items-center relative flex flex-col mb-2'>
-                      <img className='w-12 h-12 rounded-full object-cover object-center border border-gray-400
-                        hover:border-[#0095f6] border-opacity-50 z-50 mb-1 cursor-pointer' src={imagePreview} alt='Placeholder image'
+                      <img className='w-12 h-12 rounded-full object-cover object-center border border-gray-300
+                        hover:border-slate-400 z-50 mb-1 cursor-pointer' src={imagePreview} alt='Placeholder image'
                       />
                       <a className='cursor-pointer text-[#0095f6] hover:text-[#008ae3] font-medium'>
                         Edit photo
@@ -128,7 +129,9 @@ export default class AuthForm extends React.Component {
                       htmlFor="username" onChange={handleChange}
                     >Username
                     </label>
-                    <input type="text" className="border-2 border-gray-200 px-3 py-3 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full border-opacity-50" placeholder="Username" id='username' name='username'
+                    <input type="text" className="border-2 border-gray-200 px-3 py-3 text-gray-700 bg-white
+                      rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full border-opacity-50"
+                      placeholder="Username" id='username' name='username' required
                       value={username} onChange={handleChange}
                     />
                   </div>
@@ -137,13 +140,16 @@ export default class AuthForm extends React.Component {
                       htmlFor="password"
                     >Password
                     </label>
-                    <input type="password" className="px-3 py-3 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring-2 ring-sky-600 w-full border-2 border-gray-200 border-opacity-50" placeholder="Password" id='password' name='password'
+                    <input type="password" className="px-3 py-3 text-gray-700 bg-white rounded text-sm
+                      shadow focus:outline-none focus:ring-2 ring-sky-600 w-full border-2 border-gray-200
+                      border-opacity-50" placeholder="Password" id='password' name='password' required
                       value={password} onChange={handleChange}
                     />
                   </div>
                   <div className="text-center mt-6">
-                    <button className="bg-[#0095f6] text-white hover:bg-[#008ae3]
-                      text-sm font-bold uppercase px-6 py-3 rounded shadow outline-none focus:outline-none mr-1 mb-1 w-full"
+                    <button className={`bg-[#0095f6] text-white hover:bg-[#008ae3] text-sm font-bold uppercase
+                    px-6 py-3 rounded shadow outline-none focus:outline-none mr-1 mb-1 w-full
+                    ${(username === '' || password === '') && 'bg-opacity-50'}`}
                       type='submit'
                     >{submitButtonText}
                     </button>
@@ -153,7 +159,7 @@ export default class AuthForm extends React.Component {
                   <p>
                     {footerMessage}
                     <a className='pl-1 text-[#0095f6] hover:text-[#008ae3] hover:scale-105'
-                    href={action === 'sign-up' ? '#sign-in' : '#sign-up' }>
+                      href={action === 'sign-up' ? '#sign-in' : '#sign-up'}>
                       {footerLink}
                     </a>
                   </p>
