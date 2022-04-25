@@ -87,7 +87,7 @@ export default class Profile extends React.Component {
               </div>
             </div>
           </div>
-          <div className='flex'>
+          <div className='flex mb-2'>
             <button className={`w-1/2 border-t border-[#dbdbdb] flex justify-center pr-4
               ${!showListView && 'border-t-2 border-gray-600'} pt-2`}
               onClick={handleGridIconClicks}>
