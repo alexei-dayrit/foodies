@@ -29,11 +29,11 @@ export default class AuthForm extends React.Component {
     event.preventDefault();
     const { action } = this.props;
     const formData = new FormData();
-    formData.append('image', this.fileInputRef.current.files[0]);
     formData.append('username', this.state.username);
     formData.append('password', this.state.password);
 
     if (action === 'sign-up') {
+      formData.append('image', this.fileInputRef.current.files[0]);
       fetch('/api/auth/sign-up', {
         method: 'POST',
         body: formData
@@ -69,7 +69,6 @@ export default class AuthForm extends React.Component {
             password: '',
             imagePreview: '/images/placeholder-profile-image.jpeg'
           });
-          this.fileInputRef.current.value = null;
           this.props.onSignIn(result);
         })
         .catch(err => console.error(err));
@@ -82,7 +81,7 @@ export default class AuthForm extends React.Component {
     const { action } = this.props;
     const welcomeMessage = action === 'sign-up'
       ? 'Sign up to see photos of delicious food.'
-      : null;
+      : 'Please sign in to continue.';
     const submitButtonText = action === 'sign-up'
       ? 'Sign Up'
       : 'Log In';
@@ -111,18 +110,20 @@ export default class AuthForm extends React.Component {
               <div className="flex-auto px-4 md:px-10 pb-6">
                 <form onSubmit={handleSubmit}>
                   <div className='flex w-full justify-center my-1'>
-                    <label htmlFor='profilePic' className='items-center relative flex flex-col mb-2'>
-                      <img className='w-12 h-12 rounded-full object-cover object-center border border-gray-300
+                    {action === 'sign-up' && (
+                      <label htmlFor='profilePic' className='items-center relative flex flex-col mb-2'>
+                        <img className='w-12 h-12 rounded-full object-cover object-center border border-gray-300
                         hover:border-slate-400 z-50 mb-1 cursor-pointer' src={imagePreview} alt='Placeholder image'
-                      />
-                      <a className='cursor-pointer text-[#0095f6] hover:text-[#008ae3] font-medium'>
-                        Edit photo
-                      </a>
-                      <input ref={this.fileInputRef} className='inset-center hidden cursor-pointer'
-                        type="file" id="profilePic" name="profilePic"
-                        accept=".png, .jpg, .jpeg, .gif" onChange={handleImageUpload}
-                      />
-                    </label>
+                        />
+                        <a className='cursor-pointer text-[#0095f6] hover:text-[#008ae3] font-medium'>
+                          Edit photo
+                        </a>
+                        <input ref={this.fileInputRef} className='inset-center hidden cursor-pointer'
+                          type="file" id="profilePic" name="profilePic"
+                          accept=".png, .jpg, .jpeg, .gif" onChange={handleImageUpload}
+                        />
+                      </label>
+                    )}
                   </div>
                   <div className="relative w-full mb-3">
                     <label className="block uppercase text-gray-700 text-xs font-bold mb-2"

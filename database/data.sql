@@ -30,7 +30,7 @@ insert into "posts" ("userId","postId", "caption", "imageUrl", "location", "isBo
 
 -- SAMPLE USER3
 insert into "users" ("userId", "username", "profilePhotoUrl", "hashedPassword", "followerCount", "followingCount", "postCount")
-     values (102, 'varietyEater', null, 'pass1', 2, 1, 2);
+     values (102, 'varietyEater', 'image-1650869307167.jpeg', 'pass1', 2, 1, 2);
 
 insert into "posts" ("userId","postId", "caption", "imageUrl", "location", "isBought", "createdAt")
      values (102, 110, 'Perfect for a cold day!', 'image-1650862870268.jpeg', 'Irvine, CA', true, '2022-04-22 15:30:10');
