@@ -56,9 +56,9 @@ export default class PostForm extends React.Component {
 
   handleIsBoughtChange(event) {
     if (event.target.value === 'bought') {
-      this.setState({ isBought: true });
-    } else {
       this.setState({ isBought: false });
+    } else {
+      this.setState({ isBought: true });
     }
   }
 
@@ -187,7 +187,7 @@ export default class PostForm extends React.Component {
                   <ul id="isBought" className="filter-switch inline-flex items-center
                     h-10 space-x-1 rounded-md font-semibold text-sky-600">
                     <li className="filter-switch-item flex h-8 bg-gray-300x">
-                      <input onChange={this.handleIsBoughtChange} checked={isBought === false}
+                      <input onChange={this.handleIsBoughtChange} checked={isBought === true}
                         type="radio" name="isBought" id="cooked" value='cooked' className="sr-only" required
                       />
                       <label htmlFor="cooked" className="hover:scale-110 border-2 h-9 py-2 px-2
@@ -196,7 +196,7 @@ export default class PostForm extends React.Component {
                       </label>
                     </li>
                     <li className="filter-switch-item flex relative h-8 bg-gray-300x">
-                      <input onChange={this.handleIsBoughtChange} checked={isBought === true}
+                      <input onChange={this.handleIsBoughtChange} checked={isBought === false}
                         type="radio" name="isBought" id="bought" value='bought' className="sr-only" required
                       />
                       <label htmlFor="bought" className="hover:scale-110 border-2 h-9 py-2 px-2 ml-1
