@@ -43,9 +43,9 @@ export default class Profile extends React.Component {
     return (
       <>
         <div className='sm:w-96 md:w-[800px] p-2 mx-auto overflow-hidden mt-16'>
-          <div className='flex flex-wrap p-4 pb-8 mb-8 border-b border-[#dbdbdb]'>
+          <div className='flex flex-wrap p-4 pb-6 mb-6 border-b border-[#dbdbdb]'>
             <div className='w-[25%] md:w-1/3 order-1 flex items-center md:justify-end'>
-              <img className="w-[75px] h-[75px] md:w-[120px] md:h-[120px]
+              <img className="w-20 h-20 md:w-36 md:h-36
                 border-gray-300 border rounded-full object-cover"
                 src=
                 {user.profilePhotoUrl
@@ -55,20 +55,20 @@ export default class Profile extends React.Component {
                 alt="Profile picture" />
             </div>
             <div className="w-[75%] md:w-2/3 order-2 flex flex-wrap items-center
-              md:justify-center text-center">
+              md:justify-center text-center font-medium">
               <div className='w-1/3 md:w-[22%]'>
-                <p>{user.postCount}</p>
+                <p className='font-semibold'>{user.postCount}</p>
                 <p>Posts</p>
               </div>
               <div className='w-1/3 md:w-[22%]'>
-                <p>{user.followerCount}</p>
+                <p className='font-semibold'>{user.followerCount}</p>
                 <p>Followers</p>
               </div>
               <div className='w-1/3 md:w-[22%]'>
-                <p>{user.followingCount}</p>
+                <p className='font-semibold'>{user.followingCount}</p>
                 <p>Following</p>
               </div>
-              <div className="w-full md:w-3/4 flex ml-4 pl-4 mt-4 md:text-lg">
+              <div className="w-full md:w-3/4 flex ml-4 pl-4 mt-4 md:text-xl">
                 <div className="w-1/3">
                   <p className='font-semibold'>{user.username}</p>
                 </div>

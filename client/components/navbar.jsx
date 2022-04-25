@@ -40,7 +40,7 @@ export default class Navbar extends React.Component {
             items-center justify-between">
             <div className="w-full relative flex justify-between md:w-auto md:static
               md:block md:justify-start">
-              <a className="pl-2 styled-font text-4xl leading-relaxed
+              <a className="pl-2 styled-font text-3xl leading-relaxed
                 inline-block mr-4 py-2 whitespace-nowrap hover:scale-105"
                 href="#">
                 Foodies
@@ -54,27 +54,27 @@ export default class Navbar extends React.Component {
               <ul className="flex flex-col md:flex-row list-none md:ml-auto font-semibold">
                 <li>
                   <a onClick={handleMobileDropdownToggle} className="px-3 py-2 flex
-                    items-center uppercase leading-snug hover:text-gray-600 hover:scale-105" href="#">
+                    items-center uppercase leading-snug hover:text-slate-600" href="#">
                     <span className="ml-2 md:mt-2">Home</span>
                   </a>
                 </li>
                 <li>
                   <a onClick={handleMobileDropdownToggle} className="px-3 py-2 flex items-center
-                    uppercase leading-snug hover:text-gray-600 hover:scale-105"
+                    uppercase leading-snug hover:text-slate-600"
                     href="#new-post">
                     <span className="ml-2 md:mt-2">Add Post</span>
                   </a>
                 </li>
                 <li className='md:hidden'>
                   <a onClick={handleMobileDropdownToggle} className="px-3 py-2 flex items-center
-                    uppercase leading-snug hover:text-gray-600 hover:scale-105"
+                    uppercase leading-snug hover:text-slate-600"
                     href={ `#profile?userId=${user.userId}`}>
                     <span className="ml-2 md:mt-2">View Profile</span>
                   </a>
                 </li>
                 <li className='md:hidden'>
                   <button onClick={handleSignOut} className="text-[#262626] px-3 py-2 flex items-center
-                    uppercase leading-snug hover:text-gray-600 hover:scale-105 ml-2 md:mt-2 font-semibold">
+                    uppercase leading-snug hover:text-slate-600 ml-2 md:mt-2 font-semibold">
                     Sign out
                   </button>
                 </li>

@@ -8,7 +8,7 @@ export default class DropdownMenu extends React.Component {
       <div>
         <button onClick={handleDesktopDropdownToggle}
           className="flex justify-between items-center pr-4 pl-2 w-full font-semibold
-            md:p-0 md:w-auto relative hover:text-gray-600 hover:scale-105 uppercase"
+            md:p-0 md:w-auto relative hover:text-slate-600 uppercase"
         >My Profile
           <ChevronDownIcon />
         </button>
@@ -16,7 +16,7 @@ export default class DropdownMenu extends React.Component {
           <div className="absolute w-36 mt-2 rounded divide-y shadow bg-[#ebebeb] divide-gray-400">
             <ul className="py-1 text-sm text-[#262626]">
               <li>
-                <a className="block py-2 px-4 hover:bg-gray-600 hover:text-white"
+                <a className="block py-2 px-4 hover:bg-slate-600 hover:text-white"
                   href={`#profile?userId=${user.userId}`}>
                   View Profile
                 </a>
