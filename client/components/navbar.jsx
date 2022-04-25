@@ -46,7 +46,7 @@ export default class Navbar extends React.Component {
               md:block md:justify-start">
               <a className="pl-2 styled-font text-3xl leading-relaxed
                 inline-block mr-4 py-2 whitespace-nowrap hover:scale-105"
-                href="#" onClick={handleMobileDropdownToggle && handleDesktopDropdownToggle}>
+                href="#" onClick={handleMobileDropdownToggle}>
                 Foodies
               </a>
               <button className="cursor-pointer leading-none md:hidden"

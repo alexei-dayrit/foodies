@@ -132,7 +132,7 @@ export default class Post extends React.Component {
           <div className='w-full md:w-[60%] flex flex-wrap'
             href={`/images/${imageUrl}`} target="_blank" rel="noreferrer"
           ><img className='w-full min-h-[300px] max-h-[500px] object-cover'
-            src={`/images/${imageUrl}`} alt='Placeholder image' />
+            src={`/images/${imageUrl}`} alt='Photo of post' />
           </div>
           <div className='w-full md:w-[40%] md:pl-2 flex flex-col p-2'>
             <div className="md:flex items-center w-full space-x-3 md:pt-0 pb-2 border-b

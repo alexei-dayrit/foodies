@@ -18,7 +18,12 @@ export default class Profile extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/posts/${this.props.userId}`)
+    const { user } = this.context;
+    let userId = this.props.userId;
+    if (!this.props.userId) {
+      userId = user.userId;
+    }
+    fetch(`/api/posts/${userId}`)
       .then(res => res.json())
       .then(posts => {
         this.setState({
@@ -26,7 +31,7 @@ export default class Profile extends React.Component {
         });
       })
       .catch(err => console.error(err));
-    fetch(`/api/user/${this.props.userId}`)
+    fetch(`/api/user/${userId}`)
       .then(res => res.json())
       .then(user => {
         this.setState({
