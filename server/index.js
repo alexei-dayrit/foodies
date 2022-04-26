@@ -27,13 +27,13 @@ app.get('/api/user/:userId', (req, res, next) => {
     throw new ClientError(400, 'UserId must be a positive integer');
   }
   const sql = `
-    select "username",
-           "profilePhotoUrl",
-           "followerCount",
-           "followingCount",
-           "postCount"
-      from "users"
-     where "userId" = $1
+    select "u"."username",
+           "u"."profilePhotoUrl",
+           "p"."userId" is not null as "postCount",
+           count("p".*)
+      from "users" as "u"
+ left join "posts" as "p"
+     where "u"."userId" = $1
   `;
   const params = [userId];
   db.query(sql, params)
