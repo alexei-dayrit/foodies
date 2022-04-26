@@ -26,10 +26,7 @@ CREATE TABLE "public"."users" (
 	"userId" serial NOT NULL,
 	"username" TEXT NOT NULL UNIQUE,
 	"hashedPassword" TEXT NOT NULL,
-	"signedUpAt" timestamp with time zone NOT NULL default now(),
-  "followerCount" integer NOT NULL,
-  "followingCount" integer NOT NULL,
-  "postCount" integer NOT NULL,
+	"signedUpAt" timestamp with time zone NOT NULL default now()
   "profilePhotoUrl" TEXT,
 	CONSTRAINT "users_pk" PRIMARY KEY ("userId")
 ) WITH (

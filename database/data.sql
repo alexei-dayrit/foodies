@@ -2,8 +2,8 @@
 -- You should NEVER EVER check user data into Git!
 
 -- SAMPLE USER1
-insert into "users" ("userId", "username", "profilePhotoUrl", "hashedPassword", "followerCount", "followingCount", "postCount")
-     values (100, 'sushi_lover', 'image-1650864757312.jpeg', 'pass1', 2, 1, 3);
+insert into "users" ("userId", "username", "profilePhotoUrl", "hashedPassword")
+     values (100, 'sushi_lover', 'image-1650864757312.jpeg', 'pass1');
 
 insert into "posts" ("userId", "postId", "caption", "imageUrl", "location", "isBought", "createdAt")
      values (100, 100, 'Celebrated my birthday with delicious sushi!', 'image-1650860094759.jpeg', 'San Francisco, CA', false, '2022-03-21 11:30:10');
@@ -16,8 +16,8 @@ insert into "posts" ("userId", "postId", "caption", "imageUrl", "location", "isB
 
 
 -- SAMPLE USER2
-insert into "users" ("userId", "username",  "profilePhotoUrl", "hashedPassword", "followerCount", "followingCount", "postCount")
-     values (101, 'casual_cook', 'image-1650864705652.jpeg', 'pass2', 2, 2, 3);
+insert into "users" ("userId", "username",  "profilePhotoUrl", "hashedPassword")
+     values (101, 'casual_cook', 'image-1650864705652.jpeg', 'pass2');
 
 insert into "posts" ("userId","postId", "caption", "imageUrl", "location", "isBought", "createdAt")
      values (101, 107, 'First post! Upgraded ramen noodles.', 'image-1650859980943.jpeg', 'Vallejo, CA', true, '2022-04-17 18:30:10');
@@ -26,8 +26,8 @@ insert into "posts" ("userId","postId", "caption", "imageUrl", "location", "isBo
      values (101, 108, 'Made some fish and chips with some sides.', 'image-1650861154878.jpeg', 'Vallejo, CA', true, '2022-04-19 18:30:10');
 
 -- SAMPLE USER3
-insert into "users" ("userId", "username", "profilePhotoUrl", "hashedPassword", "followerCount", "followingCount", "postCount")
-     values (102, 'varietyEater', 'image-1650869307167.jpeg', 'pass1', 2, 1, 2);
+insert into "users" ("userId", "username", "profilePhotoUrl", "hashedPassword")
+     values (102, 'varietyEater', 'image-1650869307167.jpeg', 'pass1');
 
 insert into "posts" ("userId","postId", "caption", "imageUrl", "location", "isBought", "createdAt")
      values (102, 110, 'Perfect for a cold day!', 'image-1650862870268.jpeg', 'Irvine, CA', false, '2022-04-22 15:30:10');
