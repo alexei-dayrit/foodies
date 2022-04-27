@@ -106,11 +106,12 @@ export default class Post extends React.Component {
     const comments = this.state.comments;
     const {
       username, userId, postId, imageUrl, caption, isBought,
-      createdAt, location, editedAt
+      createdAt, location, editedAt, profilePhotoUrl
     } = this.props.post;
-    let { profilePhotoUrl } = this.props.post;
-    if (profilePhotoUrl === null) {
-      profilePhotoUrl = 'placeholder-profile-image.jpeg';
+
+    let placeholder = '';
+    if (user.profilePhotoUrl === null) {
+      placeholder = 'images/placeholder-profile-image.jpeg';
     }
     return (
       <>
@@ -120,7 +121,7 @@ export default class Post extends React.Component {
               <a href={`#profile?userId=${userId}`} className='items-center'>
                 <img className="object-cover w-10 h-10 rounded-full border border-gray-300
                  hover:border-slate-400"
-                  src={profilePhotoUrl} alt="Profile picture" />
+                  src={profilePhotoUrl || placeholder} alt="Profile picture" />
               </a>
               <div className='flex-col flex'>
                 <a href={`#profile?userId=${userId}`}>
@@ -146,7 +147,7 @@ export default class Post extends React.Component {
               <div className="flex w-full items-center">
                 <a href={`#profile?userId=${userId}`}>
                   <img className="object-cover w-10 h-10 rounded-full border border-gray-300 hover:border-slate-400"
-                    src={profilePhotoUrl} alt="Profile picture" />
+                    src={profilePhotoUrl || placeholder} alt="Profile picture" />
                 </a>
                 <div className='flex flex-col'>
                   <a href={`#profile?userId=${userId}`}>

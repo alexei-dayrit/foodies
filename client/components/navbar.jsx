@@ -32,10 +32,6 @@ export default class Navbar extends React.Component {
 
     if (!user) return <Redirect to="sign-in" />;
 
-    if (user.profilePhotoUrl === null) {
-      user.profilePhotoUrl = '/placeholder-profile-image.jpeg';
-    }
-
     return (
       <>
         <nav className="flex flex-wrap items-center justify-between
