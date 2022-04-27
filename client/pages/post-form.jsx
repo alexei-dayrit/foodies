@@ -164,7 +164,7 @@ export default class PostForm extends React.Component {
                     border-gray-300 cursor-pointer" alt="Profile picture"
                     src=
                     {user.profilePhotoUrl
-                      ? `images/${user.profilePhotoUrl}`
+                      ? user.profilePhotoUrl
                       : '/images/placeholder-profile-image.jpeg'
                     }
                   />

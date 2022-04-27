@@ -27,13 +27,10 @@ app.get('/api/user/:userId', (req, res, next) => {
     throw new ClientError(400, 'UserId must be a positive integer');
   }
   const sql = `
-    select "u"."username",
-           "u"."profilePhotoUrl",
-           "p"."userId" is not null as "postCount",
-           count("p".*)
-      from "users" as "u"
- left join "posts" as "p"
-     where "u"."userId" = $1
+    select "username",
+           "profilePhotoUrl"
+      from "users"
+     where "userId" = $1
   `;
   const params = [userId];
   db.query(sql, params)
@@ -83,7 +80,7 @@ app.get('/api/posts/:userId', (req, res, next) => {
 app.post('/api/auth/sign-up', uploadsMiddleware, (req, res, next) => {
   const { username, password } = req.body;
   const profilePhoto = req.file
-    ? req.file.filename
+    ? req.file.location
     : null;
   if (!username || !password) {
     throw new ClientError(400, 'Username and password are required fields');
@@ -92,13 +89,12 @@ app.post('/api/auth/sign-up', uploadsMiddleware, (req, res, next) => {
     .hash(password)
     .then(hashedPassword => {
       const sql = `
-        insert into "users" ("username", "hashedPassword", "postCount",
-            "followerCount", "followingCount", "profilePhotoUrl")
-        values ($1, $2, $3, $4, $5, $6)
+        insert into "users" ("username", "hashedPassword", "profilePhotoUrl")
+             values ($1, $2, $3)
         on conflict (username) do nothing
         returning "signedUpAt", "username", "userId", "profilePhotoUrl"
       `;
-      const params = [username, hashedPassword, 0, 0, 0, profilePhoto];
+      const params = [username, hashedPassword, profilePhoto];
       db.query(sql, params)
         .then(result => {
           const [user] = result.rows;
@@ -321,7 +317,7 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
   if (!caption || !location || !isBought) {
     throw new ClientError(400, 'Caption, location, and isBought are required fields');
   }
-  const imageUrl = req.file.filename;
+  const imageUrl = req.file.location;
   const sql = `
     insert into "posts" ("userId", "imageUrl", "caption", "location", "isBought")
       values ($1, $2, $3, $4, $5)
@@ -361,7 +357,7 @@ app.put('/api/edit/:postId', uploadsMiddleware, (req, res, next) => {
   const { userId } = req.user;
   const { caption, isBought, location } = req.body;
   const postId = parseFloat(req.params.postId);
-  const imageUrl = req.file ? req.file.filename : null;
+  const imageUrl = req.file ? req.file.location : null;
   const editedAt = new Date();
   if (Number.isInteger(postId) !== true || postId < 0) {
     throw new ClientError(400, 'PostId must be a positive integer');

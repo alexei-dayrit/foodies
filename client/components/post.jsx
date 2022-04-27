@@ -5,6 +5,7 @@ import formatDistance from 'date-fns/formatDistance';
 import HeartIcon from './svg-assets/heart-icon';
 import HeartIconFilled from './svg-assets/heart-icon-filled';
 import CommentIcon from './svg-assets/comment-icon';
+import Redirect from './redirect';
 import AppContext from '../lib/app-context';
 
 export default class Post extends React.Component {
@@ -98,6 +99,9 @@ export default class Post extends React.Component {
 
   render() {
     const { user } = this.context;
+
+    if (!this.context.user) return <Redirect to="sign-in" />;
+
     const showComments = this.state.showComments;
     const comments = this.state.comments;
     const {
@@ -116,7 +120,7 @@ export default class Post extends React.Component {
               <a href={`#profile?userId=${userId}`} className='items-center'>
                 <img className="object-cover w-10 h-10 rounded-full border border-gray-300
                  hover:border-slate-400"
-                  src={`/images/${profilePhotoUrl}`} alt="Profile picture" />
+                  src={profilePhotoUrl} alt="Profile picture" />
               </a>
               <div className='flex-col flex'>
                 <a href={`#profile?userId=${userId}`}>
@@ -132,9 +136,9 @@ export default class Post extends React.Component {
             }
           </div>
           <div className='w-full md:w-[60%] flex flex-wrap'
-            href={`/images/${imageUrl}`} target="_blank" rel="noreferrer"
+            href={imageUrl} target="_blank" rel="noreferrer"
           ><img className='w-full min-h-[300px] max-h-[500px] object-cover'
-            src={`/images/${imageUrl}`} alt='Photo of post' />
+            src={imageUrl} alt='Photo of post' />
           </div>
           <div className='w-full md:w-[40%] md:pl-2 flex flex-col p-2'>
             <div className="md:flex items-center w-full space-x-3 md:pt-0 pb-2 border-b
@@ -142,7 +146,7 @@ export default class Post extends React.Component {
               <div className="flex w-full items-center">
                 <a href={`#profile?userId=${userId}`}>
                   <img className="object-cover w-10 h-10 rounded-full border border-gray-300 hover:border-slate-400"
-                    src={`/images/${profilePhotoUrl}`} alt="Profile picture" />
+                    src={profilePhotoUrl} alt="Profile picture" />
                 </a>
                 <div className='flex flex-col'>
                   <a href={`#profile?userId=${userId}`}>

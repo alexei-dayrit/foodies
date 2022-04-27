@@ -5,6 +5,7 @@ import Post from './post';
 export default class PostHistory extends React.Component {
   render() {
     const { posts } = this.props;
+
     if (posts.length === 0) {
       return (
         <div className='flex flex-wrap p-2 h-96 rounded-sm border

@@ -111,7 +111,7 @@ export default class AuthForm extends React.Component {
                 <form onSubmit={handleSubmit}>
                   <div className='flex w-full justify-center my-1'>
                     {action === 'sign-up' && (
-                      <label htmlFor='profilePic' className='items-center relative flex flex-col mb-2'>
+                      <label htmlFor='image' className='items-center relative flex flex-col mb-2'>
                         <img className='w-12 h-12 rounded-full object-cover object-center border border-gray-300
                         hover:border-slate-400 z-50 mb-1 cursor-pointer' src={imagePreview} alt='Placeholder image'
                         />
@@ -119,7 +119,7 @@ export default class AuthForm extends React.Component {
                           Edit photo
                         </a>
                         <input ref={this.fileInputRef} className='inset-center hidden cursor-pointer'
-                          type="file" id="profilePic" name="profilePic"
+                          type="file" id="image" name="image"
                           accept=".png, .jpg, .jpeg, .gif" onChange={handleImageUpload}
                         />
                       </label>

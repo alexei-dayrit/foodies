@@ -10,7 +10,7 @@ export default class Comment extends React.Component {
           <a className='w-[12%]' href={`#profile?userId=${userId}`}>
             <img alt="Profile picture"
             src={profilePhotoUrl
-              ? `images/${profilePhotoUrl}`
+              ? { profilePhotoUrl }
               : 'images/placeholder-profile-image.jpeg'
             }
               className='object-cover w-8 h-8 rounded-full border border-gray-300'

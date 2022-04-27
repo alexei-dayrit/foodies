@@ -11,7 +11,7 @@ export default class DropdownMenu extends React.Component {
           md:p-0 md:w-auto relative hover:text-slate-600 uppercase mb-0">
           <img className="object-cover w-7 h-7 rounded-full border border-gray-300
           hover:border-slate-400"
-            src={`/images/${user.profilePhotoUrl}`} alt="Profile picture" />
+            src={user.profilePhotoUrl} alt="Profile picture" />
           <ChevronDownIcon />
         </button>
         {showDesktopDropdown && (
