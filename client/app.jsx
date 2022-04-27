@@ -32,7 +32,9 @@ export default class App extends React.Component {
 
   handleSignIn(result) {
     const { user, token } = result;
-    window.localStorage.setItem('foodies-jwt', token);
+    if (token) {
+      window.localStorage.setItem('foodies-jwt', token);
+    }
     this.setState({ user });
   }
 
@@ -56,10 +58,10 @@ export default class App extends React.Component {
     }
     if (route.path === 'edit-post') {
       const postId = route.params.get('postId');
-      return <PostForm key='edit-post' postId={postId}/>;
+      return <PostForm key='edit-post' postId={postId} />;
     }
     if (route.path === 'new-post') {
-      return <PostForm />;
+      return <PostForm key='new-post' />;
     }
   }
 

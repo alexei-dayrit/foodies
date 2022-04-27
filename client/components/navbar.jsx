@@ -34,15 +34,15 @@ export default class Navbar extends React.Component {
 
     return (
       <>
-        <nav className="relative flex flex-wrap items-center justify-between
-          px-2 py-3 border-b-2 border-[#dbdbdb] text-[#262626]">
-          <div className="w-96 md:w-[800px] m-auto container px-4 flex flex-wrap
+        <nav className="flex flex-wrap items-center justify-between
+          text-[#262626] fixed top-0 right-0 left-0 z-[9999] bg-white">
+          <div className="w-96 md:w-[800px] m-auto container flex flex-wrap
             items-center justify-between">
             <div className="w-full relative flex justify-between md:w-auto md:static
               md:block md:justify-start">
-              <a className="pl-2 styled-font text-4xl leading-relaxed
+              <a className="pl-2 styled-font text-3xl leading-relaxed
                 inline-block mr-4 py-2 whitespace-nowrap hover:scale-105"
-                href="#">
+                href="#" onClick={handleMobileDropdownToggle}>
                 Foodies
               </a>
               <button className="cursor-pointer leading-none md:hidden"
@@ -54,33 +54,33 @@ export default class Navbar extends React.Component {
               <ul className="flex flex-col md:flex-row list-none md:ml-auto font-semibold">
                 <li>
                   <a onClick={handleMobileDropdownToggle} className="px-3 py-2 flex
-                    items-center uppercase leading-snug hover:text-gray-600 hover:scale-105" href="#">
+                    items-center uppercase leading-snug hover:text-slate-600" href="#">
                     <span className="ml-2 md:mt-2">Home</span>
                   </a>
                 </li>
                 <li>
                   <a onClick={handleMobileDropdownToggle} className="px-3 py-2 flex items-center
-                    uppercase leading-snug hover:text-gray-600 hover:scale-105"
+                    uppercase leading-snug hover:text-slate-600"
                     href="#new-post">
                     <span className="ml-2 md:mt-2">Add Post</span>
                   </a>
                 </li>
                 <li className='md:hidden'>
                   <a onClick={handleMobileDropdownToggle} className="px-3 py-2 flex items-center
-                    uppercase leading-snug hover:text-gray-600 hover:scale-105"
+                    uppercase leading-snug hover:text-slate-600"
                     href={ `#profile?userId=${user.userId}`}>
                     <span className="ml-2 md:mt-2">View Profile</span>
                   </a>
                 </li>
                 <li className='md:hidden'>
                   <button onClick={handleSignOut} className="text-[#262626] px-3 py-2 flex items-center
-                    uppercase leading-snug hover:text-gray-600 hover:scale-105 ml-2 md:mt-2 font-semibold">
-                    Sign out
+                    uppercase leading-snug hover:text-slate-600 ml-2 md:mt-2 font-semibold">
+                    Log out
                   </button>
                 </li>
                 <li className='hidden md:block'>
                   <div onClick={handleDesktopDropdownToggle} className='px-3 py-2 flex items-center
-                    uppercase leading-snug md:mt-2'>
+                    uppercase leading-snug md:mt-1'>
                     <DropdownMenu handleDesktopDropdownToggle={handleDesktopDropdownToggle}
                       showDesktopDropdown={showDesktopDropdown} user={user || null}
                       handleSignOut={handleSignOut}

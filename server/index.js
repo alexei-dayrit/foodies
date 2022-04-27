@@ -28,10 +28,7 @@ app.get('/api/user/:userId', (req, res, next) => {
   }
   const sql = `
     select "username",
-           "profilePhotoUrl",
-           "followerCount",
-           "followingCount",
-           "postCount"
+           "profilePhotoUrl"
       from "users"
      where "userId" = $1
   `;
@@ -44,10 +41,46 @@ app.get('/api/user/:userId', (req, res, next) => {
     .catch(err => console.error(err));
 });
 
+app.get('/api/posts/:userId', (req, res, next) => {
+  const userId = parseFloat(req.params.userId);
+  if (Number.isInteger(userId) !== true || userId < 0) {
+    throw new ClientError(400, 'UserId must be a positive integer');
+  }
+  const sql = `
+     select "u"."username",
+            "u"."profilePhotoUrl",
+            "p"."userId",
+            "p"."postId",
+            "p"."imageUrl",
+            "p"."caption",
+            "p"."isBought",
+            "p"."location",
+            "p"."createdAt",
+            "p"."editedAt",
+            "isLiked"."userId" is not null as "isLiked",
+            count("l".*) as "numberOfLikes"
+       from "posts" as "p"
+       join "users" as "u" using ("userId")
+       left join "likes" as "l" using ("postId")
+       left join "likes" as "isLiked"
+         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = $1)
+      where "p"."userId" = $1
+      group by "u"."userId", "isLiked"."userId", "p"."postId"
+      order by "p"."createdAt" desc
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      const posts = result.rows;
+      res.status(201).json(posts);
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/auth/sign-up', uploadsMiddleware, (req, res, next) => {
   const { username, password } = req.body;
   const profilePhoto = req.file
-    ? req.file.filename
+    ? req.file.location
     : null;
   if (!username || !password) {
     throw new ClientError(400, 'Username and password are required fields');
@@ -56,16 +89,22 @@ app.post('/api/auth/sign-up', uploadsMiddleware, (req, res, next) => {
     .hash(password)
     .then(hashedPassword => {
       const sql = `
-        insert into "users" ("username", "hashedPassword", "postCount",
-            "followerCount", "followingCount", "profilePhotoUrl")
-        values ($1, $2, $3, $4, $5, $6)
+        insert into "users" ("username", "hashedPassword", "profilePhotoUrl")
+             values ($1, $2, $3)
+        on conflict (username) do nothing
         returning "signedUpAt", "username", "userId", "profilePhotoUrl"
       `;
-      const params = [username, hashedPassword, 0, 0, 0, profilePhoto];
+      const params = [username, hashedPassword, profilePhoto];
       db.query(sql, params)
         .then(result => {
           const [user] = result.rows;
-          res.status(201).json(user);
+          if (!user) {
+            res.status(401).json({
+              error: 'Username taken'
+            });
+          } else {
+            res.status(201).json(user);
+          }
         })
         .catch(err => next(err));
     })
@@ -89,7 +128,7 @@ app.post('/api/auth/sign-in', (req, res, next) => {
     .then(result => {
       const [user] = result.rows;
       if (!user) {
-        throw new ClientError(401, 'Invald login');
+        throw new ClientError(401, 'Invalid login');
       }
       const { userId, hashedPassword, profilePhotoUrl } = user;
       return argon2
@@ -135,42 +174,6 @@ app.get('/api/posts', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/posts/:userId', (req, res, next) => {
-  const userId = parseFloat(req.params.userId);
-  if (Number.isInteger(userId) !== true || userId < 0) {
-    throw new ClientError(400, 'UserId must be a positive integer');
-  }
-  const sql = `
-     select "u"."username",
-            "u"."profilePhotoUrl",
-            "p"."userId",
-            "p"."postId",
-            "p"."imageUrl",
-            "p"."caption",
-            "p"."isBought",
-            "p"."location",
-            "p"."createdAt",
-            "p"."editedAt",
-            "isLiked"."userId" is not null as "isLiked",
-            count("l".*) as "numberOfLikes"
-       from "posts" as "p"
-       join "users" as "u" using ("userId")
-       left join "likes" as "l" using ("postId")
-       left join "likes" as "isLiked"
-         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = $1)
-      where "p"."userId" = $1
-      group by "u"."userId", "isLiked"."userId", "p"."postId"
-      order by "p"."createdAt" desc
-  `;
-  const params = [userId];
-  db.query(sql, params)
-    .then(result => {
-      const posts = result.rows;
-      res.status(201).json(posts);
-    })
-    .catch(err => next(err));
-});
-
 app.get('/api/comments/:postId', (req, res, next) => {
   const postId = parseFloat(req.params.postId);
   if (Number.isInteger(postId) !== true || postId < 0) {
@@ -182,7 +185,8 @@ app.get('/api/comments/:postId', (req, res, next) => {
            "commentId",
            "comment",
            "commentedAt",
-           "postId"
+           "postId",
+           "comments"."userId"
       from "comments"
       join "users" using ("userId")
      where "postId" = $1
@@ -313,7 +317,7 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
   if (!caption || !location || !isBought) {
     throw new ClientError(400, 'Caption, location, and isBought are required fields');
   }
-  const imageUrl = req.file.filename;
+  const imageUrl = req.file.location;
   const sql = `
     insert into "posts" ("userId", "imageUrl", "caption", "location", "isBought")
       values ($1, $2, $3, $4, $5)
@@ -328,11 +332,32 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/follow', (req, res, next) => {
+  const { userId } = req.user;
+  const toBeFollowedUserId = parseFloat(req.body.userId);
+  if (Number.isInteger(toBeFollowedUserId) !== true || toBeFollowedUserId < 0) {
+    throw new ClientError(400, 'Target userId must be a positive integer');
+  } else if (!toBeFollowedUserId) {
+    throw new ClientError(400, 'Target userId is a required field');
+  }
+  const sql = `
+    insert into "followers" ("userId", "followerId")
+      values($1, $2)
+      returning *;
+  `;
+  const params = [toBeFollowedUserId, userId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(201).json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
 app.put('/api/edit/:postId', uploadsMiddleware, (req, res, next) => {
   const { userId } = req.user;
   const { caption, isBought, location } = req.body;
   const postId = parseFloat(req.params.postId);
-  const imageUrl = req.file ? req.file.filename : null;
+  const imageUrl = req.file ? req.file.location : null;
   const editedAt = new Date();
   if (Number.isInteger(postId) !== true || postId < 0) {
     throw new ClientError(400, 'PostId must be a positive integer');
@@ -369,20 +394,20 @@ app.delete('/api/deletePost/:postId', (req, res, next) => {
   if (Number.isInteger(postId) !== true || postId < 0) {
     throw new ClientError(400, 'PostId must be a positive integer');
   }
-  const sql = `
+  const sqlDeleteLikes = `
     delete from "likes"
      where "postId" = $1 and "userId" = $2
      returning *;
   `;
-  const sql2 = `
+  const sqlDeletePosts = `
     delete from "posts"
      where "postId" = $1 and "userId" = $2
      returning *;
   `;
   const params = [postId, userId];
-  db.query(sql, params)
+  db.query(sqlDeleteLikes, params)
     .then(result => {
-      db.query(sql2, params)
+      db.query(sqlDeletePosts, params)
         .then(result => {
           const [deletedPost] = result.rows;
           if (!deletedPost) {

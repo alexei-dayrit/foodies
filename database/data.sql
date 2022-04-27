@@ -1,20 +1,39 @@
 -- DANGER: this is NOT how to do it in the real world.
 -- You should NEVER EVER check user data into Git!
 
-insert into "users" ("userId", "username", "profilePhotoUrl", "hashedPassword", "followerCount", "followingCount", "postCount")
-     values (100, 'anonymous1', 'image-1649956734443.jpeg', 'pass1', 0, 0, 2);
+-- SAMPLE USER1
+insert into "users" ("userId", "username", "profilePhotoUrl", "hashedPassword")
+     values (100, 'sushi_lover', '/images/image-1650864757312.jpeg', 'pass1');
 
-insert into "users" ("userId", "username",  "profilePhotoUrl", "hashedPassword", "followerCount", "followingCount", "postCount")
-     values (101, 'anonymous2', null, 'pass2', 0, 0, 1);
+insert into "posts" ("userId", "postId", "caption", "imageUrl", "location", "isBought", "createdAt")
+     values (100, 100, 'Celebrated my birthday with delicious sushi!', '/images/image-1650860094759.jpeg', 'San Francisco, CA', false, '2022-03-21 11:30:10');
 
-insert into "posts" ("postId", "caption", "imageUrl", "location", "userId", "isBought")
-     values (100, 'caption1', 'image-1649888023634.jpeg', 'location1', 100, true);
+insert into "posts" ("userId", "postId", "caption", "imageUrl", "location", "isBought", "createdAt")
+     values (100, 101, 'This is great.', '/images/image-1650862677041.JPG', 'Irvine, CA', false, '2022-04-21 12:30:10');
 
-insert into "posts" ("postId", "caption", "imageUrl", "location", "userId", "isBought")
-     values (101, 'caption2', 'image-1649888023634.jpeg', 'location2', 100, false);
+insert into "posts" ("userId", "postId", "caption", "imageUrl", "location", "isBought", "createdAt")
+     values (100, 102, 'MOAR Sushi haha.', '/images/image-1650861360080.jpeg', 'Concord, CA', false, '2022-04-23 14:30:10');
 
-insert into "posts" ("postId", "caption", "imageUrl", "location", "userId", "isBought")
-     values (102, 'caption3', 'image-1649888023634.jpeg', 'location3', 101, false);
+
+-- SAMPLE USER2
+insert into "users" ("userId", "username",  "profilePhotoUrl", "hashedPassword")
+     values (101, 'casual_cook', '/images/image-1650864705652.jpeg', 'pass2');
+
+insert into "posts" ("userId","postId", "caption", "imageUrl", "location", "isBought", "createdAt")
+     values (101, 107, 'First post! Upgraded ramen noodles.', '/images/image-1650859980943.jpeg', 'Vallejo, CA', true, '2022-04-17 18:30:10');
+
+insert into "posts" ("userId","postId", "caption", "imageUrl", "location", "isBought", "createdAt")
+     values (101, 108, 'Made some fish and chips with some sides.', '/images/image-1650861154878.jpeg', 'Vallejo, CA', true, '2022-04-19 18:30:10');
+
+-- SAMPLE USER3
+insert into "users" ("userId", "username", "profilePhotoUrl", "hashedPassword")
+     values (102, 'varietyEater', '/images/image-1650869307167.jpeg', 'pass1');
+
+insert into "posts" ("userId","postId", "caption", "imageUrl", "location", "isBought", "createdAt")
+     values (102, 110, 'Perfect for a cold day!', '/images/image-1650862870268.jpeg', 'Irvine, CA', false, '2022-04-22 15:30:10');
+
+insert into "posts" ("userId","postId", "caption", "imageUrl", "location", "isBought", "createdAt")
+     values (102, 111, 'Just get mild.', '/images/image-1650863415145.jpeg', 'Irvine, CA', false, '2022-04-23 15:30:10');
 
 insert into "comments" ("userId", "comment", "postId")
      values (101, 'WOW', 100);
@@ -24,4 +43,3 @@ insert into "comments" ("userId", "comment", "postId")
 
 insert into "comments" ("userId", "comment", "postId")
      values (101, 'That looks so good! Where did you get this?', 101);
--- 2022-04-12T18:44:59.581239Z

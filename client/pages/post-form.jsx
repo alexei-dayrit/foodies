@@ -56,9 +56,9 @@ export default class PostForm extends React.Component {
 
   handleIsBoughtChange(event) {
     if (event.target.value === 'bought') {
-      this.setState({ isBought: true });
-    } else {
       this.setState({ isBought: false });
+    } else {
+      this.setState({ isBought: true });
     }
   }
 
@@ -70,13 +70,14 @@ export default class PostForm extends React.Component {
   }
 
   handleDelete(event) {
+    const { user } = this.context;
     const token = window.localStorage.getItem('foodies-jwt');
     fetch(`/api/deletePost/${this.props.postId}`, {
       method: 'DELETE',
       headers: { 'X-Access-Token': token }
     })
       .then(() => {
-        window.location.hash = 'profile';
+        window.location.hash = `#profile?userId=${user.userId}`;
       })
       .catch(err => console.error(err));
   }
@@ -136,14 +137,14 @@ export default class PostForm extends React.Component {
 
     return (
       <>
-        <div className='w-96 md:w-[800px] p-4 m-auto'>
+        <div className='sm:w-96 md:w-[800px] p-4 mx-auto mb-2 mt-16'>
           <h1 className='text-2xl flex justify-center mt-6 pb-4'>
             {postId ? 'Edit Post' : 'New Post'}
           </h1>
           <form onSubmit={this.handleSubmit}>
-            <div className='flex flex-wrap p-4 rounded-xl border-2 border-gray-200'>
-              <div className='w-full md:w-1/2 relative order-1'>
-                <img className='w-96 h-96 max-h-96 object-cover object-center border
+            <div className='flex flex-wrap p-4 rounded-sm border shadow-md bg-white border-gray-300'>
+              <div className='w-full md:w-[60%] relative order-1'>
+                <img className='w-full object-cover object-left
                   border-gray-300' src={imagePreview} alt='Placeholder image'
                 />
                 {!this.state.isUploaded &&
@@ -157,13 +158,13 @@ export default class PostForm extends React.Component {
                   accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload}
                 />
               </div>
-              <div className='w-full md:w-1/2 order-2 px-2 md:px-4'>
-                <div className="flex items-center space-x-3 py-4 md:pt-0">
+              <div className='w-full md:w-[40%] order-2 px-2 md:px-4'>
+                <div className="flex items-center space-x-3 py-4 md:pt-0 border-b border-slate-200">
                   <img className="object-cover object-center w-10 h-10 rounded-full border
                     border-gray-300 cursor-pointer" alt="Profile picture"
                     src=
                     {user.profilePhotoUrl
-                      ? `images/${user.profilePhotoUrl}`
+                      ? user.profilePhotoUrl
                       : '/images/placeholder-profile-image.jpeg'
                     }
                   />
@@ -171,22 +172,22 @@ export default class PostForm extends React.Component {
                     <div className='cursor-pointer'>{user.username}</div>
                   </div>
                 </div>
-                <div className="py-4 border-b border-gray-200">
+                <div className="border-b border-gray-200">
                   <textarea required type="text" name="caption" placeholder="Write a caption"
                     value={this.state.caption} onChange={this.handleCaptionChange}
-                    className='bg-wrapper' cols={40} rows={2}
+                    className='bg-[#f8f9fa] bg-opacity-60 py-2 pl-1 my-2' cols={40} rows={3}
                   />
                 </div>
-                <div className="py-4 border-b border-gray-200">
+                <div className="border-b border-gray-200">
                   <input type="text" name="location" placeholder='Add location'
                     value={this.state.location} onChange={this.handleLocationChange}
-                    className='bg-wrapper' />
+                    className='bg-[#f8f9fa] bg-opacity-60 w-full py-2 pl-1 my-2'/>
                 </div>
                 <div className="py-4">
                   <ul id="isBought" className="filter-switch inline-flex items-center
                     h-10 space-x-1 rounded-md font-semibold text-sky-600">
                     <li className="filter-switch-item flex h-8 bg-gray-300x">
-                      <input onChange={this.handleIsBoughtChange} checked={isBought === false}
+                      <input onChange={this.handleIsBoughtChange} checked={isBought === true}
                         type="radio" name="isBought" id="cooked" value='cooked' className="sr-only" required
                       />
                       <label htmlFor="cooked" className="hover:scale-110 border-2 h-9 py-2 px-2
@@ -195,7 +196,7 @@ export default class PostForm extends React.Component {
                       </label>
                     </li>
                     <li className="filter-switch-item flex relative h-8 bg-gray-300x">
-                      <input onChange={this.handleIsBoughtChange} checked={isBought === true}
+                      <input onChange={this.handleIsBoughtChange} checked={isBought === false}
                         type="radio" name="isBought" id="bought" value='bought' className="sr-only" required
                       />
                       <label htmlFor="bought" className="hover:scale-110 border-2 h-9 py-2 px-2 ml-1

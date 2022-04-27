@@ -13,6 +13,9 @@ module.exports = {
     extend: {
       colors: {
         wrapper: 'var(--wrapper)'
+      },
+      screens: {
+        sm: '500px'
       }
     }
   },

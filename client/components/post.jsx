@@ -5,6 +5,8 @@ import formatDistance from 'date-fns/formatDistance';
 import HeartIcon from './svg-assets/heart-icon';
 import HeartIconFilled from './svg-assets/heart-icon-filled';
 import CommentIcon from './svg-assets/comment-icon';
+import Redirect from './redirect';
+import AppContext from '../lib/app-context';
 
 export default class Post extends React.Component {
   constructor(props) {
@@ -96,110 +98,124 @@ export default class Post extends React.Component {
   }
 
   render() {
+    const { user } = this.context;
+
+    if (!this.context.user) return <Redirect to="sign-in" />;
+
     const showComments = this.state.showComments;
     const comments = this.state.comments;
     const {
       username, userId, postId, imageUrl, caption, isBought,
-      createdAt, location, editedAt
+      createdAt, location, editedAt, profilePhotoUrl
     } = this.props.post;
-    let { profilePhotoUrl } = this.props.post;
-    if (profilePhotoUrl === null) {
-      profilePhotoUrl = 'placeholder-profile-image.jpeg';
+
+    let placeholder = '';
+    if (user.profilePhotoUrl === null) {
+      placeholder = 'images/placeholder-profile-image.jpeg';
     }
     return (
       <>
-        <div className='flex flex-wrap p-4 rounded-md border-2
-          border-gray-200'>
-          <div className="flex items-center w-full space-x-3 md:pt-0 pb-2 md:hidden">
+        <div className='flex flex-wrap rounded-sm border border-slate-200 shadow-md bg-white'>
+          <div className="flex items-center w-full space-x-3 p-2 md:pt-0 pb-2 md:hidden">
             <div className="flex w-full">
-              <a href={`#profile?userId=${userId}`}>
-                <img className="object-cover w-10 h-10 rounded-full border border-gray-300"
-                  src={`/images/${profilePhotoUrl}`} alt="Profile picture" />
+              <a href={`#profile?userId=${userId}`} className='items-center'>
+                <img className="object-cover w-10 h-10 rounded-full border border-gray-300
+                 hover:border-slate-400"
+                  src={profilePhotoUrl || placeholder} alt="Profile picture" />
               </a>
-              <div>
+              <div className='flex-col flex'>
                 <a href={`#profile?userId=${userId}`}>
-                  <div className='font-semibold text-sm md:text-lg pl-3'>{username}</div>
+                  <h2 className='font-semibold text-sm pl-3 hover:text-slate-400'>{username}</h2>
                 </a>
-                <div className='text-gray-400 text-xs md:text-sm pl-3'>{location}</div>
+                <span className='text-gray-400 text-xs pl-3'>{location}</span>
               </div>
             </div>
-            <a href={`#edit-post?postId=${postId}`}>
-              <PenIcon />
-            </a>
-          </div>
-          <div className='w-full md:w-[55%]'>
-            <img className='w-80 h-80 md:w-full md:h-[450px] object-cover border border-gray-200'
-              src={`/images/${imageUrl}`} alt='Placeholder image' />
-          </div>
-          <div className='w-full md:w-[45%] md:pl-4 flex flex-col'>
-            <div className="md:flex items-center w-full space-x-3 md:pt-0 pb-2 border-b
-              border-gray-200 hidden">
-              <div className="flex w-full">
-                <a href={`#profile?userId=${userId}`}>
-                  <img className="object-cover w-12 h-12 rounded-full border border-gray-300"
-                    src={`/images/${profilePhotoUrl}`} alt="Profile picture" />
-                </a>
-                <div>
-                  <a href={`#profile?userId=${userId}`}>
-                    <div className='font-semibold text-sm md:text-lg md:pl-3'>{username}</div>
-                  </a>
-                  <div className='text-gray-400 text-xs md:text-sm md:pl-3'>{location}</div>
-                </div>
-              </div>
+            {user.userId === userId && (
               <a href={`#edit-post?postId=${postId}`}>
                 <PenIcon />
-              </a>
+              </a>)
+            }
+          </div>
+          <div className='w-full md:w-[60%] flex flex-wrap'
+            href={imageUrl} target="_blank" rel="noreferrer"
+          ><img className='w-full min-h-[300px] max-h-[500px] object-cover'
+            src={imageUrl} alt='Photo of post' />
+          </div>
+          <div className='w-full md:w-[40%] md:pl-2 flex flex-col p-2'>
+            <div className="md:flex items-center w-full space-x-3 md:pt-0 pb-2 border-b
+              border-gray-200 hidden">
+              <div className="flex w-full items-center">
+                <a href={`#profile?userId=${userId}`}>
+                  <img className="object-cover w-10 h-10 rounded-full border border-gray-300 hover:border-slate-400"
+                    src={profilePhotoUrl || placeholder} alt="Profile picture" />
+                </a>
+                <div className='flex flex-col'>
+                  <a href={`#profile?userId=${userId}`}>
+                    <h2 className='font-semibold text-sm md:pl-3 hover:text-slate-400'>{username}</h2>
+                  </a>
+                    <span className='text-gray-400 text-xs md:pl-3'>{location}</span>
+                </div>
+              </div>
+              {user.userId === userId && (
+                <a href={`#edit-post?postId=${postId}`}>
+                  <PenIcon />
+                </a>)
+              }
             </div>
             <div className="w-full pt-2 md:pt-1">
               <div className='flex'>
                 <a className='curor-pointer' onClick={this.handleLikeClicks}>
                   {this.state.isLiked ? <HeartIconFilled /> : <HeartIcon />}
                 </a>
-                <a className='curor-pointer pl-1' onClick={this.handleCommentsToggle}>
+                <a className='curor-pointer pl-2' onClick={this.handleCommentsToggle}>
                   <CommentIcon />
                 </a>
               </div>
-              <p className='pl-1'>{`${this.state.numberOfLikes} likes`}</p>
+              <p className='pl-1 py-1 text-sm'>{`${this.state.numberOfLikes} likes`}</p>
             </div>
-            <div className='w-full pl-1'>
-              <p className='font-semibold text-sm md:text-base leading-none'>
-                {username}
+            <div className='w-full pl-1 leading-tight'>
+              <div className='flex'>
+                <a href={`#profile?userId=${userId}`}>
+                  <h2 className='font-semibold text-sm pr-1 hover:text-slate-400'>
+                    {username}
+                  </h2>
+                </a>
                 {isBought
-                  ? <span className='font-normal text-sky-600'>{' Cooked'}</span>
-                  : <span className='font-normal text-sky-600'>{' Bought'}</span>}
-              </p>
-              <p className='w-full font-light'>
+                  ? <span className='font-normal text-sm text-sky-600'>{' Cooked'}</span>
+                  : <span className='font-normal text-sm text-sky-600'>{' Bought'}</span>}
+              </div>
+              <p className='w-full text-sm font-light'>
                 {caption}
               </p>
-              <p className='w-full text-gray-400 font-light text-xs md:text-sm'>
+              <p className='w-full text-gray-400 pt-1 font-light text-xs'>
                 {editedAt === null
                   ? `posted ${formatDistance(new Date(createdAt), new Date(), { includeSeconds: true })} ago`
                   : `edited ${formatDistance(new Date(editedAt), new Date(), { includeSeconds: true })} ago`
                 }
               </p>
-              <button onClick={this.handleCommentsToggle} className='text-gray-500 hover:text-gray-600
-                text-xs md:text-sm'>
+              <button onClick={this.handleCommentsToggle} className='text-gray-400
+              hover:text-slate-500 text-sm'>
                 {showComments ? 'Hide comments' : 'View comments'}
               </button>
             </div>
-            <div className='md:max-h-[120px] md:overflow-y-scroll'>
+            <div className='md:max-h-[100px] md:overflow-y-scroll'>
               {showComments && comments.map(comment => {
                 return (
                   <div key={comment.commentId}>
-                    <Comment comment={comment} />
+                    <Comment comment={comment} post={this.props.post} />
                   </div>
                 );
               })}
             </div>
             {showComments &&
               <form onSubmit={this.handleCommentSubmit}
-                className='mt-auto'>
+                className='mt-auto pl-1'>
                 <textarea type="text" placeholder="Add a comment" required
-                  className='border border-gray-600 rounded-xl mt-5 pt-1 px-2
+                  className='border border-slate-600 rounded-xl mt-5 pt-1 px-2
                     w-full h-20'
                   onChange={this.handleCommentChange} value={this.state.newComment}
                 />
-                <div className='flex w-full justify-end hover:text-blue-700 text-blue-600 text-xl'>
+                <div className='flex w-full justify-end hover:text-blue-700 text-blue-600 text-sm'>
                   <button type='submit'>Post</button>
                 </div>
               </form>
@@ -210,3 +226,5 @@ export default class Post extends React.Component {
     );
   }
 }
+
+Post.contextType = AppContext;
