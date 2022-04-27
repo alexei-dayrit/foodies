@@ -332,12 +332,12 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/follow/:userId', (req, res, next) => {
+app.post('/api/follow', (req, res, next) => {
   const { userId } = req.user;
-  const toBeFollowUserId = parseFloat(req.params.userId);
-  if (Number.isInteger(toBeFollowUserId) !== true || toBeFollowUserId < 0) {
+  const toBeFollowedUserId = parseFloat(req.body.userId);
+  if (Number.isInteger(toBeFollowedUserId) !== true || toBeFollowedUserId < 0) {
     throw new ClientError(400, 'Target userId must be a positive integer');
-  } else if (!toBeFollowUserId) {
+  } else if (!toBeFollowedUserId) {
     throw new ClientError(400, 'Target userId is a required field');
   }
   const sql = `
@@ -345,7 +345,7 @@ app.post('/api/follow/:userId', (req, res, next) => {
       values($1, $2)
       returning *;
   `;
-  const params = [toBeFollowUserId, userId];
+  const params = [toBeFollowedUserId, userId];
   db.query(sql, params)
     .then(result => {
       res.status(201).json(result.rows);

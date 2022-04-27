@@ -11,10 +11,12 @@ export default class Profile extends React.Component {
     this.state = {
       posts: [],
       user: '',
-      showListView: false
+      showListView: false,
+      following: false
     };
     this.handleGridIconClicks = this.handleGridIconClicks.bind(this);
     this.handleListIconClicks = this.handleListIconClicks.bind(this);
+    this.handleFollowClicks = this.handleFollowClicks.bind(this);
   }
 
   componentDidMount() {
@@ -49,9 +51,25 @@ export default class Profile extends React.Component {
     this.setState({ showListView: true });
   }
 
+  handleFollowClicks() {
+    const { userId } = this.props;
+    const token = window.localStorage.getItem('foodies-jwt');
+    this.setState({ following: !this.state.following });
+    fetch('/api/follow', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Access-Token': token
+      },
+      body: JSON.stringify({ userId: userId })
+    })
+      .then(response => response.json())
+      .catch(err => console.error(err));
+  }
+
   render() {
-    const { posts, user, showListView } = this.state;
-    const { handleGridIconClicks, handleListIconClicks } = this;
+    const { posts, user, showListView, following } = this.state;
+    const { handleGridIconClicks, handleListIconClicks, handleFollowClicks } = this;
     return (
       <>
         <div className='sm:w-96 md:w-[800px] p-2 mx-auto overflow-hidden mt-16'>
@@ -80,9 +98,16 @@ export default class Profile extends React.Component {
                 <p className='font-semibold'>{user.followingCount}</p>
                 <p>Following</p>
               </div>
-              <div className="w-full md:w-3/4 flex ml-4 pl-4 mt-4 md:text-xl">
-                <div className="w-1/3">
+              <div className="w-full md:w-3/4 flex ml-4 pl-4 mt-4 md:text-xl justify-around">
+                <div className="w-1/3 flex items-center">
                   <p className='font-semibold'>{user.username}</p>
+                </div>
+                <div className="w-1/3">
+                  <button className={`font-medium text-[#262626] border rounded-lg px-3 py-1
+                    ${following ? 'bg-blue-400' : 'bg-blue-300'}`}
+                    onClick={handleFollowClicks}>
+                    {following ? 'Unfollow' : 'Follow'}
+                  </button>
                 </div>
               </div>
             </div>
