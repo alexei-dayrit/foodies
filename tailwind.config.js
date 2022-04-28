@@ -11,9 +11,6 @@ module.exports = {
       sans: ['"Roboto"', 'sans-serif']
     },
     extend: {
-      colors: {
-        wrapper: 'var(--wrapper)'
-      },
       screens: {
         sm: '500px'
       }

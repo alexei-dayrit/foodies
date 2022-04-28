@@ -55,7 +55,7 @@ export default class PostForm extends React.Component {
   }
 
   handleIsBoughtChange(event) {
-    if (event.target.value === 'bought') {
+    if (event.target.value === 'cooked') {
       this.setState({ isBought: false });
     } else {
       this.setState({ isBought: true });
@@ -160,16 +160,16 @@ export default class PostForm extends React.Component {
               </div>
               <div className='w-full md:w-[40%] order-2 px-2 md:px-4'>
                 <div className="flex items-center space-x-3 py-4 md:pt-0 border-b border-slate-200">
-                  <img className="object-cover object-center w-10 h-10 rounded-full border
-                    border-gray-300 cursor-pointer" alt="Profile picture"
-                    src=
-                    {user.profilePhotoUrl
-                      ? user.profilePhotoUrl
-                      : '/images/placeholder-profile-image.jpeg'
-                    }
-                  />
+                  <a href={`#profile?userId=${user.userId}`}>
+                    <img className="object-cover object-center w-10 h-10 rounded-full border
+                      border-gray-300 cursor-pointer" alt="Profile picture"
+                      src={user.profilePhotoUrl ? user.profilePhotoUrl : '/images/placeholder-profile-image.jpeg'}
+                    />
+                  </a>
                   <div className="space-y-1 font-semibold">
-                    <div className='cursor-pointer'>{user.username}</div>
+                    <a href={`#profile?userId=${user.userId}`}className='cursor-pointer'>
+                      {user.username}
+                    </a>
                   </div>
                 </div>
                 <div className="border-b border-gray-200">
@@ -184,22 +184,22 @@ export default class PostForm extends React.Component {
                     className='bg-[#f8f9fa] bg-opacity-60 w-full py-2 pl-1 my-2'/>
                 </div>
                 <div className="py-4">
-                  <ul id="isBought" className="filter-switch inline-flex items-center
+                  <ul id="isBought" className="inline-flex items-center
                     h-10 space-x-1 rounded-md font-semibold text-sky-600">
-                    <li className="filter-switch-item flex h-8 bg-gray-300x">
-                      <input onChange={this.handleIsBoughtChange} checked={isBought === true}
+                    <li className="switch-item flex h-8 bg-gray-300x">
+                      <input onChange={this.handleIsBoughtChange} checked={isBought === false}
                         type="radio" name="isBought" id="cooked" value='cooked' className="sr-only" required
                       />
-                      <label htmlFor="cooked" className="hover:scale-110 border-2 h-9 py-2 px-2
+                      <label htmlFor="cooked" className="hover:scale-110 border-2 h-9 py-2 px-2 cursor-pointer
                         text-sm leading-4 text-gray-600 hover:text-gray-800 bg-white rounded shadow"
                         >Home-cooked
                       </label>
                     </li>
-                    <li className="filter-switch-item flex relative h-8 bg-gray-300x">
-                      <input onChange={this.handleIsBoughtChange} checked={isBought === false}
+                    <li className="switch-item flex relative h-8 bg-gray-300x">
+                      <input onChange={this.handleIsBoughtChange} checked={isBought === true}
                         type="radio" name="isBought" id="bought" value='bought' className="sr-only" required
                       />
-                      <label htmlFor="bought" className="hover:scale-110 border-2 h-9 py-2 px-2 ml-1
+                      <label htmlFor="bought" className="hover:scale-110 border-2 h-9 py-2 px-2 ml-1 cursor-pointer
                         text-sm leading-4 text-gray-600 hover:text-gray-800 bg-white rounded shadow"
                         >Bought
                       </label>

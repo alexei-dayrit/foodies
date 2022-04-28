@@ -3,12 +3,9 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-:root {
-  --wrapper: #f9faf8;
-}
-
 #root {
   background-color: #f8f9fa;
+  color: #262626;
   min-height: 100vh;
 }
 
@@ -20,18 +17,8 @@
   z-index: 1;
 }
 
-.filter-switch label {
-  cursor: pointer;
-}
-
-.filter-switch-item input:checked + label {
+.switch-item input:checked + label {
   color: inherit;
-}
-
-.filter-switch-item input:not(:checked) + label {
-  --bg-opacity: 0;
-
-  box-shadow: none;
 }
 
 textarea {
@@ -43,29 +30,21 @@ textarea {
   font-family: "Oleo Script Swash Caps", cursive;
 }
 
-/* width */
 ::-webkit-scrollbar {
   width: 16px;
   height: 16px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   border-radius: 100vh;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #cbd5e0;
   border-radius: 100vh;
   border: 2px solid #edf2f7;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #a0aec0;
-}
-
-img {
-  object-position: center;
 }

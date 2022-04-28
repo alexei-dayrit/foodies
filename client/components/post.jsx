@@ -138,7 +138,7 @@ export default class Post extends React.Component {
           </div>
           <div className='w-full md:w-[60%] flex flex-wrap'
             href={imageUrl} target="_blank" rel="noreferrer"
-          ><img className='w-full min-h-[300px] max-h-[500px] object-cover'
+            ><img className='w-full min-h-[300px] max-h-[500px] object-cover'
             src={imageUrl} alt='Photo of post' />
           </div>
           <div className='w-full md:w-[40%] md:pl-2 flex flex-col p-2'>
@@ -181,8 +181,9 @@ export default class Post extends React.Component {
                   </h2>
                 </a>
                 {isBought
-                  ? <span className='font-normal text-sm text-sky-600'>{' Cooked'}</span>
-                  : <span className='font-normal text-sm text-sky-600'>{' Bought'}</span>}
+                  ? <span className='font-normal text-sm text-sky-600'>{' Bought'}</span>
+                  : <span className='font-normal text-sm text-sky-600'>{' Cooked'}</span>
+                }
               </div>
               <p className='w-full text-sm font-light'>
                 {caption}
