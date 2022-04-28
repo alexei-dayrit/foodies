@@ -12,6 +12,7 @@ export default class AuthForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDemoLogin = this.handleDemoLogin.bind(this);
   }
 
   handleChange(event) {
@@ -22,6 +23,13 @@ export default class AuthForm extends React.Component {
   handleImageUpload(event) {
     this.setState({
       imagePreview: URL.createObjectURL(this.fileInputRef.current.files[0])
+    });
+  }
+
+  handleDemoLogin() {
+    this.setState({
+      username: 'average_eater',
+      password: 'average_eater'
     });
   }
 
@@ -77,7 +85,7 @@ export default class AuthForm extends React.Component {
 
   render() {
     const { password, username, imagePreview } = this.state;
-    const { handleChange, handleSubmit, handleImageUpload } = this;
+    const { handleChange, handleSubmit, handleImageUpload, handleDemoLogin } = this;
     const { action } = this.props;
     const welcomeMessage = action === 'sign-up'
       ? 'Sign up to see photos of delicious food.'
@@ -164,6 +172,11 @@ export default class AuthForm extends React.Component {
                       {footerLink}
                     </a>
                   </p>
+                  <a onClick={handleDemoLogin} className='mt-4 text-sm pl-1 text-[#0095f6]
+                  hover:text-[#008ae3] hover:scale-105 cursor-pointer'>
+                    Demo Login
+                    <button></button>
+                  </a>
                 </div>
               </div>
             </div>
