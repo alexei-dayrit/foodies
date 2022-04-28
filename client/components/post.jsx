@@ -181,8 +181,9 @@ export default class Post extends React.Component {
                   </h2>
                 </a>
                 {isBought
-                  ? <span className='font-normal text-sm text-sky-600'>{' Cooked'}</span>
-                  : <span className='font-normal text-sm text-sky-600'>{' Bought'}</span>}
+                  ? <span className='font-normal text-sm text-sky-600'>{' Bought'}</span>
+                  : <span className='font-normal text-sm text-sky-600'>{' Cooked'}</span>
+                }
               </div>
               <p className='w-full text-sm font-light'>
                 {caption}
