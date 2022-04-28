@@ -160,16 +160,16 @@ export default class PostForm extends React.Component {
               </div>
               <div className='w-full md:w-[40%] order-2 px-2 md:px-4'>
                 <div className="flex items-center space-x-3 py-4 md:pt-0 border-b border-slate-200">
-                  <img className="object-cover object-center w-10 h-10 rounded-full border
-                    border-gray-300 cursor-pointer" alt="Profile picture"
-                    src=
-                    {user.profilePhotoUrl
-                      ? user.profilePhotoUrl
-                      : '/images/placeholder-profile-image.jpeg'
-                    }
-                  />
+                  <a href={`#profile?userId=${user.userId}`}>
+                    <img className="object-cover object-center w-10 h-10 rounded-full border
+                      border-gray-300 cursor-pointer" alt="Profile picture"
+                      src={user.profilePhotoUrl ? user.profilePhotoUrl : '/images/placeholder-profile-image.jpeg'}
+                    />
+                  </a>
                   <div className="space-y-1 font-semibold">
-                    <div className='cursor-pointer'>{user.username}</div>
+                    <a href={`#profile?userId=${user.userId}`}className='cursor-pointer'>
+                      {user.username}
+                    </a>
                   </div>
                 </div>
                 <div className="border-b border-gray-200">
