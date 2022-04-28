@@ -1,6 +1,10 @@
 -- DANGER: this is NOT how to do it in the real world.
 -- You should NEVER EVER check user data into Git!
 
+-- DEMO LOGIN
+insert into "users" ("userId", "username", "profilePhotoUrl", "hashedPassword")
+     values (99, 'average_eater', '/images/image-1650997140946.jpeg', '$argon2i$v=19$m=4096,t=3,p=1$CJWaAzREBERoS/grWI0gdA$ApIMunxQ6q+nxQrJxUijMuMhiEKQCFU7eG/H2NzI21w');
+
 -- SAMPLE USER1
 insert into "users" ("userId", "username", "profilePhotoUrl", "hashedPassword")
      values (100, 'sushi_lover', '/images/image-1650864757312.jpeg', 'pass1');
@@ -27,7 +31,7 @@ insert into "posts" ("userId","postId", "caption", "imageUrl", "location", "isBo
 
 -- SAMPLE USER3
 insert into "users" ("userId", "username", "profilePhotoUrl", "hashedPassword")
-     values (102, 'varietyEater', '/images/image-1650869307167.jpeg', 'pass1');
+     values (102, 'varietyEater', '/images/image-1650869307167.jpeg', 'pass3');
 
 insert into "posts" ("userId","postId", "caption", "imageUrl", "location", "isBought", "createdAt")
      values (102, 110, 'Perfect for a cold day!', '/images/image-1650862870268.jpeg', 'Irvine, CA', true, '2022-04-22 15:30:10');

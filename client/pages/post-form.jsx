@@ -137,7 +137,7 @@ export default class PostForm extends React.Component {
 
     return (
       <>
-        <div className='sm:w-96 md:w-[800px] p-4 mx-auto mb-2 mt-16'>
+        <div className='sm:w-96 md:w-[768px] lg:w-[900px] p-4 mx-auto mb-2 mt-8'>
           <h1 className='text-2xl flex justify-center mt-6 pb-4'>
             {postId ? 'Edit Post' : 'New Post'}
           </h1>

@@ -27,7 +27,7 @@ export default class Home extends React.Component {
 
     return (
       <>
-        <div className='sm:w-96 md:w-[800px] p-2 m-auto mt-16'>
+        <div className='sm:w-96 md:w-[768px] lg:w-[900px] p-2 m-auto mt-8'>
           {posts.map(post => {
             return (
               <div key={post.postId} className='my-4'>
