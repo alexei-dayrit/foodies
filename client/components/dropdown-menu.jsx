@@ -22,7 +22,7 @@ export default class DropdownMenu extends React.Component {
         </button>
         {showDesktopDropdown && (
           <div className="absolute w-36 mt-2 rounded divide-y shadow bg-[#ebebeb] divide-gray-400">
-            <ul className="py-1 text-sm text-[#262626]">
+            <ul className="py-1 text-sm">
               <li>
                 <a className="block py-2 px-4 hover:bg-slate-600 hover:text-white"
                   href={`#profile?userId=${user.userId}`}>
@@ -32,7 +32,7 @@ export default class DropdownMenu extends React.Component {
             </ul>
             <div className="py-1 ">
               <button onClick={handleSignOut} className="w-full block py-2 px-4 text-sm
-                text-[#262626] text-left hover:bg-gray-600 hover:text-white font-semibold uppercase">
+                text-left hover:bg-gray-600 hover:text-white font-semibold uppercase">
                 Log out
               </button>
             </div>

@@ -35,7 +35,7 @@ export default class Navbar extends React.Component {
     return (
       <>
         <nav className="relative flex flex-wrap items-center justify-between
-          px-2 py-3 border-b-2 border-[#dbdbdb] text-[#262626]">
+          px-2 py-3 border-b-2 border-[#dbdbdb]">
           <div className="sm:w-96 md:w-[768px] lg:w-[900px] m-auto container px-4 flex flex-wrap
             items-center justify-between">
             <div className="w-full relative flex justify-between md:w-auto md:static
@@ -73,7 +73,7 @@ export default class Navbar extends React.Component {
                   </a>
                 </li>
                 <li className='md:hidden'>
-                  <button onClick={handleSignOut} className="text-[#262626] px-3 py-2 flex items-center
+                  <button onClick={handleSignOut} className="px-3 py-2 flex items-center
                     uppercase leading-snug hover:text-gray-600 hover:scale-105 ml-2 md:mt-2 font-semibold">
                     Sign out
                   </button>
