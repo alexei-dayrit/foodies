@@ -72,7 +72,7 @@ export default class Profile extends React.Component {
     const { handleGridIconClicks, handleListIconClicks, handleFollowClicks } = this;
     return (
       <>
-        <div className='sm:w-96 md:w-[800px] p-2 mx-auto overflow-hidden mt-16'>
+        <div className='sm:w-96 md:w-[768px] lg:w-[900px] p-2 mx-auto overflow-hidden mt-8'>
           <div className='flex flex-wrap p-4 pb-6'>
             <div className='w-[25%] md:w-1/3 order-1 flex items-center md:justify-end'>
               <img className="w-20 h-20 md:w-36 md:h-36
