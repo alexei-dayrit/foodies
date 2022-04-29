@@ -46,7 +46,7 @@ A full stack JavaScript web application for foodies who want to share and view p
 
 ## Why I built this project
 
-I wanted my first full stack application to be about something I loved, **food**. I've always enjoyed discovering different types of food. Nowadays people document their food adventures on social media, making it easier to learn about different cultures' cuisine. There's also many food events like the 626 Night Market and even mukbangs, where people can earn money for videoing themselves eating. The never-ending interest and creativity with food inspired me to create an app solely dedicated to sharing and enjoying food.
+I wanted my first full stack application to be about something I loved, **food**. Nowadays people document their food adventures on social media, making it much easier to learn about different cultures' cuisine. There's so much focus on food with festivals like the 626 Night Market, mukbangs, fusion restaurants, etc. The never-ending interest and creativity with food inspired me to create an app solely dedicated to sharing and enjoying food.
 
 ## Stretch Features
 
