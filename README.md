@@ -22,7 +22,7 @@ A full stack JavaScript web application for foodies who want to share and view p
 - PGweb
 - Heroku
 
-### Live Link: https://foodies-web-app.herokuapp.com/#sign-in
+### Live Link: https://foodies-web-app.herokuapp.com/
 
 ## Features
 
