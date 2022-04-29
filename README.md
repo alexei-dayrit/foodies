@@ -41,8 +41,12 @@ A full stack JavaScript web application for foodies who want to share and view p
 - User can follow a profile
 ## Preview
 
-### Demo: User can login ![Foodies login demo](assets/foodies-login-75.gif)
-### Demo: User can add posts ![Foodies add post demo](assets/foodies-add-post.gif)
+### Demo - User can login:
+
+![Foodies login demo](assets/foodies-login-75.gif)
+### Demo - User can add posts:
+
+![Foodies add post demo](assets/foodies-add-post.gif)
 
 ## Why I built this project
 
@@ -54,7 +58,7 @@ I wanted my first full stack application to be about something I loved, **food**
 - User can search for other users
 - User can edit their profile
 
-### System Requirements
+## System Requirements
 
 - NPM 6 or higher
 - Node.js 10 or higher
@@ -74,31 +78,31 @@ I wanted my first full stack application to be about something I loved, **food**
 
 3. Create an [AWS account](https://aws.amazon.com/free/) then create an IAM user for S3
 
-- Open IAM service while signed into AWS console
-- Click **Add users** and enter a username. The name of the app is a good idea.
-- For AWS access type, check **Access key** option for programmatic access.
-- Click **Next:Permissions**
-- Select **Attach existing policies directly**.
-- Filter policies to **AmazonS3FullAccess** and check its box.
-- Skip through the **Tags** step to **Review**
-- Create the user
-- Copy and keep your **access key id** and **secret access key** somewhere safe.
-- Done!
+    - Open IAM service while signed into AWS console
+    - Click **Add users** and enter a username. The name of the app is a good idea.
+    - For AWS access type, check **Access key** option for programmatic access.
+    - Click **Next:Permissions**
+    - Select **Attach existing policies directly**.
+    - Filter policies to **AmazonS3FullAccess** and check its box.
+    - Skip through the **Tags** step to **Review**
+    - Create the user
+    - Copy and keep your **access key id** and **secret access key** somewhere safe.
+    - Done!
 
 4. Create an S3 bucket for your uploads
 
-- In your home screen, click the **Create bucket** button
-- Pick a unique name for your bucket. Try something related to the app.
-- Under Object Ownership, choose **ACLs enabled** and **Bucket owner preferred**.
--**Uncheck** the option to Block *all* public access. And leave the rest unchecked too.
-- Check the box that acknowledges public objects in the bucket.
-- Click **Create bucket** at the bottom
+    - In your home screen, click the **Create bucket** button
+    - Pick a unique name for your bucket. Try something related to the app.
+    - Under Object Ownership, choose **ACLs enabled** and **Bucket owner preferred**.
+    -**Uncheck** the option to Block *all* public access. And leave the rest unchecked too.
+    - Check the box that acknowledges public objects in the bucket.
+    - Click **Create bucket** at the bottom
 
 5. Make a copy of the provided ```.env.example``` into your own ```.env``` file. Then add your own AWS credentials as well as your database URL: ```postgres://dev:dev@localhost/foodies```
 
-```shell
-  cp .env.example .env
-```
+  ```shell
+    cp .env.example .env
+  ```
 
 6. Start your postgreSQL service
 
