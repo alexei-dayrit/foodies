@@ -103,7 +103,7 @@ export default class Profile extends React.Component {
                   <p className='font-semibold'>{user.username}</p>
                 </div>
                 <div className="w-1/3">
-                  <button className={`font-medium text-[#262626] border rounded-lg px-3 py-1
+                  <button className={`font-medium text-gray-600 border rounded-md px-2 py-1
                     ${following ? 'bg-blue-400' : 'bg-blue-300'}`}
                     onClick={handleFollowClicks}>
                     {following ? 'Unfollow' : 'Follow'}

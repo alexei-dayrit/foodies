@@ -353,6 +353,33 @@ app.post('/api/follow', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/unfollow', (req, res, next) => {
+  const { userId } = req.user;
+  const toBeUnfollowedUserId = parseFloat(req.body.userId);
+  if (Number.isInteger(toBeUnfollowedUserId) !== true || toBeUnfollowedUserId < 0) {
+    throw new ClientError(400, 'Target userId must be a positive integer');
+  } else if (!toBeUnfollowedUserId) {
+    throw new ClientError(400, 'Target userId is a required field');
+  }
+  const sql = `
+    delete from "followers"
+     where "userId" = $1 and "followerId" = $2
+     returning *;
+  `;
+  const params = [toBeUnfollowedUserId, userId];
+  db.query(sql, params)
+    .then(result => {
+      const [unfollow] = result.rows;
+      if (!unfollow) {
+        res.status(404).json({
+          error: `Cannot find user with followerId ${userId}`
+        });
+      } else {
+        res.sendStatus(204);
+      }
+    });
+});
+
 app.put('/api/edit/:postId', uploadsMiddleware, (req, res, next) => {
   const { userId } = req.user;
   const { caption, isBought, location } = req.body;
