@@ -12,7 +12,7 @@ export default class Profile extends React.Component {
       posts: [],
       user: '',
       showListView: false,
-      following: false
+      isFollowing: false
     };
     this.handleGridIconClicks = this.handleGridIconClicks.bind(this);
     this.handleListIconClicks = this.handleListIconClicks.bind(this);
@@ -54,9 +54,20 @@ export default class Profile extends React.Component {
   handleFollowClicks() {
     const { userId } = this.props;
     const token = window.localStorage.getItem('foodies-jwt');
-    this.setState({ following: !this.state.following });
-    fetch('/api/follow', {
-      method: 'POST',
+    this.setState({ isFollowing: !this.state.isFollowing });
+
+    let fetchMethod = '';
+    let fetchRoute = '';
+    if (!this.state.isFollowing) {
+      fetchMethod = 'POST';
+      fetchRoute = '/api/follow';
+    } else {
+      fetchMethod = 'DELETE';
+      fetchRoute = '/api/unfollow';
+    }
+
+    fetch(fetchRoute, {
+      method: fetchMethod,
       headers: {
         'Content-Type': 'application/json',
         'X-Access-Token': token
@@ -68,7 +79,7 @@ export default class Profile extends React.Component {
   }
 
   render() {
-    const { posts, user, showListView, following } = this.state;
+    const { posts, user, showListView, isFollowing } = this.state;
     const { handleGridIconClicks, handleListIconClicks, handleFollowClicks } = this;
     return (
       <>
@@ -104,9 +115,9 @@ export default class Profile extends React.Component {
                 </div>
                 <div className="w-1/3">
                   <button className={`font-medium text-gray-600 border rounded-md px-2 py-1
-                    ${following ? 'bg-blue-400' : 'bg-blue-300'}`}
+                    ${isFollowing ? 'bg-blue-400' : 'bg-blue-300'}`}
                     onClick={handleFollowClicks}>
-                    {following ? 'Unfollow' : 'Follow'}
+                    {isFollowing ? 'Unfollow' : 'Follow'}
                   </button>
                 </div>
               </div>

@@ -375,7 +375,7 @@ app.delete('/api/unfollow', (req, res, next) => {
           error: `Cannot find user with followerId ${userId}`
         });
       } else {
-        res.sendStatus(204);
+        res.status(204);
       }
     });
 });
@@ -442,7 +442,7 @@ app.delete('/api/deletePost/:postId', (req, res, next) => {
               error: `Cannot find posts with postId ${postId}`
             });
           } else {
-            res.sendStatus(204);
+            res.status(204);
           }
         })
         .catch(err => next(err));
