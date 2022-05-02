@@ -21,26 +21,6 @@ const db = new pg.Pool({
   }
 });
 
-app.get('/api/user/:userId', (req, res, next) => {
-  const userId = parseFloat(req.params.userId);
-  if (Number.isInteger(userId) !== true || userId < 0) {
-    throw new ClientError(400, 'UserId must be a positive integer');
-  }
-  const sql = `
-    select "username",
-           "profilePhotoUrl"
-      from "users"
-     where "userId" = $1
-  `;
-  const params = [userId];
-  db.query(sql, params)
-    .then(result => {
-      const [user] = result.rows;
-      res.status(200).json(user);
-    })
-    .catch(err => console.error(err));
-});
-
 app.get('/api/posts/:userId', (req, res, next) => {
   const userId = parseFloat(req.params.userId);
   if (Number.isInteger(userId) !== true || userId < 0) {
@@ -201,6 +181,30 @@ app.get('/api/comments/:postId', (req, res, next) => {
 });
 
 app.use(authorizationMiddleware);
+
+app.get('/api/user/:userId', (req, res, next) => {
+  const { userId } = req.user;
+  const followingId = parseFloat(req.params.userId);
+  if (Number.isInteger(followingId) !== true || followingId < 0) {
+    throw new ClientError(400, 'FollowingId must be a positive integer');
+  }
+  const sql = `
+    select "u"."username",
+           "u"."profilePhotoUrl",
+           "isFollowing"."userId" is not null as "isFollowing"
+      from "users" as "u"
+      left join "followers" as "isFollowing"
+        on ("isFollowing"."userId" = $1 and "isFollowing"."followerId" = $2)
+     where "u"."userId" = $1
+  `;
+  const params = [followingId, userId];
+  db.query(sql, params)
+    .then(result => {
+      const [user] = result.rows;
+      res.status(200).json(user);
+    })
+    .catch(err => console.error(err));
+});
 
 app.get('/api/post/:postId', (req, res, next) => {
   const { userId } = req.user;
