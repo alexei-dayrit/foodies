@@ -189,13 +189,42 @@ app.get('/api/user/:userId', (req, res, next) => {
     throw new ClientError(400, 'FollowingId must be a positive integer');
   }
   const sql = `
-    select "u"."username",
-           "u"."profilePhotoUrl",
+  with "followerCount" as (
+    select "userId",
+           count("followers"."userId") as "followerCount",
+           count("followers"."followerId") filter (where "followers"."followerId" = $1) as "followingCount"
+      from "followers"
+      where "userId" = $1
+      group by "followers"."userId"
+  ),
+  "postCount" as (
+    select "userId",
+           count(*) as "postCount"
+      from "posts"
+     where "userId" = $1
+     group by "posts"."userId"
+  ),
+  "isFollowing" as (
+    select "u"."userId",
            "isFollowing"."userId" is not null as "isFollowing"
       from "users" as "u"
       left join "followers" as "isFollowing"
-        on ("isFollowing"."userId" = $1 and "isFollowing"."followerId" = $2)
+             on ("isFollowing"."userId" = "u"."userId" and "isFollowing"."followerId" = $2)
      where "u"."userId" = $1
+  )
+  select "u"."username",
+         "u"."profilePhotoUrl",
+         "u"."userId",
+         "f"."followerCount",
+         "f"."followingCount",
+         "p"."postCount",
+         "i"."isFollowing"
+    from "users" as "u"
+    join "followerCount" as "f" using ("userId")
+    join "postCount" as "p" using ("userId")
+    join "isFollowing" as "i" using ("userId")
+    where "u"."userId" = $1
+    group by "u"."userId", "f"."followerCount", "f"."followingCount", "p"."postCount", "i"."isFollowing"
   `;
   const params = [followingId, userId];
   db.query(sql, params)

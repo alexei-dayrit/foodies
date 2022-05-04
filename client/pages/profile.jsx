@@ -20,6 +20,7 @@ export default class Profile extends React.Component {
   }
 
   componentDidMount() {
+    const token = window.localStorage.getItem('foodies-jwt');
     const { user } = this.context;
     let userId = this.props.userId;
     if (!this.props.userId) {
@@ -33,11 +34,16 @@ export default class Profile extends React.Component {
         });
       })
       .catch(err => console.error(err));
-    fetch(`/api/user/${userId}`)
+    fetch(`/api/user/${userId}`, {
+      headers: {
+        'X-Access-Token': token
+      }
+    })
       .then(res => res.json())
       .then(user => {
         this.setState({
-          user
+          user,
+          isFollowing: user.isFollowing
         });
       })
       .catch(err => console.error(err));
@@ -98,15 +104,15 @@ export default class Profile extends React.Component {
             <div className="w-[75%] md:w-2/3 order-2 flex flex-wrap items-center
               md:justify-center text-center font-medium">
               <div className='w-1/3 md:w-[22%]'>
-                <p className='font-semibold'>{user.postCount}</p>
+                <p className='font-semibold'>{user.postCount ? user.postCount : 0}</p>
                 <p>Posts</p>
               </div>
               <div className='w-1/3 md:w-[22%]'>
-                <p className='font-semibold'>{user.followerCount}</p>
+                <p className='font-semibold'>{user.followerCount ? user.followerCount : 0}</p>
                 <p>Followers</p>
               </div>
               <div className='w-1/3 md:w-[22%]'>
-                <p className='font-semibold'>{user.followingCount}</p>
+                <p className='font-semibold'>{user.followingCount ? user.followingCount : 0}</p>
                 <p>Following</p>
               </div>
               <div className="w-full md:w-3/4 flex ml-4 pl-4 mt-4 md:text-xl justify-around">

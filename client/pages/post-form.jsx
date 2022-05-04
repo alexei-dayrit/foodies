@@ -36,7 +36,7 @@ export default class PostForm extends React.Component {
         .then(post => {
           const { imageUrl, caption, location, isBought } = post;
           this.setState({
-            imagePreview: `images/${imageUrl}`,
+            imagePreview: `${imageUrl}`,
             caption: caption,
             location: location,
             isBought: isBought
