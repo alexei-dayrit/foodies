@@ -118,6 +118,7 @@ app.get('/api/comments/:postId', (req, res, next) => {
 app.use(authorizationMiddleware);
 
 app.get('/api/posts', (req, res, next) => {
+  const { userId } = req.user;
   const sql = `
      select "u"."username",
             "u"."profilePhotoUrl",
@@ -135,11 +136,12 @@ app.get('/api/posts', (req, res, next) => {
        join "users" as "u" using ("userId")
        left join "likes" as "l" using ("postId")
        left join "likes" as "isLiked"
-         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = "u"."userId")
+         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = $1)
       group by "u"."userId", "isLiked"."userId", "p"."postId"
       order by "p"."createdAt" desc
   `;
-  db.query(sql)
+  const params = [userId];
+  db.query(sql, params)
     .then(result => {
       res.status(201).json(result.rows);
     })
@@ -147,7 +149,8 @@ app.get('/api/posts', (req, res, next) => {
 });
 
 app.get('/api/posts/:userId', (req, res, next) => {
-  const userId = parseFloat(req.params.userId);
+  const { userId } = req.user;
+  const viewedUserId = parseFloat(req.params.userId);
   if (Number.isInteger(userId) !== true || userId < 0) {
     throw new ClientError(400, 'UserId must be a positive integer');
   }
@@ -168,12 +171,12 @@ app.get('/api/posts/:userId', (req, res, next) => {
        join "users" as "u" using ("userId")
        left join "likes" as "l" using ("postId")
        left join "likes" as "isLiked"
-         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = $1)
+         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = $2)
       where "p"."userId" = $1
       group by "u"."userId", "isLiked"."userId", "p"."postId"
       order by "p"."createdAt" desc
   `;
-  const params = [userId];
+  const params = [viewedUserId, userId];
   db.query(sql, params)
     .then(result => {
       const posts = result.rows;
