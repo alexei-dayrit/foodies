@@ -190,19 +190,19 @@ app.get('/api/user/:userId', (req, res, next) => {
   }
   const sql = `
   with "followerCount" as (
-    select "userId",
-           count("followers"."userId") as "followerCount",
-           count("followers"."followerId") filter (where "followers"."followerId" = $1) as "followingCount"
+    select count("followers"."userId") as "total"
       from "followers"
       where "userId" = $1
-      group by "followers"."userId"
+  ),
+   "followingCount" as (
+    select count("followers"."followerId") as "total"
+      from "followers"
+      where "followerId" = $1
   ),
   "postCount" as (
-    select "userId",
-           count(*) as "postCount"
+    select count(*) as "total"
       from "posts"
      where "userId" = $1
-     group by "posts"."userId"
   ),
   "isFollowing" as (
     select "u"."userId",
@@ -215,16 +215,17 @@ app.get('/api/user/:userId', (req, res, next) => {
   select "u"."username",
          "u"."profilePhotoUrl",
          "u"."userId",
-         "f"."followerCount",
-         "f"."followingCount",
-         "p"."postCount",
+         coalesce("f"."total", 0) as "followerCount",
+         coalesce("a"."total", 0) as "followingCount",
+         coalesce("p"."total", 0) as "postCount",
          "i"."isFollowing"
-    from "users" as "u"
-    join "followerCount" as "f" using ("userId")
-    join "postCount" as "p" using ("userId")
-    join "isFollowing" as "i" using ("userId")
+    from "followerCount" as "f",
+         "followingCount" as "a",
+         "postCount" as "p",
+         "users" as "u"
+    left join "isFollowing" as "i" using ("userId")
     where "u"."userId" = $1
-    group by "u"."userId", "f"."followerCount", "f"."followingCount", "p"."postCount", "i"."isFollowing"
+    group by "u"."userId", "f"."total", "a"."total", "p"."total", "i"."isFollowing"
   `;
   const params = [followingId, userId];
   db.query(sql, params)
