@@ -12,7 +12,8 @@ export default class Profile extends React.Component {
       posts: [],
       user: '',
       showListView: false,
-      following: false
+      isFollowing: false,
+      followerCount: 0
     };
     this.handleGridIconClicks = this.handleGridIconClicks.bind(this);
     this.handleListIconClicks = this.handleListIconClicks.bind(this);
@@ -20,6 +21,7 @@ export default class Profile extends React.Component {
   }
 
   componentDidMount() {
+    const token = window.localStorage.getItem('foodies-jwt');
     const { user } = this.context;
     let userId = this.props.userId;
     if (!this.props.userId) {
@@ -33,11 +35,17 @@ export default class Profile extends React.Component {
         });
       })
       .catch(err => console.error(err));
-    fetch(`/api/user/${userId}`)
+    fetch(`/api/user/${userId}`, {
+      headers: {
+        'X-Access-Token': token
+      }
+    })
       .then(res => res.json())
       .then(user => {
         this.setState({
-          user
+          user,
+          isFollowing: user.isFollowing,
+          followerCount: user.followerCount
         });
       })
       .catch(err => console.error(err));
@@ -53,10 +61,25 @@ export default class Profile extends React.Component {
 
   handleFollowClicks() {
     const { userId } = this.props;
+    const { isFollowing } = this.state;
+    const followerCount = Number(this.state.followerCount);
     const token = window.localStorage.getItem('foodies-jwt');
-    this.setState({ following: !this.state.following });
-    fetch('/api/follow', {
-      method: 'POST',
+    this.setState({ isFollowing: !isFollowing });
+
+    let fetchMethod = '';
+    let fetchRoute = '';
+    if (!isFollowing) {
+      fetchMethod = 'POST';
+      fetchRoute = '/api/follow';
+      this.setState({ followerCount: followerCount + 1 });
+    } else {
+      fetchMethod = 'DELETE';
+      fetchRoute = '/api/unfollow';
+      this.setState({ followerCount: followerCount - 1 });
+    }
+
+    fetch(fetchRoute, {
+      method: fetchMethod,
       headers: {
         'Content-Type': 'application/json',
         'X-Access-Token': token
@@ -68,7 +91,7 @@ export default class Profile extends React.Component {
   }
 
   render() {
-    const { posts, user, showListView, following } = this.state;
+    const { posts, user, showListView, isFollowing, followerCount } = this.state;
     const { handleGridIconClicks, handleListIconClicks, handleFollowClicks } = this;
     return (
       <>
@@ -91,7 +114,7 @@ export default class Profile extends React.Component {
                 <p>Posts</p>
               </div>
               <div className='w-1/3 md:w-[22%]'>
-                <p className='font-semibold'>{user.followerCount}</p>
+                <p className='font-semibold'>{followerCount}</p>
                 <p>Followers</p>
               </div>
               <div className='w-1/3 md:w-[22%]'>
@@ -103,10 +126,10 @@ export default class Profile extends React.Component {
                   <p className='font-semibold'>{user.username}</p>
                 </div>
                 <div className="w-1/3">
-                  <button className={`font-medium text-[#262626] border rounded-lg px-3 py-1
-                    ${following ? 'bg-blue-400' : 'bg-blue-300'}`}
+                  <button className={`font-medium text-gray-600 border rounded-md px-2 py-1
+                    ${isFollowing ? 'bg-blue-400' : 'bg-blue-300'}`}
                     onClick={handleFollowClicks}>
-                    {following ? 'Unfollow' : 'Follow'}
+                    {isFollowing ? 'Unfollow' : 'Follow'}
                   </button>
                 </div>
               </div>

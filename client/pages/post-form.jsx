@@ -128,9 +128,8 @@ export default class PostForm extends React.Component {
   }
 
   render() {
-    const imagePreview = this.state.imagePreview;
-    const isBought = this.state.isBought;
     const postId = this.props.postId;
+    const { imagePreview, isBought } = this.state;
     const { user } = this.context;
 
     if (!user) return <Redirect to="sign-in" />;
@@ -154,8 +153,9 @@ export default class PostForm extends React.Component {
                     </label>
                   </a>}
                 <input ref={this.fileInputRef} className='inset-center opacity-0 cursor-pointer'
-                  type="file" id="image" name="image"
-                  accept=".png, .jpg, .jpeg, .gif" onChange={this.handleImageUpload}
+                  type="file" id="image" name="image" accept=".png, .jpg, .jpeg, .gif"
+                  required={imagePreview === '/images/placeholder-image-square.jpeg'}
+                  onChange={this.handleImageUpload}
                 />
               </div>
               <div className='w-full md:w-[40%] order-2 px-2 md:px-4'>
@@ -179,7 +179,7 @@ export default class PostForm extends React.Component {
                   />
                 </div>
                 <div className="border-b border-gray-200">
-                  <input type="text" name="location" placeholder='Add location'
+                  <input type="text" name="location" placeholder='Add location' required
                     value={this.state.location} onChange={this.handleLocationChange}
                     className='bg-[#f8f9fa] bg-opacity-60 w-full py-2 pl-1 my-2'/>
                 </div>

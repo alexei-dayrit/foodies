@@ -21,26 +21,6 @@ const db = new pg.Pool({
   }
 });
 
-app.get('/api/user/:userId', (req, res, next) => {
-  const userId = parseFloat(req.params.userId);
-  if (Number.isInteger(userId) !== true || userId < 0) {
-    throw new ClientError(400, 'UserId must be a positive integer');
-  }
-  const sql = `
-    select "username",
-           "profilePhotoUrl"
-      from "users"
-     where "userId" = $1
-  `;
-  const params = [userId];
-  db.query(sql, params)
-    .then(result => {
-      const [user] = result.rows;
-      res.status(200).json(user);
-    })
-    .catch(err => console.error(err));
-});
-
 app.get('/api/posts/:userId', (req, res, next) => {
   const userId = parseFloat(req.params.userId);
   if (Number.isInteger(userId) !== true || userId < 0) {
@@ -202,6 +182,60 @@ app.get('/api/comments/:postId', (req, res, next) => {
 
 app.use(authorizationMiddleware);
 
+app.get('/api/user/:userId', (req, res, next) => {
+  const { userId } = req.user;
+  const followingId = parseFloat(req.params.userId);
+  if (Number.isInteger(followingId) !== true || followingId < 0) {
+    throw new ClientError(400, 'FollowingId must be a positive integer');
+  }
+  const sql = `
+  with "followerCount" as (
+    select count("followers"."userId") as "total"
+      from "followers"
+      where "userId" = $1
+  ),
+   "followingCount" as (
+    select count("followers"."followerId") as "total"
+      from "followers"
+      where "followerId" = $1
+  ),
+  "postCount" as (
+    select count(*) as "total"
+      from "posts"
+     where "userId" = $1
+  ),
+  "isFollowing" as (
+    select "u"."userId",
+           "isFollowing"."userId" is not null as "isFollowing"
+      from "users" as "u"
+      left join "followers" as "isFollowing"
+             on ("isFollowing"."userId" = "u"."userId" and "isFollowing"."followerId" = $2)
+     where "u"."userId" = $1
+  )
+  select "u"."username",
+         "u"."profilePhotoUrl",
+         "u"."userId",
+         coalesce("f"."total", 0) as "followerCount",
+         coalesce("a"."total", 0) as "followingCount",
+         coalesce("p"."total", 0) as "postCount",
+         "i"."isFollowing"
+    from "followerCount" as "f",
+         "followingCount" as "a",
+         "postCount" as "p",
+         "users" as "u"
+    left join "isFollowing" as "i" using ("userId")
+    where "u"."userId" = $1
+    group by "u"."userId", "f"."total", "a"."total", "p"."total", "i"."isFollowing"
+  `;
+  const params = [followingId, userId];
+  db.query(sql, params)
+    .then(result => {
+      const [user] = result.rows;
+      res.status(200).json(user);
+    })
+    .catch(err => console.error(err));
+});
+
 app.get('/api/post/:postId', (req, res, next) => {
   const { userId } = req.user;
   const postId = parseFloat(req.params.postId);
@@ -353,6 +387,33 @@ app.post('/api/follow', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/unfollow', (req, res, next) => {
+  const { userId } = req.user;
+  const toBeUnfollowedUserId = parseFloat(req.body.userId);
+  if (Number.isInteger(toBeUnfollowedUserId) !== true || toBeUnfollowedUserId < 0) {
+    throw new ClientError(400, 'Target userId must be a positive integer');
+  } else if (!toBeUnfollowedUserId) {
+    throw new ClientError(400, 'Target userId is a required field');
+  }
+  const sql = `
+    delete from "followers"
+     where "userId" = $1 and "followerId" = $2
+     returning *;
+  `;
+  const params = [toBeUnfollowedUserId, userId];
+  db.query(sql, params)
+    .then(result => {
+      const [unfollow] = result.rows;
+      if (!unfollow) {
+        res.status(404).json({
+          error: `Cannot find user with followerId ${userId}`
+        });
+      } else {
+        res.status(204);
+      }
+    });
+});
+
 app.put('/api/edit/:postId', uploadsMiddleware, (req, res, next) => {
   const { userId } = req.user;
   const { caption, isBought, location } = req.body;
@@ -415,7 +476,7 @@ app.delete('/api/deletePost/:postId', (req, res, next) => {
               error: `Cannot find posts with postId ${postId}`
             });
           } else {
-            res.sendStatus(204);
+            res.status(204);
           }
         })
         .catch(err => next(err));

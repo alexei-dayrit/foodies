@@ -47,3 +47,9 @@ insert into "comments" ("userId", "comment", "postId")
 
 insert into "comments" ("userId", "comment", "postId")
      values (101, 'That looks so good! Where did you get this?', 101);
+
+insert into "followers" ("userId", "followerId")
+     values (100, 101);
+
+insert into "followers" ("userId", "followerId")
+     values (101, 100);
