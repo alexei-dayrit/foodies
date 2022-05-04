@@ -12,7 +12,10 @@ export default class Home extends React.Component {
   }
 
   componentDidMount() {
-    fetch('api/posts')
+    const token = window.localStorage.getItem('foodies-jwt');
+    fetch('/api/posts', {
+      headers: { 'X-Access-Token': token }
+    })
       .then(res => res.json())
       .then(posts => {
         this.setState({ posts: posts });

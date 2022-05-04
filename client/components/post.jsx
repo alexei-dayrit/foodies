@@ -25,7 +25,10 @@ export default class Post extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/comments/${this.props.post.postId}`)
+    const token = window.localStorage.getItem('foodies-jwt');
+    fetch(`/api/comments/${this.props.post.postId}`, {
+      headers: { 'X-Access-Token': token }
+    })
       .then(res => res.json())
       .then(comments => {
         this.setState({ comments: comments });

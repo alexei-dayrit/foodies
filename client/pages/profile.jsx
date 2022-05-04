@@ -27,7 +27,11 @@ export default class Profile extends React.Component {
     if (!this.props.userId) {
       userId = user.userId;
     }
-    fetch(`/api/posts/${userId}`)
+    fetch(`/api/posts/${userId}`, {
+      headers: {
+        'X-Access-Token': token
+      }
+    })
       .then(res => res.json())
       .then(posts => {
         this.setState({
