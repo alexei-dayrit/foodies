@@ -12,7 +12,8 @@ export default class Profile extends React.Component {
       posts: [],
       user: '',
       showListView: false,
-      isFollowing: false
+      isFollowing: false,
+      followerCount: 0
     };
     this.handleGridIconClicks = this.handleGridIconClicks.bind(this);
     this.handleListIconClicks = this.handleListIconClicks.bind(this);
@@ -43,7 +44,8 @@ export default class Profile extends React.Component {
       .then(user => {
         this.setState({
           user,
-          isFollowing: user.isFollowing
+          isFollowing: user.isFollowing,
+          followerCount: user.followerCount
         });
       })
       .catch(err => console.error(err));
@@ -59,17 +61,21 @@ export default class Profile extends React.Component {
 
   handleFollowClicks() {
     const { userId } = this.props;
+    const { isFollowing } = this.state;
+    const followerCount = Number(this.state.followerCount);
     const token = window.localStorage.getItem('foodies-jwt');
-    this.setState({ isFollowing: !this.state.isFollowing });
+    this.setState({ isFollowing: !isFollowing });
 
     let fetchMethod = '';
     let fetchRoute = '';
-    if (!this.state.isFollowing) {
+    if (!isFollowing) {
       fetchMethod = 'POST';
       fetchRoute = '/api/follow';
+      this.setState({ followerCount: followerCount + 1 });
     } else {
       fetchMethod = 'DELETE';
       fetchRoute = '/api/unfollow';
+      this.setState({ followerCount: followerCount - 1 });
     }
 
     fetch(fetchRoute, {
@@ -85,7 +91,7 @@ export default class Profile extends React.Component {
   }
 
   render() {
-    const { posts, user, showListView, isFollowing } = this.state;
+    const { posts, user, showListView, isFollowing, followerCount } = this.state;
     const { handleGridIconClicks, handleListIconClicks, handleFollowClicks } = this;
     return (
       <>
@@ -104,15 +110,15 @@ export default class Profile extends React.Component {
             <div className="w-[75%] md:w-2/3 order-2 flex flex-wrap items-center
               md:justify-center text-center font-medium">
               <div className='w-1/3 md:w-[22%]'>
-                <p className='font-semibold'>{user.postCount ? user.postCount : 0}</p>
+                <p className='font-semibold'>{user.postCount}</p>
                 <p>Posts</p>
               </div>
               <div className='w-1/3 md:w-[22%]'>
-                <p className='font-semibold'>{user.followerCount ? user.followerCount : 0}</p>
+                <p className='font-semibold'>{followerCount}</p>
                 <p>Followers</p>
               </div>
               <div className='w-1/3 md:w-[22%]'>
-                <p className='font-semibold'>{user.followingCount ? user.followingCount : 0}</p>
+                <p className='font-semibold'>{user.followingCount}</p>
                 <p>Following</p>
               </div>
               <div className="w-full md:w-3/4 flex ml-4 pl-4 mt-4 md:text-xl justify-around">
