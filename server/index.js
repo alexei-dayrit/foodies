@@ -21,42 +21,6 @@ const db = new pg.Pool({
   }
 });
 
-app.get('/api/posts/:userId', (req, res, next) => {
-  const userId = parseFloat(req.params.userId);
-  if (Number.isInteger(userId) !== true || userId < 0) {
-    throw new ClientError(400, 'UserId must be a positive integer');
-  }
-  const sql = `
-     select "u"."username",
-            "u"."profilePhotoUrl",
-            "p"."userId",
-            "p"."postId",
-            "p"."imageUrl",
-            "p"."caption",
-            "p"."isBought",
-            "p"."location",
-            "p"."createdAt",
-            "p"."editedAt",
-            "isLiked"."userId" is not null as "isLiked",
-            count("l".*) as "numberOfLikes"
-       from "posts" as "p"
-       join "users" as "u" using ("userId")
-       left join "likes" as "l" using ("postId")
-       left join "likes" as "isLiked"
-         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = $1)
-      where "p"."userId" = $1
-      group by "u"."userId", "isLiked"."userId", "p"."postId"
-      order by "p"."createdAt" desc
-  `;
-  const params = [userId];
-  db.query(sql, params)
-    .then(result => {
-      const posts = result.rows;
-      res.status(201).json(posts);
-    })
-    .catch(err => next(err));
-});
-
 app.post('/api/auth/sign-up', uploadsMiddleware, (req, res, next) => {
   const { username, password } = req.body;
   const profilePhoto = req.file
@@ -125,6 +89,34 @@ app.post('/api/auth/sign-in', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/comments/:postId', (req, res, next) => {
+  const postId = parseFloat(req.params.postId);
+  if (Number.isInteger(postId) !== true || postId < 0) {
+    throw new ClientError(400, 'PostId must be a positive integer');
+  }
+  const sql = `
+    select "username",
+           "profilePhotoUrl",
+           "commentId",
+           "comment",
+           "commentedAt",
+           "postId",
+           "comments"."userId"
+      from "comments"
+      join "users" using ("userId")
+     where "postId" = $1
+     order by "comments"."commentedAt" desc
+  `;
+  const params = [postId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(201).json(result.rows);
+    })
+    .catch(err => next(err));
+});
+
+app.use(authorizationMiddleware);
+
 app.get('/api/posts', (req, res, next) => {
   const sql = `
      select "u"."username",
@@ -154,33 +146,41 @@ app.get('/api/posts', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/comments/:postId', (req, res, next) => {
-  const postId = parseFloat(req.params.postId);
-  if (Number.isInteger(postId) !== true || postId < 0) {
-    throw new ClientError(400, 'PostId must be a positive integer');
+app.get('/api/posts/:userId', (req, res, next) => {
+  const userId = parseFloat(req.params.userId);
+  if (Number.isInteger(userId) !== true || userId < 0) {
+    throw new ClientError(400, 'UserId must be a positive integer');
   }
   const sql = `
-    select "username",
-           "profilePhotoUrl",
-           "commentId",
-           "comment",
-           "commentedAt",
-           "postId",
-           "comments"."userId"
-      from "comments"
-      join "users" using ("userId")
-     where "postId" = $1
-     order by "comments"."commentedAt" desc
+     select "u"."username",
+            "u"."profilePhotoUrl",
+            "p"."userId",
+            "p"."postId",
+            "p"."imageUrl",
+            "p"."caption",
+            "p"."isBought",
+            "p"."location",
+            "p"."createdAt",
+            "p"."editedAt",
+            "isLiked"."userId" is not null as "isLiked",
+            count("l".*) as "numberOfLikes"
+       from "posts" as "p"
+       join "users" as "u" using ("userId")
+       left join "likes" as "l" using ("postId")
+       left join "likes" as "isLiked"
+         on ("isLiked"."postId" = "p"."postId" and "isLiked"."userId" = $1)
+      where "p"."userId" = $1
+      group by "u"."userId", "isLiked"."userId", "p"."postId"
+      order by "p"."createdAt" desc
   `;
-  const params = [postId];
+  const params = [userId];
   db.query(sql, params)
     .then(result => {
-      res.status(201).json(result.rows);
+      const posts = result.rows;
+      res.status(201).json(posts);
     })
     .catch(err => next(err));
 });
-
-app.use(authorizationMiddleware);
 
 app.get('/api/user/:userId', (req, res, next) => {
   const { userId } = req.user;
