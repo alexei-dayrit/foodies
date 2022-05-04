@@ -457,29 +457,37 @@ app.delete('/api/deletePost/:postId', (req, res, next) => {
   }
   const sqlDeleteLikes = `
     delete from "likes"
-     where "postId" = $1 and "userId" = $2
+     where "postId" = $1
      returning *;
+  `;
+  const sqlDeleteComments = `
+    delete from "comments"
+      where "postId" = $1
+      returning *;
   `;
   const sqlDeletePosts = `
     delete from "posts"
      where "postId" = $1 and "userId" = $2
      returning *;
   `;
+  const postIdParam = [postId];
   const params = [postId, userId];
-  db.query(sqlDeleteLikes, params)
+  return db.query(sqlDeleteLikes, postIdParam)
     .then(result => {
-      db.query(sqlDeletePosts, params)
+      db.query(sqlDeleteComments, postIdParam)
         .then(result => {
-          const [deletedPost] = result.rows;
-          if (!deletedPost) {
-            res.status(404).json({
-              error: `Cannot find posts with postId ${postId}`
+          db.query(sqlDeletePosts, params)
+            .then(result => {
+              const [deletedPost] = result.rows;
+              if (!deletedPost) {
+                res.status(404).json({
+                  error: `Cannot find posts with postId ${postId}`
+                });
+              } else {
+                res.sendStatus(204);
+              }
             });
-          } else {
-            res.status(204);
-          }
-        })
-        .catch(err => next(err));
+        });
     })
     .catch(err => next(err));
 });
