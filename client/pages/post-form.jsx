@@ -14,7 +14,8 @@ export default class PostForm extends React.Component {
       location: '',
       isBought: null,
       isUploaded: false,
-      showModal: false
+      showModal: false,
+      isDisabled: true
     };
     this.fileInputRef = React.createRef();
     this.handleCaptionChange = this.handleCaptionChange.bind(this);
@@ -129,7 +130,7 @@ export default class PostForm extends React.Component {
 
   render() {
     const postId = this.props.postId;
-    const { imagePreview, isBought } = this.state;
+    const { imagePreview, isBought, isDisabled } = this.state;
     const { user } = this.context;
 
     if (!user) return <Redirect to="sign-in" />;
@@ -213,7 +214,8 @@ export default class PostForm extends React.Component {
                     </a>
                   </div>}
                   <div className={`flex mt-1 ${postId ? 'w-1/2 justify-end' : 'w-full flex-row-reverse pr-1'}` }>
-                    <button type="submit" name='share' className='hover:scale-110 text-blue-600 text-xl'>
+                    <button type="submit" name='share' className='hover:scale-110 text-blue-600 text-xl'
+                      disabled={isDisabled}>
                       {postId ? 'Save' : 'Share'}
                     </button>
                   </div>
