@@ -86,17 +86,17 @@ export default class PostForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    const { caption, location, imagePreview, isBought } = this.state;
-    if (caption && location && (imagePreview !== '/images/placeholder-image-square.jpeg') &&
+    const { caption, location, isBought } = this.state;
+    if (caption && location && this.fileInputRef.current.files[0] &&
       (isBought === true || isBought === false)) {
       this.setState({ isDisabled: true });
     }
 
     const formData = new FormData();
     formData.append('image', this.fileInputRef.current.files[0]);
-    formData.append('caption', this.state.caption);
-    formData.append('location', this.state.location);
-    formData.append('isBought', this.state.isBought);
+    formData.append('caption', caption);
+    formData.append('location', location);
+    formData.append('isBought', isBought);
 
     let fetchMethod = '';
     let fetchRoute = '';
