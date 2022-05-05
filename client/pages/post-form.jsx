@@ -14,7 +14,8 @@ export default class PostForm extends React.Component {
       location: '',
       isBought: null,
       isUploaded: false,
-      showModal: false
+      showModal: false,
+      isDisabled: false
     };
     this.fileInputRef = React.createRef();
     this.handleCaptionChange = this.handleCaptionChange.bind(this);
@@ -84,11 +85,18 @@ export default class PostForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+
+    const { caption, location, isBought } = this.state;
+    if (caption && location && this.fileInputRef.current.files[0] &&
+      (isBought === true || isBought === false)) {
+      this.setState({ isDisabled: true });
+    }
+
     const formData = new FormData();
     formData.append('image', this.fileInputRef.current.files[0]);
-    formData.append('caption', this.state.caption);
-    formData.append('location', this.state.location);
-    formData.append('isBought', this.state.isBought);
+    formData.append('caption', caption);
+    formData.append('location', location);
+    formData.append('isBought', isBought);
 
     let fetchMethod = '';
     let fetchRoute = '';
@@ -129,7 +137,11 @@ export default class PostForm extends React.Component {
 
   render() {
     const postId = this.props.postId;
-    const { imagePreview, isBought } = this.state;
+    const {
+      handleSubmit, handleImageUpload, handleCaptionChange, handleLocationChange,
+      handleDelete, handleIsBoughtChange, handleModal
+    } = this;
+    const { imagePreview, caption, location, isBought, isDisabled } = this.state;
     const { user } = this.context;
 
     if (!user) return <Redirect to="sign-in" />;
@@ -140,7 +152,7 @@ export default class PostForm extends React.Component {
           <h1 className='text-2xl flex justify-center mt-6 pb-4'>
             {postId ? 'Edit Post' : 'New Post'}
           </h1>
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <div className='flex flex-wrap p-4 rounded-sm border shadow-md bg-white border-gray-300'>
               <div className='w-full md:w-[60%] relative order-1'>
                 <img className='w-full object-cover object-left
@@ -155,7 +167,7 @@ export default class PostForm extends React.Component {
                 <input ref={this.fileInputRef} className='inset-center opacity-0 cursor-pointer'
                   type="file" id="image" name="image" accept=".png, .jpg, .jpeg, .gif"
                   required={imagePreview === '/images/placeholder-image-square.jpeg'}
-                  onChange={this.handleImageUpload}
+                  onChange={handleImageUpload}
                 />
               </div>
               <div className='w-full md:w-[40%] order-2 px-2 md:px-4'>
@@ -167,64 +179,67 @@ export default class PostForm extends React.Component {
                     />
                   </a>
                   <div className="space-y-1 font-semibold">
-                    <a href={`#profile?userId=${user.userId}`}className='cursor-pointer'>
+                    <a href={`#profile?userId=${user.userId}`} className='cursor-pointer'>
                       {user.username}
                     </a>
                   </div>
                 </div>
                 <div className="border-b border-gray-200">
                   <textarea required type="text" name="caption" placeholder="Write a caption"
-                    value={this.state.caption} onChange={this.handleCaptionChange}
+                    value={caption} onChange={handleCaptionChange}
                     className='bg-[#f8f9fa] bg-opacity-60 py-2 pl-1 my-2' cols={40} rows={3}
                   />
                 </div>
                 <div className="border-b border-gray-200">
                   <input type="text" name="location" placeholder='Add location' required
-                    value={this.state.location} onChange={this.handleLocationChange}
-                    className='bg-[#f8f9fa] bg-opacity-60 w-full py-2 pl-1 my-2'/>
+                    value={location} onChange={handleLocationChange}
+                    className='bg-[#f8f9fa] bg-opacity-60 w-full py-2 pl-1 my-2' />
                 </div>
                 <div className="py-4">
                   <ul id="isBought" className="inline-flex items-center
                     h-10 space-x-1 rounded-md font-semibold text-sky-600">
                     <li className="switch-item flex h-8 bg-gray-300x">
-                      <input onChange={this.handleIsBoughtChange} checked={isBought === false}
+                      <input onChange={handleIsBoughtChange} checked={isBought === false}
                         type="radio" name="isBought" id="cooked" value='cooked' className="sr-only" required
                       />
                       <label htmlFor="cooked" className="hover:scale-110 border-2 h-9 py-2 px-2 cursor-pointer
                         text-sm leading-4 text-gray-600 hover:text-gray-800 bg-white rounded shadow"
-                        >Home-cooked
+                      >Home-cooked
                       </label>
                     </li>
                     <li className="switch-item flex relative h-8 bg-gray-300x">
-                      <input onChange={this.handleIsBoughtChange} checked={isBought === true}
+                      <input onChange={handleIsBoughtChange} checked={isBought === true}
                         type="radio" name="isBought" id="bought" value='bought' className="sr-only" required
                       />
                       <label htmlFor="bought" className="hover:scale-110 border-2 h-9 py-2 px-2 ml-1 cursor-pointer
                         text-sm leading-4 text-gray-600 hover:text-gray-800 bg-white rounded shadow"
-                        >Bought
+                      >Bought
                       </label>
                     </li>
                   </ul>
                 </div>
                 <div className="pb-2 pt-8 flex">
                   {postId && <div className='w-1/2'>
-                    <a onClick={this.handleModal} className='cursor-pointer'>
+                    <a onClick={handleModal} className='cursor-pointer'>
                       <DeleteIcon />
                     </a>
                   </div>}
-                  <div className={`flex mt-1 ${postId ? 'w-1/2 justify-end' : 'w-full flex-row-reverse pr-1'}` }>
-                    <button type="submit" name='share' className='hover:scale-110 text-blue-600 text-xl'>
-                      {postId ? 'Save' : 'Share'}
-                    </button>
-                  </div>
+                  <div className={`flex mt-1 ${postId ? 'w-1/2 justify-end' : 'w-full flex-row-reverse pr-1'}`}>
+                    <button type="submit" name='share' className='hover:scale-110 text-blue-600 text-xl'
+                      disabled={isDisabled}>
+                    {postId ? 'Save' : 'Share'}
+                  </button>
                 </div>
               </div>
             </div>
-          </form>
         </div>
-        {this.state.showModal && (
-          <Modal handleModal={this.handleModal} handleDelete={this.handleDelete}/>
-        )}
+      </form>
+        </div >
+    {
+      this.state.showModal && (
+        <Modal handleModal={handleModal} handleDelete={handleDelete} />
+      )
+    }
       </>
     );
   }
