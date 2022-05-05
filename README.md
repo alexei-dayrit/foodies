@@ -54,9 +54,9 @@ I wanted my first full stack application to be about something I loved, **food**
 
 ## Stretch Features
 
-- User can mark location on a map
 - User can search for other users
 - User can edit their profile
+- User can mark location on a map
 
 ## System Requirements
 
