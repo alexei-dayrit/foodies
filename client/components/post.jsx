@@ -103,10 +103,10 @@ export default class Post extends React.Component {
   render() {
     const { user } = this.context;
 
-    if (!this.context.user) return <Redirect to="sign-in" />;
+    if (!user) return <Redirect to="sign-in" />;
 
-    const showComments = this.state.showComments;
-    const comments = this.state.comments;
+    const { handleLikeClicks, handleCommentsToggle, handleCommentSubmit, handleCommentChange } = this;
+    const { showComments, comments, numberOfLikes, isLiked, newComment } = this.state;
     const {
       username, userId, postId, imageUrl, caption, isBought,
       createdAt, location, editedAt, profilePhotoUrl
@@ -141,7 +141,7 @@ export default class Post extends React.Component {
           </div>
           <div className='w-full md:w-[60%] flex flex-wrap'
             href={imageUrl} target="_blank" rel="noreferrer"
-            ><img className='w-full min-h-[300px] max-h-[500px] object-cover'
+          ><img className='w-full min-h-[300px] max-h-[500px] object-cover'
             src={imageUrl} alt='Photo of post' />
           </div>
           <div className='w-full md:w-[40%] md:pl-2 flex flex-col p-2'>
@@ -156,7 +156,7 @@ export default class Post extends React.Component {
                   <a href={`#profile?userId=${userId}`}>
                     <h2 className='font-semibold text-sm md:pl-3 hover:text-slate-400'>{username}</h2>
                   </a>
-                    <span className='text-gray-400 text-xs md:pl-3'>{location}</span>
+                  <span className='text-gray-400 text-xs md:pl-3'>{location}</span>
                 </div>
               </div>
               {user.userId === userId && (
@@ -165,16 +165,20 @@ export default class Post extends React.Component {
                 </a>)
               }
             </div>
-            <div className="w-full pt-2 md:pt-1">
+            <div className="w-full pt-2 pb-1 md:pt-1">
               <div className='flex'>
-                <a className='curor-pointer' onClick={this.handleLikeClicks}>
-                  {this.state.isLiked ? <HeartIconFilled /> : <HeartIcon />}
+                <a className='curor-pointer' onClick={handleLikeClicks}>
+                  {isLiked ? <HeartIconFilled /> : <HeartIcon />}
                 </a>
-                <a className='curor-pointer pl-2' onClick={this.handleCommentsToggle}>
+                <a className='curor-pointer pl-2' onClick={handleCommentsToggle}>
                   <CommentIcon />
                 </a>
               </div>
-              <p className='pl-1 py-1 text-sm'>{`${this.state.numberOfLikes} likes`}</p>
+              {numberOfLikes > 0 && (
+                <p className='pl-1 text-sm'>
+                  {`${numberOfLikes} ${numberOfLikes > 1 ? 'likes' : 'like'}`}
+                </p>
+              )}
             </div>
             <div className='w-full pl-1 leading-tight'>
               <div className='flex'>
@@ -197,7 +201,7 @@ export default class Post extends React.Component {
                   : `edited ${formatDistance(new Date(editedAt), new Date(), { includeSeconds: true })} ago`
                 }
               </p>
-              <button onClick={this.handleCommentsToggle} className='text-gray-400
+              <button onClick={handleCommentsToggle} className='text-gray-400
               hover:text-slate-500 text-sm'>
                 {showComments ? 'Hide comments' : 'View comments'}
               </button>
@@ -212,12 +216,12 @@ export default class Post extends React.Component {
               })}
             </div>
             {showComments &&
-              <form onSubmit={this.handleCommentSubmit}
+              <form onSubmit={handleCommentSubmit}
                 className='mt-auto pl-1'>
                 <textarea type="text" placeholder="Add a comment" required
                   className='border border-slate-600 rounded-xl mt-5 pt-1 px-2
                     w-full h-20'
-                  onChange={this.handleCommentChange} value={this.state.newComment}
+                  onChange={handleCommentChange} value={newComment}
                 />
                 <div className='flex w-full justify-end hover:text-blue-700 text-blue-600 text-sm'>
                   <button type='submit'>Post</button>
