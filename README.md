@@ -110,7 +110,7 @@ I wanted my first full stack application to be about something I loved, **food**
   sudo service postgresql start
 ```
 
-7. Create your database with Postgresql, then import database schema.
+7. Create your database with PostgreSQL.
 
 ```shell
   createdb foodies
@@ -122,7 +122,7 @@ I wanted my first full stack application to be about something I loved, **food**
   npm run db:import
 ```
 
-9. View your database with ```pgweb``` GUI tool for PostgreQL. Can also be seen at ```http://localhost:8081``` in your browser once it's running.
+9. View your database with ```pgweb``` GUI tool for PostgreSQL. Can also be seen at ```http://localhost:8081``` in your browser once it's running.
 
 ```shell
   pgweb --db=foodies
