@@ -11,13 +11,13 @@ const Navbar = props => {
   const { user, handleSignOut } = useContext(AppContext);
 
   const handleDesktopDropdownToggle = () => {
-    setShowDesktopDropdown({ showDesktopDropdown: !showDesktopDropdown });
-    setShowMobileDropdown({ showMobileDropdown: false });
+    setShowDesktopDropdown(!showDesktopDropdown);
+    setShowMobileDropdown(false);
   };
 
   const handleMobileDropdownToggle = () => {
-    setShowMobileDropdown({ showMobileDropdown: !this.state.showMobileDropdown });
-    setShowDesktopDropdown({ showDesktopDropdown: false });
+    setShowMobileDropdown(!showMobileDropdown);
+    setShowDesktopDropdown(false);
   };
 
   if (!user) return <Redirect to="sign-in" />;
