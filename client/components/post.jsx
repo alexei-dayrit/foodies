@@ -210,7 +210,7 @@ export default class Post extends React.Component {
               {showComments && comments.map(comment => {
                 return (
                   <div key={comment.commentId}>
-                    <Comment comment={comment} post={this.props.post} />
+                    <Comment comment={comment} />
                   </div>
                 );
               })}
