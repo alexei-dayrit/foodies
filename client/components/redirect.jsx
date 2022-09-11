@@ -1,4 +1,4 @@
-export default function Redirect(props) {
+function Redirect(props) {
   const url = new URL(window.location);
   if (props.to === '') {
     url.hash = '#';
@@ -8,3 +8,5 @@ export default function Redirect(props) {
   window.location.replace(url);
   return null;
 }
+
+export default Redirect;
