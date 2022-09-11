@@ -1,46 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Post from '../components/post';
 import Redirect from '../components/redirect';
 import AppContext from '../lib/app-context';
 
-export default class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      posts: []
-    };
-  }
+const Home = props => {
+  const { user } = useContext(AppContext);
+  if (!user) return <Redirect to="sign-in" />;
 
-  componentDidMount() {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
     const token = window.localStorage.getItem('foodies-jwt');
     fetch('/api/posts', {
       headers: { 'X-Access-Token': token }
     })
       .then(res => res.json())
-      .then(posts => {
-        this.setState({ posts: posts });
+      .then(data => {
+        setPosts(data);
       })
       .catch(err => console.error(err));
-  }
+  }, []);
 
-  render() {
-    const posts = this.state.posts;
+  return (
+    <div className='sm:w-96 md:w-[768px] lg:w-[900px] p-2 m-auto mt-8'>
+      {posts.map(post => {
+        return (
+          <div key={post.postId} className='my-4'>
+            <Post post={post} />
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
-    if (!this.context.user) return <Redirect to="sign-in" />;
-
-    return (
-      <>
-        <div className='sm:w-96 md:w-[768px] lg:w-[900px] p-2 m-auto mt-8'>
-          {posts.map(post => {
-            return (
-              <div key={post.postId} className='my-4'>
-                <Post post={post} />
-              </div>
-            );
-          })}
-        </div>
-      </>
-    );
-  }
-}
-Home.contextType = AppContext;
+export default Home;

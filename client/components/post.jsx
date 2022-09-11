@@ -34,7 +34,7 @@ const Post = props => {
         setComments(data);
       })
       .catch(err => console.error(err));
-  });
+  }, []);
 
   const handleLikeClicks = event => {
     const isLiked = likesInfo.isLiked;
