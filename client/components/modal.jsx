@@ -2,7 +2,7 @@ import React from 'react';
 import XMarkIcon from './svg-assets/xmark-icon';
 
 const Modal = props => {
-  const { handleDelete, handleModal } = this.props;
+  const { handleDelete, handleModal } = props;
 
   return (
     <>
