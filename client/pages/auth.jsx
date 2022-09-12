@@ -1,21 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AppContext from '../lib/app-context';
 import AuthForm from '../components/auth-form';
 import Redirect from '../components/redirect';
-export default class AuthPage extends React.Component {
-  render() {
-    const { user, route, handleSignIn } = this.context;
-    if (user) return <Redirect to="" />;
 
-    return (
+const AuthPage = () => {
+  const { user, route, handleSignIn } = useContext(AppContext);
+
+  if (user) return <Redirect to="" />;
+
+  return (
       <>
         <AuthForm
           key={route.path}
           action={route.path}
           onSignIn={handleSignIn}/>
       </>
-    );
-  }
-}
+  );
+};
 
-AuthPage.contextType = AppContext;
+export default AuthPage;
