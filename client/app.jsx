@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Home from './pages/home';
 import PostForm from './pages/post-form';
 import Profile from './pages/profile';
@@ -8,44 +8,38 @@ import parseRoute from './lib/parse-route';
 import decodeToken from './lib/decode-token';
 import AppContext from './lib/app-context';
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: null,
-      isAuthorizing: true,
-      route: parseRoute(window.location.hash)
-    };
-    this.handleSignIn = this.handleSignIn.bind(this);
-    this.handleSignOut = this.handleSignOut.bind(this);
-  }
+const App = () => {
 
-  componentDidMount() {
+  const [user, setUser] = useState(null);
+  const [isAuthorizing, setIsAuthorizing] = useState(true);
+  const [route, setRoute] = useState(parseRoute(window.location.hash));
+
+  useEffect(() => {
     window.addEventListener('hashchange', () => {
       const newRoute = parseRoute(window.location.hash);
-      this.setState({ route: newRoute });
+      setRoute(newRoute);
     });
     const token = window.localStorage.getItem('foodies-jwt');
     const user = token ? decodeToken(token) : null;
-    this.setState({ user, isAuthorizing: false });
-  }
+    setUser(user);
+    setIsAuthorizing(false);
+  }, []);
 
-  handleSignIn(result) {
+  const handleSignIn = result => {
     const { user, token } = result;
     if (token) {
       window.localStorage.setItem('foodies-jwt', token);
     }
-    this.setState({ user });
-  }
+    setUser(user);
+  };
 
-  handleSignOut() {
+  const handleSignOut = () => {
     window.localStorage.removeItem('foodies-jwt');
-    this.setState({ user: null });
+    setUser(null);
     window.location.hash = '#sign-in';
-  }
+  };
 
-  renderPage() {
-    const { route } = this.state;
+  const renderPage = () => {
     if (route.path === 'sign-up' || route.path === 'sign-in') {
       return <AuthPage />;
     }
@@ -63,22 +57,23 @@ export default class App extends React.Component {
     if (route.path === 'new-post') {
       return <PostForm key='new-post' />;
     }
-  }
+  };
 
-  render() {
-    if (this.state.isAuthorizing) return null;
-    const { user, route } = this.state;
-    const { handleSignIn, handleSignOut } = this;
-    const contextValue = { user, route, handleSignIn, handleSignOut };
-    return (
-      <>
-        <AppContext.Provider value={contextValue}>
-          {!(route.path === 'sign-up' || route.path === 'sign-in') &&
-            <Navbar />
-          }
-          {this.renderPage()}
-        </AppContext.Provider>
-      </>
-    );
-  }
-}
+  const contextValue = { user, route, handleSignIn, handleSignOut };
+
+  if (isAuthorizing) return null;
+
+  return (
+    <>
+      <AppContext.Provider value={contextValue}>
+        {!(route.path === 'sign-up' || route.path === 'sign-in') &&
+          <Navbar />
+        }
+        {renderPage()}
+      </AppContext.Provider>
+    </>
+  );
+
+};
+
+export default App;
