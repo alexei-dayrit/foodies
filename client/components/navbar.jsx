@@ -1,11 +1,12 @@
 import React, { useState, useContext } from 'react';
+import SearchBar from './search-bar';
 import XMarkIcon from './svg-assets/xmark-icon';
 import MenuIcon from './svg-assets/menu-icon';
 import DropdownMenu from './dropdown-menu';
 import Redirect from './redirect';
 import AppContext from '../lib/app-context';
 
-const Navbar = props => {
+const Navbar = ({ posts }) => {
   const [showDesktopDropdown, setShowDesktopDropdown] = useState(false);
   const [showMobileDropdown, setShowMobileDropdown] = useState(false);
   const { user, handleSignOut } = useContext(AppContext);
@@ -41,6 +42,14 @@ const Navbar = props => {
         </div>
         <div className={`md:flex items-center' ${(showMobileDropdown ? 'flex' : 'hidden')}`}>
           <ul className="flex flex-col md:flex-row list-none md:ml-auto font-semibold">
+            <li>
+              <a onClick={handleMobileDropdownToggle} className="px-3 py-2 flex
+                    items-center uppercase leading-snug hover:text-gray-600 hover:scale-105" href="#">
+                <span className="ml-2 md:mt-2">
+                  <SearchBar posts={posts} />
+                </span>
+              </a>
+            </li>
             <li>
               <a onClick={handleMobileDropdownToggle} className="px-3 py-2 flex
                     items-center uppercase leading-snug hover:text-gray-600 hover:scale-105" href="#">

@@ -13,6 +13,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [isAuthorizing, setIsAuthorizing] = useState(true);
   const [route, setRoute] = useState(parseRoute(window.location.hash));
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     window.addEventListener('hashchange', () => {
@@ -23,6 +24,15 @@ const App = () => {
     const user = token ? decodeToken(token) : null;
     setUser(user);
     setIsAuthorizing(false);
+
+    fetch('/api/posts', {
+      headers: { 'X-Access-Token': token }
+    })
+      .then(res => res.json())
+      .then(data => {
+        setPosts(data);
+      })
+      .catch(err => console.error(err));
   }, []);
 
   const handleSignIn = result => {
@@ -44,7 +54,7 @@ const App = () => {
       return <AuthPage />;
     }
     if (route.path === '') {
-      return <Home />;
+      return <Home posts={posts} />;
     }
     if (route.path === 'profile') {
       const userId = route.params.get('userId');
@@ -67,7 +77,7 @@ const App = () => {
     <>
       <AppContext.Provider value={contextValue}>
         {!(route.path === 'sign-up' || route.path === 'sign-in') &&
-          <Navbar />
+          <Navbar posts={posts} />
         }
         {renderPage()}
       </AppContext.Provider>
