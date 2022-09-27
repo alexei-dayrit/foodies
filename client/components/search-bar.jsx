@@ -1,9 +1,12 @@
 import React from 'react';
+import SearchIcon from './svg-assets/search-icon';
 
 const SearchBar = ({ posts }) => {
 
   return (
-    <div>Search</div>
+    <div>
+      <SearchIcon/>
+    </div>
   );
 };
 
