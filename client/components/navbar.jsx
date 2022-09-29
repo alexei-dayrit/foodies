@@ -6,7 +6,8 @@ import DropdownMenu from './dropdown-menu';
 import Redirect from './redirect';
 import AppContext from '../lib/app-context';
 
-const Navbar = ({ posts }) => {
+const Navbar = props => {
+  const { searchQuery, setSearchQuery, isSearching, setIsSearching } = props;
   const [showDesktopDropdown, setShowDesktopDropdown] = useState(false);
   const [showMobileDropdown, setShowMobileDropdown] = useState(false);
   const { user, handleSignOut } = useContext(AppContext);
@@ -46,7 +47,12 @@ const Navbar = ({ posts }) => {
               <a onClick={handleMobileDropdownToggle} className="px-3 py-2 flex
                     items-center uppercase leading-snug hover:text-gray-600 hover:scale-105" href="#">
                 <span className="ml-2 md:mt-2">
-                  <SearchBar posts={posts} />
+                  <SearchBar
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    isSearching={isSearching}
+                    setIsSearching={setIsSearching}
+                  />
                 </span>
               </a>
             </li>
