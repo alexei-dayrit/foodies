@@ -12,7 +12,6 @@ const SearchBar = props => {
   const handleChange = event => {
     const { value } = event.target;
     setSearchQuery(value);
-    console.log(searchQuery);
   };
 
   const handleSearchSubmit = event => {
