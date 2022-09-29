@@ -7,7 +7,7 @@ import AppContext from '../lib/app-context';
 const Home = () => {
   const { user } = useContext(AppContext);
   if (!user) return <Redirect to="sign-in" />;
-  let filteredPosts = [];
+  let filteredPosts = null;
 
   const [posts, setPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
