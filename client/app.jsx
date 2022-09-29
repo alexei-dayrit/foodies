@@ -60,13 +60,12 @@ const App = () => {
   };
 
   const contextValue = { user, route, handleSignIn, handleSignOut };
-
   if (isAuthorizing) return null;
 
   return (
     <>
       <AppContext.Provider value={contextValue}>
-        {!(route.path === 'sign-up' || route.path === 'sign-in') &&
+        {!(route.path === 'sign-up' || route.path === 'sign-in' || route.path === '') &&
           <Navbar />
         }
         {renderPage()}
