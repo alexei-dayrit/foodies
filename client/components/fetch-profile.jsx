@@ -7,7 +7,6 @@ const fetchProfile = async (selectedUserId, token, setProfileInfo) => {
   ]);
   const posts = await fetchData1.json();
   const selectedUser = await fetchData2.json();
-  console.log('selectedUser:', selectedUser);
 
   setProfileInfo(prev => ({
     ...prev,
