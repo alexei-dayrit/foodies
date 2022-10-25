@@ -11,10 +11,9 @@ const Profile = props => {
     posts: [],
     selectedUser: '',
     showListView: false,
-    isFollowing: false,
-    followerCount: 0
+    isFollowing: false
   });
-  const { posts, selectedUser, showListView, isFollowing, followerCount } = profileInfo;
+  const { posts, selectedUser, showListView, isFollowing } = profileInfo;
   const { user } = useContext(AppContext);
   const propsUserId = props.userId;
 
@@ -61,7 +60,7 @@ const Profile = props => {
       .then(response => response.json())
       .catch(err => console.error(err));
   };
-
+  console.log({ isFollowing });
   return (
     <div className='sm:w-96 md:w-[768px] lg:w-[900px] p-2 mx-auto overflow-hidden mt-8'>
       <div className='flex flex-wrap p-4 pb-6'>
@@ -78,7 +77,7 @@ const Profile = props => {
             <p>Posts</p>
           </div>
           <div className='w-1/3 md:w-[22%]'>
-            <p className='font-semibold'>{followerCount}</p>
+            <p className='font-semibold'>{selectedUser.followerCount}</p>
             <p>Followers</p>
           </div>
           <div className='w-1/3 md:w-[22%]'>
