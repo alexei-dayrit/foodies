@@ -30,10 +30,10 @@ const Profile = props => {
     })
       .then(res => res.json())
       .then(posts => {
-        setProfileInfo({
-          ...profileInfo,
+        setProfileInfo(prev => ({
+          ...prev,
           posts: posts
-        });
+        }));
       })
       .catch(err => console.error(err));
     fetch(`/api/user/${selectedUserId}`, {
@@ -43,22 +43,22 @@ const Profile = props => {
     })
       .then(res => res.json())
       .then(user => {
-        setProfileInfo({
+        setProfileInfo(prev => ({
           ...profileInfo,
           selectedUser: user,
           isFollowing: user.isFollowing,
           followerCount: user.followerCount
-        });
+        }));
       })
       .catch(err => console.error(err));
   }, []);
 
   const handleGridIconClicks = () => {
-    setProfileInfo({ ...profileInfo, showListView: false });
+    setProfileInfo(prev => ({ ...profileInfo, showListView: false }));
   };
 
   const handleListIconClicks = () => {
-    setProfileInfo({ ...profileInfo, showListView: true });
+    setProfileInfo(prev => ({ ...profileInfo, showListView: true }));
   };
 
   const handleFollowClicks = () => {
@@ -69,11 +69,11 @@ const Profile = props => {
     if (!isFollowing) {
       fetchMethod = 'POST';
       fetchRoute = '/api/follow';
-      setProfileInfo({ ...profileInfo, isFollowing: true, followerCount: Number(followerCount) + 1 });
+      setProfileInfo(prev => ({ ...profileInfo, isFollowing: true, followerCount: Number(followerCount) + 1 }));
     } else {
       fetchMethod = 'DELETE';
       fetchRoute = '/api/unfollow';
-      setProfileInfo({ ...profileInfo, isFollowing: false, followerCount: Number(followerCount) - 1 });
+      setProfileInfo(prev => ({ ...profileInfo, isFollowing: false, followerCount: Number(followerCount) - 1 }));
     }
 
     fetch(fetchRoute, {
