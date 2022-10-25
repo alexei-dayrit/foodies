@@ -5,6 +5,56 @@ import GridIcon from '../components/svg-assets/grid-icon';
 import ListIcon from '../components/svg-assets/list-icon';
 import AppContext from '../lib/app-context';
 
+const fetchProfile = async (selectedUserId, token, setProfileInfo) => {
+  const headers = { headers: { 'X-Access-Token': token } };
+
+  const [fetchData1, fetchData2] = await Promise.all([
+    fetch(`/api/posts/${selectedUserId}`, headers),
+    fetch(`/api/user/${selectedUserId}`, headers)
+  ]);
+  const posts = await fetchData1.json();
+  const selectedUser = await fetchData2.json();
+  console.log(posts);
+  console.log(selectedUser);
+
+  setProfileInfo(prev => ({
+    ...prev,
+    posts
+  }));
+
+  setProfileInfo(prev => ({
+    ...prev,
+    selectedUser
+  }));
+  // fetch(`/api/posts/${selectedUserId}`, {
+  //   headers: {
+  //     'X-Access-Token': token
+  //   }
+  // })
+  //   .then(res => res.json())
+  //   .then(posts => {
+  //     setProfileInfo(prev => ({
+  //       ...prev,
+  //       posts
+  //     }));
+  //   })
+  //   .catch(err => console.error(err));
+
+  // fetch(`/api/user/${selectedUserId}`, {
+  //   headers: {
+  //     'X-Access-Token': token
+  //   }
+  // })
+  //   .then(res => res.json())
+  //   .then(user => {
+  //     setProfileInfo(prev => ({
+  //       ...prev,
+  //       selectedUser: user
+  //     }));
+  //   })
+  //   .catch(err => console.error(err));
+};
+
 const Profile = props => {
   const [profileInfo, setProfileInfo] = useState({
     posts: [],
@@ -13,7 +63,7 @@ const Profile = props => {
     isFollowing: false,
     followerCount: 0
   });
-  const { posts, selectedUser, showListView, isFollowing, followerCount } = profileInfo;
+  // const { posts, selectedUser, showListView, isFollowing, followerCount } = profileInfo;
   const { user } = useContext(AppContext);
   const propsUserId = props.userId;
 
@@ -23,34 +73,7 @@ const Profile = props => {
     if (!selectedUserId) {
       selectedUserId = user.userId;
     }
-    fetch(`/api/posts/${selectedUserId}`, {
-      headers: {
-        'X-Access-Token': token
-      }
-    })
-      .then(res => res.json())
-      .then(posts => {
-        setProfileInfo(prev => ({
-          ...prev,
-          posts: posts
-        }));
-      })
-      .catch(err => console.error(err));
-    fetch(`/api/user/${selectedUserId}`, {
-      headers: {
-        'X-Access-Token': token
-      }
-    })
-      .then(res => res.json())
-      .then(user => {
-        setProfileInfo(prev => ({
-          ...profileInfo,
-          selectedUser: user,
-          isFollowing: user.isFollowing,
-          followerCount: user.followerCount
-        }));
-      })
-      .catch(err => console.error(err));
+    fetchProfile(selectedUserId, token, setProfileInfo);
   }, []);
 
   const handleGridIconClicks = () => {
@@ -66,14 +89,14 @@ const Profile = props => {
 
     let fetchMethod = '';
     let fetchRoute = '';
-    if (!isFollowing) {
+    if (!profileInfo.isFollowing) {
       fetchMethod = 'POST';
       fetchRoute = '/api/follow';
-      setProfileInfo(prev => ({ ...profileInfo, isFollowing: true, followerCount: Number(followerCount) + 1 }));
+      setProfileInfo(prev => ({ ...profileInfo, isFollowing: true, followerCount: Number(profileInfo.followerCount) + 1 }));
     } else {
       fetchMethod = 'DELETE';
       fetchRoute = '/api/unfollow';
-      setProfileInfo(prev => ({ ...profileInfo, isFollowing: false, followerCount: Number(followerCount) - 1 }));
+      setProfileInfo(prev => ({ ...profileInfo, isFollowing: false, followerCount: Number(profileInfo.followerCount) - 1 }));
     }
 
     fetch(fetchRoute, {
@@ -94,32 +117,32 @@ const Profile = props => {
         <div className='w-[25%] md:w-1/3 order-1 flex items-center md:justify-end'>
           <img className="w-20 h-20 md:w-36 md:h-36
               border-gray-300 border rounded-full object-cover"
-            src={selectedUser.profilePhotoUrl || 'images/placeholder-profile-image.jpeg'}
+            src={profileInfo.selectedUser.profilePhotoUrl || 'images/placeholder-profile-image.jpeg'}
             alt="Profile picture" />
         </div>
         <div className="w-[75%] md:w-2/3 order-2 flex flex-wrap items-center
               md:justify-center text-center font-medium">
           <div className='w-1/3 md:w-[22%]'>
-            <p className='font-semibold'>{selectedUser.postCount}</p>
+            <p className='font-semibold'>{profileInfo.selectedUser.postCount}</p>
             <p>Posts</p>
           </div>
           <div className='w-1/3 md:w-[22%]'>
-            <p className='font-semibold'>{followerCount}</p>
+            <p className='font-semibold'>{profileInfo.followerCount}</p>
             <p>Followers</p>
           </div>
           <div className='w-1/3 md:w-[22%]'>
-            <p className='font-semibold'>{selectedUser.followingCount}</p>
+            <p className='font-semibold'>{profileInfo.selectedUser.followingCount}</p>
             <p>Following</p>
           </div>
           <div className="w-full md:w-3/4 flex ml-4 pl-4 mt-4 md:text-xl justify-around">
             <div className="w-1/3 flex items-center">
-              <p className='font-semibold'>{selectedUser.username}</p>
+              <p className='font-semibold'>{profileInfo.selectedUser.username}</p>
             </div>
             <div className="w-1/3">
               <button className={`font-medium text-gray-600 border rounded-md px-2 py-1
-                    ${isFollowing ? 'bg-blue-400' : 'bg-blue-300'}`}
+                    ${profileInfo.isFollowing ? 'bg-blue-400' : 'bg-blue-300'}`}
                 onClick={handleFollowClicks}>
-                {isFollowing ? 'Unfollow' : 'Follow'}
+                {profileInfo.isFollowing ? 'Unfollow' : 'Follow'}
               </button>
             </div>
           </div>
@@ -127,19 +150,19 @@ const Profile = props => {
       </div>
       <div className='flex mb-2'>
         <button className={`w-1/2 border-t border-[#dbdbdb] flex justify-center pr-4
-              ${!showListView && 'border-t-2 border-gray-600'} pt-2`}
+              ${!profileInfo.showListView && 'border-t-2 border-gray-600'} pt-2`}
           onClick={handleGridIconClicks}>
           <GridIcon />
         </button>
         <button className={`w-1/2 border-t border-[#dbdbdb] pl-4 flex justify-center
-              ${showListView && 'border-t-2 border-gray-600'} pt-2`}
+              ${profileInfo.showListView && 'border-t-2 border-gray-600'} pt-2`}
           onClick={handleListIconClicks}>
           <ListIcon />
         </button>
       </div>
-      {showListView
-        ? <PostHistory posts={posts} />
-        : <GridHistory posts={posts} handleListIconClicks={handleListIconClicks} />}
+      {profileInfo.showListView
+        ? <PostHistory posts={profileInfo.posts} />
+        : <GridHistory posts={profileInfo.posts} handleListIconClicks={handleListIconClicks} />}
     </div>
   );
 };
