@@ -10,10 +10,9 @@ const Profile = props => {
   const [profileInfo, setProfileInfo] = useState({
     posts: [],
     selectedUser: '',
-    showListView: false,
-    isFollowing: false
+    showListView: false
   });
-  const { posts, selectedUser, showListView, isFollowing } = profileInfo;
+  const { posts, selectedUser, showListView } = profileInfo;
   const { user } = useContext(AppContext);
   const propsUserId = props.userId;
 
@@ -34,19 +33,28 @@ const Profile = props => {
     setProfileInfo(prev => ({ ...profileInfo, showListView: true }));
   };
 
-  const handleFollowClicks = () => {
+  const handleFollowClicks = event => {
     const token = window.localStorage.getItem('foodies-jwt');
+    const followerCount = selectedUser.followerCount;
+    const value = event.target.value;
 
     let fetchMethod = '';
     let fetchRoute = '';
-    if (!profileInfo.isFollowing) {
+
+    if (value === 'follow') {
       fetchMethod = 'POST';
       fetchRoute = '/api/follow';
-      setProfileInfo(prev => ({ ...profileInfo, isFollowing: true, followerCount: Number(profileInfo.followerCount) + 1 }));
+      setProfileInfo(prev => ({
+        ...prev,
+        selectedUser: { ...selectedUser, isFollowing: true, followerCount: Number(followerCount) + 1 }
+      }));
     } else {
       fetchMethod = 'DELETE';
       fetchRoute = '/api/unfollow';
-      setProfileInfo(prev => ({ ...profileInfo, isFollowing: false, followerCount: Number(profileInfo.followerCount) - 1 }));
+      setProfileInfo(prev => ({
+        ...prev,
+        selectedUser: { ...selectedUser, isFollowing: false, followerCount: Number(followerCount) - 1 }
+      }));
     }
 
     fetch(fetchRoute, {
@@ -60,7 +68,7 @@ const Profile = props => {
       .then(response => response.json())
       .catch(err => console.error(err));
   };
-  console.log({ isFollowing });
+
   return (
     <div className='sm:w-96 md:w-[768px] lg:w-[900px] p-2 mx-auto overflow-hidden mt-8'>
       <div className='flex flex-wrap p-4 pb-6'>
@@ -90,9 +98,10 @@ const Profile = props => {
             </div>
             <div className="w-1/3">
               <button className={`font-medium text-gray-600 border rounded-md px-2 py-1
-                    ${isFollowing ? 'bg-blue-400' : 'bg-blue-300'}`}
-                onClick={handleFollowClicks}>
-                {isFollowing ? 'Unfollow' : 'Follow'}
+                    ${selectedUser.isFollowing ? 'bg-blue-400' : 'bg-blue-300'}`}
+                onClick={handleFollowClicks}
+                value={selectedUser.isFollowing ? 'unfollow' : 'follow'}>
+                {selectedUser.isFollowing ? 'Unfollow' : 'Follow'}
               </button>
             </div>
           </div>
