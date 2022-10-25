@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import fetchProfile from '../components/fetch-profile';
 import PostHistory from '../components/post-history';
 import GridHistory from '../components/grid-history';
 import GridIcon from '../components/svg-assets/grid-icon';
@@ -9,11 +10,9 @@ const Profile = props => {
   const [profileInfo, setProfileInfo] = useState({
     posts: [],
     selectedUser: '',
-    showListView: false,
-    isFollowing: false,
-    followerCount: 0
+    showListView: false
   });
-  const { posts, selectedUser, showListView, isFollowing, followerCount } = profileInfo;
+  const { posts, selectedUser, showListView } = profileInfo;
   const { user } = useContext(AppContext);
   const propsUserId = props.userId;
 
@@ -23,57 +22,39 @@ const Profile = props => {
     if (!selectedUserId) {
       selectedUserId = user.userId;
     }
-    fetch(`/api/posts/${selectedUserId}`, {
-      headers: {
-        'X-Access-Token': token
-      }
-    })
-      .then(res => res.json())
-      .then(posts => {
-        setProfileInfo({
-          ...profileInfo,
-          posts: posts
-        });
-      })
-      .catch(err => console.error(err));
-    fetch(`/api/user/${selectedUserId}`, {
-      headers: {
-        'X-Access-Token': token
-      }
-    })
-      .then(res => res.json())
-      .then(user => {
-        setProfileInfo({
-          ...profileInfo,
-          selectedUser: user,
-          isFollowing: user.isFollowing,
-          followerCount: user.followerCount
-        });
-      })
-      .catch(err => console.error(err));
+    fetchProfile(selectedUserId, token, setProfileInfo);
   }, []);
 
   const handleGridIconClicks = () => {
-    setProfileInfo({ ...profileInfo, showListView: false });
+    setProfileInfo(prev => ({ ...profileInfo, showListView: false }));
   };
 
   const handleListIconClicks = () => {
-    setProfileInfo({ ...profileInfo, showListView: true });
+    setProfileInfo(prev => ({ ...profileInfo, showListView: true }));
   };
 
-  const handleFollowClicks = () => {
+  const handleFollowClicks = event => {
     const token = window.localStorage.getItem('foodies-jwt');
+    const followerCount = selectedUser.followerCount;
+    const value = event.target.value;
 
     let fetchMethod = '';
     let fetchRoute = '';
-    if (!isFollowing) {
+
+    if (value === 'follow') {
       fetchMethod = 'POST';
       fetchRoute = '/api/follow';
-      setProfileInfo({ ...profileInfo, isFollowing: true, followerCount: Number(followerCount) + 1 });
+      setProfileInfo(prev => ({
+        ...prev,
+        selectedUser: { ...selectedUser, isFollowing: true, followerCount: Number(followerCount) + 1 }
+      }));
     } else {
       fetchMethod = 'DELETE';
       fetchRoute = '/api/unfollow';
-      setProfileInfo({ ...profileInfo, isFollowing: false, followerCount: Number(followerCount) - 1 });
+      setProfileInfo(prev => ({
+        ...prev,
+        selectedUser: { ...selectedUser, isFollowing: false, followerCount: Number(followerCount) - 1 }
+      }));
     }
 
     fetch(fetchRoute, {
@@ -104,7 +85,7 @@ const Profile = props => {
             <p>Posts</p>
           </div>
           <div className='w-1/3 md:w-[22%]'>
-            <p className='font-semibold'>{followerCount}</p>
+            <p className='font-semibold'>{selectedUser.followerCount}</p>
             <p>Followers</p>
           </div>
           <div className='w-1/3 md:w-[22%]'>
@@ -117,9 +98,10 @@ const Profile = props => {
             </div>
             <div className="w-1/3">
               <button className={`font-medium text-gray-600 border rounded-md px-2 py-1
-                    ${isFollowing ? 'bg-blue-400' : 'bg-blue-300'}`}
-                onClick={handleFollowClicks}>
-                {isFollowing ? 'Unfollow' : 'Follow'}
+                    ${selectedUser.isFollowing ? 'bg-blue-400' : 'bg-blue-300'}`}
+                onClick={handleFollowClicks}
+                value={selectedUser.isFollowing ? 'unfollow' : 'follow'}>
+                {selectedUser.isFollowing ? 'Unfollow' : 'Follow'}
               </button>
             </div>
           </div>
