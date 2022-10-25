@@ -1,30 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
+import fetchProfile from '../components/fetch-profile';
 import PostHistory from '../components/post-history';
 import GridHistory from '../components/grid-history';
 import GridIcon from '../components/svg-assets/grid-icon';
 import ListIcon from '../components/svg-assets/list-icon';
 import AppContext from '../lib/app-context';
-
-const fetchProfile = async (selectedUserId, token, setProfileInfo) => {
-  const headers = { headers: { 'X-Access-Token': token } };
-
-  const [fetchData1, fetchData2] = await Promise.all([
-    fetch(`/api/posts/${selectedUserId}`, headers),
-    fetch(`/api/user/${selectedUserId}`, headers)
-  ]);
-  const posts = await fetchData1.json();
-  const selectedUser = await fetchData2.json();
-
-  setProfileInfo(prev => ({
-    ...prev,
-    posts
-  }));
-
-  setProfileInfo(prev => ({
-    ...prev,
-    selectedUser
-  }));
-};
 
 const Profile = props => {
   const [profileInfo, setProfileInfo] = useState({
