@@ -14,8 +14,6 @@ const fetchProfile = async (selectedUserId, token, setProfileInfo) => {
   ]);
   const posts = await fetchData1.json();
   const selectedUser = await fetchData2.json();
-  console.log(posts);
-  console.log(selectedUser);
 
   setProfileInfo(prev => ({
     ...prev,
@@ -26,33 +24,6 @@ const fetchProfile = async (selectedUserId, token, setProfileInfo) => {
     ...prev,
     selectedUser
   }));
-  // fetch(`/api/posts/${selectedUserId}`, {
-  //   headers: {
-  //     'X-Access-Token': token
-  //   }
-  // })
-  //   .then(res => res.json())
-  //   .then(posts => {
-  //     setProfileInfo(prev => ({
-  //       ...prev,
-  //       posts
-  //     }));
-  //   })
-  //   .catch(err => console.error(err));
-
-  // fetch(`/api/user/${selectedUserId}`, {
-  //   headers: {
-  //     'X-Access-Token': token
-  //   }
-  // })
-  //   .then(res => res.json())
-  //   .then(user => {
-  //     setProfileInfo(prev => ({
-  //       ...prev,
-  //       selectedUser: user
-  //     }));
-  //   })
-  //   .catch(err => console.error(err));
 };
 
 const Profile = props => {
@@ -63,7 +34,7 @@ const Profile = props => {
     isFollowing: false,
     followerCount: 0
   });
-  // const { posts, selectedUser, showListView, isFollowing, followerCount } = profileInfo;
+  const { posts, selectedUser, showListView, isFollowing, followerCount } = profileInfo;
   const { user } = useContext(AppContext);
   const propsUserId = props.userId;
 
@@ -117,32 +88,32 @@ const Profile = props => {
         <div className='w-[25%] md:w-1/3 order-1 flex items-center md:justify-end'>
           <img className="w-20 h-20 md:w-36 md:h-36
               border-gray-300 border rounded-full object-cover"
-            src={profileInfo.selectedUser.profilePhotoUrl || 'images/placeholder-profile-image.jpeg'}
+            src={selectedUser.profilePhotoUrl || 'images/placeholder-profile-image.jpeg'}
             alt="Profile picture" />
         </div>
         <div className="w-[75%] md:w-2/3 order-2 flex flex-wrap items-center
               md:justify-center text-center font-medium">
           <div className='w-1/3 md:w-[22%]'>
-            <p className='font-semibold'>{profileInfo.selectedUser.postCount}</p>
+            <p className='font-semibold'>{selectedUser.postCount}</p>
             <p>Posts</p>
           </div>
           <div className='w-1/3 md:w-[22%]'>
-            <p className='font-semibold'>{profileInfo.followerCount}</p>
+            <p className='font-semibold'>{followerCount}</p>
             <p>Followers</p>
           </div>
           <div className='w-1/3 md:w-[22%]'>
-            <p className='font-semibold'>{profileInfo.selectedUser.followingCount}</p>
+            <p className='font-semibold'>{selectedUser.followingCount}</p>
             <p>Following</p>
           </div>
           <div className="w-full md:w-3/4 flex ml-4 pl-4 mt-4 md:text-xl justify-around">
             <div className="w-1/3 flex items-center">
-              <p className='font-semibold'>{profileInfo.selectedUser.username}</p>
+              <p className='font-semibold'>{selectedUser.username}</p>
             </div>
             <div className="w-1/3">
               <button className={`font-medium text-gray-600 border rounded-md px-2 py-1
-                    ${profileInfo.isFollowing ? 'bg-blue-400' : 'bg-blue-300'}`}
+                    ${isFollowing ? 'bg-blue-400' : 'bg-blue-300'}`}
                 onClick={handleFollowClicks}>
-                {profileInfo.isFollowing ? 'Unfollow' : 'Follow'}
+                {isFollowing ? 'Unfollow' : 'Follow'}
               </button>
             </div>
           </div>
@@ -150,19 +121,19 @@ const Profile = props => {
       </div>
       <div className='flex mb-2'>
         <button className={`w-1/2 border-t border-[#dbdbdb] flex justify-center pr-4
-              ${!profileInfo.showListView && 'border-t-2 border-gray-600'} pt-2`}
+              ${!showListView && 'border-t-2 border-gray-600'} pt-2`}
           onClick={handleGridIconClicks}>
           <GridIcon />
         </button>
         <button className={`w-1/2 border-t border-[#dbdbdb] pl-4 flex justify-center
-              ${profileInfo.showListView && 'border-t-2 border-gray-600'} pt-2`}
+              ${showListView && 'border-t-2 border-gray-600'} pt-2`}
           onClick={handleListIconClicks}>
           <ListIcon />
         </button>
       </div>
-      {profileInfo.showListView
-        ? <PostHistory posts={profileInfo.posts} />
-        : <GridHistory posts={profileInfo.posts} handleListIconClicks={handleListIconClicks} />}
+      {showListView
+        ? <PostHistory posts={posts} />
+        : <GridHistory posts={posts} handleListIconClicks={handleListIconClicks} />}
     </div>
   );
 };
