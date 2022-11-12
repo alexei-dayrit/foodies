@@ -76,7 +76,7 @@ const Profile = props => {
           <img className="w-20 h-20 md:w-36 md:h-36
               border-gray-300 border rounded-full object-cover"
             src={selectedUser.profilePhotoUrl || 'images/placeholder-profile-image.jpeg'}
-            alt="Profile picture" />
+            alt="Profile picture" loading='lazy'/>
         </div>
         <div className="w-[75%] md:w-2/3 order-2 flex flex-wrap items-center
               md:justify-center text-center font-medium">
