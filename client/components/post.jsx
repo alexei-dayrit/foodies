@@ -107,7 +107,7 @@ const Post = props => {
           <div className="flex w-full">
             <a href={`#profile?userId=${userId}`} className='items-center'>
               <img className="object-cover w-10 h-10 rounded-full border border-gray-300
-                hover:border-slate-400"
+                hover:border-slate-400" loading='lazy'
                 src={profilePhotoUrl || placeholderProfileImage} alt="Profile picture" />
             </a>
             <div className='flex-col flex'>
@@ -126,7 +126,7 @@ const Post = props => {
         <div className='w-full md:w-[60%] flex flex-wrap'
           href={imageUrl} target="_blank" rel="noreferrer"
         ><img className='w-full min-h-[300px] max-h-[500px] object-cover'
-          src={imageUrl} alt='Photo of post' />
+          src={imageUrl} alt='Photo of post' loading='lazy'/>
         </div>
         <div className='w-full md:w-[40%] md:pl-2 flex flex-col p-2'>
           <div className="md:flex items-center w-full space-x-3 md:pt-0 pb-2 border-b
@@ -134,7 +134,7 @@ const Post = props => {
             <div className="flex w-full items-center">
               <a href={`#profile?userId=${userId}`}>
                 <img className="object-cover w-10 h-10 rounded-full border border-gray-300 hover:border-slate-400"
-                  src={profilePhotoUrl || placeholderProfileImage} alt="Profile picture" />
+                  src={profilePhotoUrl || placeholderProfileImage} alt="Profile picture" loading='lazy'/>
               </a>
               <div className='flex flex-col'>
                 <a href={`#profile?userId=${userId}`}>
