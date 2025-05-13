@@ -21,6 +21,7 @@ A full stack JavaScript web application for foodies who want to share and view p
 - Date-fns
 - PGweb
 - Heroku
+- Supabase
 
 ### Live Link: https://foodies-web-app.herokuapp.com/
 
