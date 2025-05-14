@@ -40,6 +40,8 @@ A full stack JavaScript web application for foodies who want to share and view p
 - User can sign out of their account
 - User can view other profiles
 - User can follow a profile
+- User can search for posts by username
+
 ## Preview
 
 ### Demo - User can login:
@@ -55,8 +57,9 @@ I wanted my first full stack application to be about something I loved, **food**
 
 ## Stretch Features
 
-- User can search for other users
+- User can search for another user (display preview card)
 - User can edit their profile
+- User can message another user
 - User can mark location on a map
 
 ## System Requirements
