@@ -1,0 +1,20 @@
+name: Auto Merge PR
+
+on:
+  pull_request:
+    types:
+      - labeled
+      - synchronize
+
+jobs:
+  automerge:
+    if: contains(join(github.event.pull_request.labels.*.name, ','), 'automerge')
+    runs-on: ubuntu-latest
+
+    steps:
+      # Wait for all required status checks (like CI/CD) to pass
+      - name: Enable auto-merge for PR
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          merge-method: merge # or 'squash', 'rebase'
