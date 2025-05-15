@@ -2,8 +2,7 @@ name: Deploy Pipeline
 run-name: "Deploy to Heroku – ${{ github.event_name }} on ${{ github.ref_name || github.head_ref || 'unknown' }}"
 
 on:
-  push:
-    branches: [main]
+  workflow_call:
 
 jobs:
   deploy:
@@ -23,3 +22,14 @@ jobs:
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           dontautocreate: true
           usedocker: false
+
+      - name: Comment on PR after deploy
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ✅ **Deployed to Heroku!**
+            Your changes from PR #${{ github.event.pull_request.number }} have been successfully deployed to production at:
+            [https://foodies-web-app.herokuapp.com](https://foodies-web-app.herokuapp.com)
