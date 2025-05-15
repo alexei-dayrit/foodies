@@ -13,12 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code # REQUIRED for gh pr merge to work
-        uses: actions/checkout@v3
-
       # Wait for all required status checks (like CI/CD) to pass
       - name: Enable auto-merge for PR
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           merge-method: merge # or 'squash', 'rebase'
+          pull-request-number: ${{ github.event.pull_request.number }}
