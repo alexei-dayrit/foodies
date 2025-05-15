@@ -58,6 +58,7 @@ I wanted my first full stack application to be about something I loved, **food**
 ## Stretch Features
 
 - User can search for another user (display preview card)
+- User can use back button in chrome window to see previous page
 - User can edit their profile
 - User can message another user
 - User can mark location on a map
