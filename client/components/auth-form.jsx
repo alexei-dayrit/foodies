@@ -203,7 +203,6 @@ const AuthForm = props => {
                 onClick={handleDemoLogin}
                 className="mt-4 text-sm pl-1 text-[#0095f6]
                   hover:text-[#008ae3] hover:scale-105 cursor-pointer"
-                href={action === 'sign-up' ? '#sign-in' : '#sign-up'}
               >
                 Demo Login
               </button>
