@@ -1,19 +1,12 @@
 name: Deploy Pipeline
-run-name: "Deploy to Heroku${{ github.event.pull_request.number && ' #' }}${{ github.event.pull_request.number || '' }}${{ github.event.pull_request.number && ' on ' }}${{ github.event.pull_request.base.ref || '' }} – ${{ github.event_name }} on ${{ github.ref_name || github.head_ref || 'unknown' }}"
+run-name: "Deploy to Heroku – ${{ github.event_name }} on ${{ github.ref_name || github.head_ref || 'unknown' }}"
 
 on:
   push:
     branches: [main]
-  pull_request:
-    types: [closed]
 
 jobs:
   deploy:
-    if: |
-        (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-          (github.event_name == 'pull_request' &&
-          github.event.pull_request.merged == true &&
-          github.event.pull_request.base.ref == 'main')
     runs-on: ubuntu-latest
 
     steps:
