@@ -1,0 +1,35 @@
+name: Deploy After CI
+run-name: Deploy to Heroku - ${{ github.event_name }} on ${{ github.ref_name || github.head_ref || 'unknown' }}
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [closed]
+
+jobs:
+  call-ci:
+    uses: ./.github/workflows/ci.yml@main
+  deploy:
+    needs: call-ci
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'pull_request' &&
+       github.event.pull_request.merged == true &&
+       github.event.pull_request.base.ref == 'main')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Heroku CLI
+        run: curl https://cli-assets.heroku.com/install.sh | sh
+
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.14.15
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: foodies-web-app
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          dontautocreate: true
+          usedocker: false
