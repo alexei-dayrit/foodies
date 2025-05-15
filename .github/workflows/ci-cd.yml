@@ -89,3 +89,15 @@ jobs:
           heroku_email: ${{ secrets.HEROKU_EMAIL }} # Heroku email from GitHub secrets
           dontautocreate: true # Don't auto-create the app if it doesn't exist
           usedocker: false # Set to true if deploying a Docker app
+  debug-context:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print GitHub context
+        run: |
+          echo "event_name: ${{ github.event_name }}"
+          echo "ref: ${{ github.ref }}"
+          echo "sha: ${{ github.sha }}"
+          echo "head_ref: ${{ github.head_ref }}"
+          echo "base_ref: ${{ github.base_ref }}"
+          echo "actor: ${{ github.actor }}"
+          echo "triggering_actor: ${{ github.triggering_actor }}"
