@@ -1,5 +1,5 @@
 name: CI Pipeline
-run-name: Build and Test – ${{ github.event_name }} on ${{ github.ref_name || github.head_ref || 'unknown' }}
+run-name: "Build and Test – ${{ github.event.pull_request.number && 'PR#' }}${{ github.event.pull_request.number || '' }}${{ github.event.pull_request.number && ' on ' }}${{ github.event.pull_request.head.ref || github.ref_name || github.head_ref || 'unknown' }}"
 
 on:
   push:
