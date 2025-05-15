@@ -1,8 +1,11 @@
-name: Build and Test
-run-name: "Build and test – ${{ github.event_name }} event on ${{ github.ref_name }}"
+name: CI Pipeline
+run-name: Build and Test – ${{ github.event_name }} on ${{ github.ref_name || github.head_ref || 'unknown' }}
 
 on:
-  workflow_call:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   build-and-test:
