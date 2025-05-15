@@ -8,10 +8,14 @@ on:
 
 jobs:
   automerge:
+    # This job will run when a pull request is labeled with 'automerge'
     if: contains(join(github.event.pull_request.labels.*.name, ','), 'automerge')
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code # REQUIRED for gh pr merge to work
+        uses: actions/checkout@v3
+
       # Wait for all required status checks (like CI/CD) to pass
       - name: Enable auto-merge for PR
         uses: peter-evans/enable-pull-request-automerge@v3
