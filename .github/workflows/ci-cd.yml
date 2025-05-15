@@ -2,17 +2,17 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [main] # Run on push to main branch
   pull_request:
-    branches: [main]
+    branches: [main] # Run on PRs to main branch
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Use Ubuntu runner
 
     services:
       postgres:
-        image: postgres:13
+        image: postgres:13 # Use Postgres 13 for tests
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -25,37 +25,57 @@ jobs:
       NODE_ENV: test
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3 # Checkout code
 
-      - name: Set up Node.js
+      - name: Cache Node modules # Speed up installs by caching dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Set up Node.js # Set Node.js version
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: Install dependencies
+      - name: Install dependencies # Install npm packages
         run: npm install
 
-      - name: Run backend tests
+      - name: Wait for PostgreSQL # Wait until Postgres is ready
+        run: |
+          until pg_isready -h localhost -p 5432; do
+            echo "Waiting for PostgreSQL...";
+            sleep 2;
+          done
+
+      - name: Run backend tests # Run backend tests (if defined)
         run: npm run test:backend || echo "No backend tests defined."
 
-      - name: Build frontend
+      - name: Build frontend # Build frontend assets
         run: npm run build
 
-      - name: Run frontend tests
+      - name: Run frontend tests # Run frontend tests (if defined)
         run: npm run test:frontend || echo "No frontend tests defined."
 
   deploy:
-    needs: build-and-test
+    needs: build-and-test # Only run if build-and-test succeeds
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && success()
+    if: github.ref == 'refs/heads/main' && success() # Only deploy from main branch on success
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3 # Checkout code again for deployment
 
-      - name: Deploy to Heroku
-        uses: heroku/heroku-deploy@v1
+      - name: Install Heroku CLI # Install Heroku CLI for deployment
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+
+      - name: Deploy to Heroku # Deploy to Heroku using GitHub Action
+        uses: akhileshns/heroku-deploy@v3.14.15
         with:
-            heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-            heroku_app_name: foodies-web-app
-            heroku_email: ${{ secrets.HEROKU_EMAIL }}
-            branch: main
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }} # Heroku API key from GitHub secrets
+          heroku_app_name: foodies-web-app # Your Heroku app name
+          heroku_email: ${{ secrets.HEROKU_EMAIL }} # Heroku email from GitHub secrets
+          dontautocreate: true # Don't auto-create the app if it doesn't exist
+          usedocker: false # Set to true if deploying a Docker app
